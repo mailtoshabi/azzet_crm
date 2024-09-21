@@ -1,0 +1,8 @@
+body[data-topbar=dark] #page-topbar, body[data-topbar=dark] .navbar-brand-box {
+    background-color: #1c84ee;
+    border-color: #1c84ee;
+}
+
+.table_min_height {
+    min-height: 200px;
+}
