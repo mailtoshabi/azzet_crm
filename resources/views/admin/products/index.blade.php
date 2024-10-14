@@ -6,7 +6,7 @@
 
 @endsection
 @section('content')
-@component('admin.components.breadcrumb')
+@component('admin.dir_components.breadcrumb')
 @slot('li_1') @lang('translation.Catalogue_Manage') @endslot
 @slot('li_2') @lang('translation.Product_Manage') @endslot
 @slot('title') @lang('translation.Product_List') @endslot
@@ -82,7 +82,7 @@
                                     </th>
                                     <td>
                                         @if(!empty($product->image))
-                                            <img src="{{ URL::asset(App\Models\Category::DIR_STORAGE . $product->image) }}" alt="" class="avatar-sm rounded-circle me-2">
+                                            <img src="{{ URL::asset(App\Models\Product::DIR_STORAGE . $product->image) }}" alt="" class="avatar-sm rounded-circle me-2">
                                         @else
                                         <div class="avatar-sm d-inline-block align-middle me-2">
                                             <div class="avatar-title bg-soft-primary text-primary font-size-20 m-0 rounded-circle">

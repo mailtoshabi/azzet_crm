@@ -4,6 +4,7 @@ namespace App\Http\Utilities;
 
 use App\Models\Settings;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class Utility{
 
@@ -19,9 +20,10 @@ class Utility{
     const FROM_MAIL = 'shabeer@gmail.com';
 
     const COUNTRY_CODE = '+91';
-    const COUNTRY = 'KSA';
-    const CURRENCY_DISPLAY = 'SAR';
-    const CURRENCY_WORD_DISPLAY = 'Riyal';
+    const COUNTRY = 'IN';
+    const CURRENCY_DISPLAY = 'INR';
+    const CURRENCY_WORD_DISPLAY = 'Rupees';
+    const STATE_ID_KERALA = 12;
 
     const DEFAULT_PRICE = 'products.price_month';
     const DEFAULT_LOCATION_RADIUS = 10;
@@ -301,10 +303,10 @@ class Utility{
         return static::$ticket_escalations;
     }
 
-    public static function settings($term) {
-        $value = Settings::where('term', $term)->value('value');
-        return $value;
-    }
+    // public static function settings($term) {
+    //     $value = Settings::where('term', $term)->value('value');
+    //     return $value;
+    // }
 
     public static function addUnderScore($data)
     {
@@ -313,8 +315,15 @@ class Utility{
 
     public static function cleanString($string) {
         $string = str_replace(' ','_', $string); // Replaces all spaces with underscore.
+        $string = str_replace('-_','_', $string);
+        $string = str_replace('_-','_', $string);
+        $string = str_replace('-','_', $string);
+        $string = str_replace('--','_', $string);
+        $string = str_replace('__','_', $string);
 
-        return preg_replace('/[^A-Za-z.0-9\-]/', '', $string); // Removes special chars.
+        $string = preg_replace('/[^A-Za-z.0-9\-_]/', '', $string); // Removes special chars.
+
+        return Str::limit($string, $limit = 25, $end = '...');
     }
 
     public static function currencyToWords(float $number)
@@ -366,9 +375,55 @@ class Utility{
     //     return $branch_product->stock;
     // }
 
-    public static function rentTermNameById($id)
+    public static function numToWords($number)
     {
-        $data = DB::table('rent_terms')->where(['id'=>$id])->first();
-        return $data->name;
+        $words = array(
+            '0' => 'Zero', '1' => 'One', '2' => 'Two',
+            '3' => 'Three', '4' => 'Four', '5' => 'Five',
+            '6' => 'Six', '7' => 'Seven', '8' => 'Eight',
+            '9' => 'Nine', '10' => 'Ten', '11' => 'Eleven',
+            '12' => 'Twelve', '13' => 'Thirteen', '14' => 'Fourteen',
+            '15' => 'Fifteen', '16' => 'Sixteen', '17' => 'Seventeen',
+            '18' => 'Eighteen', '19' => 'Nineteen', '20' => 'Twenty',
+            '30' => 'Thirty', '40' => 'Forty', '50' => 'Fifty', '60' => 'Sixty',
+            '70' => 'Seventy', '80' => 'Eighty', '90' => 'Ninety'
+        );
+
+        if ($number <= 20) {
+            return $words[$number];
+        }
+        elseif ($number < 100) {
+            return $words[10 * floor($number / 10)]
+                . ($number % 10 > 0 ? ' ' . $words[$number % 10] : '');
+        }
+        else {
+            $output = '';
+            if ($number >= 1000000000) {
+                $output .= static::numToWords(floor($number / 1000000000))
+                    . ' Billion ';
+                $number %= 1000000000;
+            }
+            if ($number >= 1000000) {
+                $output .= static::numToWords(floor($number / 1000000))
+                    . ' Million ';
+                $number %= 1000000;
+            }
+            if ($number >= 1000) {
+                $output .= static::numToWords(floor($number / 1000))
+                    . ' Thousand ';
+                $number %= 1000;
+            }
+            if ($number >= 100) {
+                $output .= static::numToWords(floor($number / 100))
+                    . ' Hundred ';
+                $number %= 100;
+            }
+            if ($number > 0) {
+                $output .= ($number <= 20) ? $words[$number] :
+                $words[10 * floor($number / 10)] . ' '
+                    . ($number % 10 > 0 ? $words[$number % 10] : '');
+            }
+            return trim($output);
+        }
     }
 }

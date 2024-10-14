@@ -15,7 +15,10 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('name',255);
             $table->string('image')->nullable();
+            $table->text('images')->nullable();
+            $table->double('profit')->default(0);
             $table->boolean('status')->comment('1-Active 0-Inactive')->default(1);
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id');
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();

@@ -95,9 +95,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added a new `mceTableToggleCaption` command that toggles captions on a selected table #TINY-7479
 - Added a new `tablerowheader` toolbar button and menu item to toggle the header state of row cells #TINY-7478
 - Added a new `tablecolheader` toolbar button and menu item to toggle the header state of column cells #TINY-7482
-- Added a new `tablecellbordercolor` toolbar button and menu item to select table cell border colors, with an accompanying setting `table_border_color_map` to customize the available values #TINY-7480
-- Added a new `tablecellbackgroundcolor` toolbar button and menu item to select table cell background colors, with an accompanying setting `table_background_color_map` to customize the available values #TINY-7480
-- Added a new `language` menu item and toolbar button to add `lang` attributes to content, with an accompanying `content_langs` setting to specify the languages available #TINY-6149
+- Added a new `tablecellbordercolor` toolbar button and menu item to select table cell border colors, with an accustomering setting `table_border_color_map` to customize the available values #TINY-7480
+- Added a new `tablecellbackgroundcolor` toolbar button and menu item to select table cell background colors, with an accustomering setting `table_background_color_map` to customize the available values #TINY-7480
+- Added a new `language` menu item and toolbar button to add `lang` attributes to content, with an accustomering `content_langs` setting to specify the languages available #TINY-6149
 - A new `lang` format is now available that can be used with `editor.formatter`, or applied with the `Lang` editor command #TINY-6149
 - Added a new `language` icon for the `language` toolbar button #TINY-7670
 - Added a new `table-row-numbering` icon #TINY-7327

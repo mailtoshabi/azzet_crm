@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Utilities\Utility;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -131,6 +132,10 @@ class HomeController extends Controller
     }
 
     public function test() {
-        return 'shabi';
+        $var = 'Password updated successfully!';
+
+        // return Utility::cleanString($var);
+        // return set_active('test');
+        return Utility::numToWords(4);
     }
 }

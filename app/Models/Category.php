@@ -39,4 +39,9 @@ class Category extends Model
         return $query->orderBy('id', 'asc');
     }
 
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
 }

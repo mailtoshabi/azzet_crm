@@ -29,7 +29,7 @@ class CategoryController extends Controller
         $input = request()->only(['name']);
         if(request()->hasFile('image')) {
             $extension = request('image')->extension();
-            $fileName = 'category_pic_' . date('YmdHis') . '.' . $extension;
+            $fileName = Utility::cleanString(request()->name) . date('YmdHis') . '.' . $extension;
             request('image')->storeAs('categories', $fileName);
             $input['image'] =$fileName;
         }
@@ -64,7 +64,7 @@ class CategoryController extends Controller
         }
         if(request()->hasFile('image')) {
             $extension = request('image')->extension();
-            $fileName = 'category_pic_' . date('YmdHis') . '.' . $extension;
+            $fileName = Utility::cleanString(request()->name) . date('YmdHis') . '.' . $extension;
             request('image')->storeAs('categories', $fileName);
             $input['image'] =$fileName;
         }

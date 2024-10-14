@@ -5,7 +5,7 @@
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
-<?php $__env->startComponent('admin.components.breadcrumb'); ?>
+<?php $__env->startComponent('admin.dir_components.breadcrumb'); ?>
 <?php $__env->slot('li_1'); ?> <?php echo app('translator')->get('translation.Catalogue_Manage'); ?> <?php $__env->endSlot(); ?>
 <?php $__env->slot('li_2'); ?> <?php echo app('translator')->get('translation.Category_Manage'); ?> <?php $__env->endSlot(); ?>
 <?php $__env->slot('title'); ?> <?php echo app('translator')->get('translation.Category_List'); ?> <?php $__env->endSlot(); ?>

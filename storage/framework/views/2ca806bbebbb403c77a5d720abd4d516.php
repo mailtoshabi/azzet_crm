@@ -4,10 +4,10 @@
 <link href="<?php echo e(URL::asset('assets/libs/dropzone/dropzone.min.css')); ?>" rel="stylesheet">
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
-<?php $__env->startComponent('admin.components.breadcrumb'); ?>
+<?php $__env->startComponent('admin.dir_components.breadcrumb'); ?>
 <?php $__env->slot('li_1'); ?> <?php echo app('translator')->get('translation.Catalogue_Manage'); ?> <?php $__env->endSlot(); ?>
 <?php $__env->slot('li_2'); ?> <?php echo app('translator')->get('translation.Category_Manage'); ?> <?php $__env->endSlot(); ?>
-<?php $__env->slot('title'); ?> <?php echo app('translator')->get('translation.Add_Category'); ?> <?php $__env->endSlot(); ?>
+<?php $__env->slot('title'); ?> <?php if(isset($category)): ?> <?php echo app('translator')->get('translation.Edit_Category'); ?> <?php else: ?> <?php echo app('translator')->get('translation.Add_Category'); ?> <?php endif; ?> <?php $__env->endSlot(); ?>
 <?php echo $__env->renderComponent(); ?>
 <div class="row">
     <form method="POST" action="<?php echo e(isset($category)? route('admin.categories.update') : route('admin.categories.store')); ?>" enctype="multipart/form-data">
@@ -20,8 +20,8 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Basic Information</h4>
-                    <p class="card-title-desc">Fill all information below</p>
+                    <h4 class="card-title">Category Details</h4>
+                    <p class="card-title-desc"><?php echo e(isset($category)? 'Edit' : "Enter"); ?> the Details of your Category</p>
                 </div>
                 <div class="card-body">
                         <div class="row">
@@ -67,7 +67,7 @@ unset($__errorArgs, $__bag); ?>
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex flex-wrap gap-2">
-                        <button type="submit" class="btn btn-primary waves-effect waves-light"><?php echo e(isset($category) ? 'Update' : 'Add New'); ?></button>
+                        <button type="submit" class="btn btn-primary waves-effect waves-light"><?php echo e(isset($category) ? 'Update' : 'Save'); ?></button>
                         <button type="reset" class="btn btn-secondary waves-effect waves-light">Cancel</button>
                     </div>
                 </div>

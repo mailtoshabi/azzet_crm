@@ -4,5 +4,20 @@ body[data-topbar=dark] #page-topbar, body[data-topbar=dark] .navbar-brand-box {
 }
 
 .table_min_height {
-    min-height: 200px;
+    min-height: 280px;
+}
+
+.hidden {
+    display: none;
+}
+
+.btn-close {
+    background: none;
+    top: 32px;
+    cursor: pointer;
+    color: red;
+}
+
+.select2-container {
+    width: 100% !important;
 }

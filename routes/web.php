@@ -8,7 +8,12 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController as AdminLoginController;
 use App\Http\Controllers\Admin\HomeController as AdminHomeController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ComponentController;
+use App\Http\Controllers\Admin\EnquiryController;
+use App\Http\Controllers\Admin\EstimateController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\ActivityController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,6 +37,7 @@ Route::get('/all_cache', function() {
 });
 
 Route::get('/', [HomeController::class, 'index'])->name('index');
+Route::get('/test', [HomeController::class, 'test'])->name('test');
 
 Auth::routes(['login' => false]);
 Route::prefix('admin')->group(function () {
@@ -53,6 +59,16 @@ Route::group(['as'=>'admin.', 'middleware'=>'auth', 'prefix'=>'admin'], function
         Route::get('/change-status/{id}',[CategoryController::class,'changeStatus'])->name('changeStatus');
     });
 
+    Route::group(['prefix'=>'components', 'as'=>'components.'], function() {
+        Route::get('/',[ComponentController::class,'index'])->name('index');
+        Route::get('/create',[ComponentController::class,'create'])->name('create');
+        Route::post('/store',[ComponentController::class,'store'])->name('store');
+        Route::get('/edit/{id}',[ComponentController::class,'edit'])->name('edit');
+        Route::put('/update',[ComponentController::class,'update'])->name('update');
+        Route::delete('/destroy/{id}',[ComponentController::class,'destroy'])->name('destroy');
+        Route::get('/change-status/{id}',[ComponentController::class,'changeStatus'])->name('changeStatus');
+    });
+
     Route::group(['prefix'=>'products', 'as'=>'products.'], function() {
         Route::get('/',[ProductController::class,'index'])->name('index');
         Route::get('/create',[ProductController::class,'create'])->name('create');
@@ -61,6 +77,47 @@ Route::group(['as'=>'admin.', 'middleware'=>'auth', 'prefix'=>'admin'], function
         Route::put('/update',[ProductController::class,'update'])->name('update');
         Route::delete('/destroy/{id}',[ProductController::class,'destroy'])->name('destroy');
         Route::get('/change-status/{id}',[ProductController::class,'changeStatus'])->name('changeStatus');
+        Route::post('/get-cost',[ProductController::class,'getCost'])->name('get_cost');
+    });
+
+    Route::group(['prefix'=>'customers', 'as'=>'customers.'], function() {
+        Route::get('/',[CustomerController::class,'index'])->name('index');
+        Route::get('/create',[CustomerController::class,'create'])->name('create');
+        Route::post('/store',[CustomerController::class,'store'])->name('store');
+        Route::get('/edit/{id}',[CustomerController::class,'edit'])->name('edit');
+        Route::get('/show/{id}',[CustomerController::class,'show'])->name('view');
+        Route::put('/update',[CustomerController::class,'update'])->name('update');
+        Route::delete('/destroy/{id}',[CustomerController::class,'destroy'])->name('destroy');
+        Route::get('/change-status/{id}',[CustomerController::class,'changeStatus'])->name('changeStatus');
+        Route::post('/districts', [CustomerController::class,'distric_list'])->name('list.districts');
+    });
+
+    Route::group(['prefix'=>'enquiries', 'as'=>'enquiries.'], function() {
+        Route::get('/',[EnquiryController::class,'index'])->name('index');
+        Route::get('/create',[EnquiryController::class,'create'])->name('create');
+        Route::post('/store',[EnquiryController::class,'store'])->name('store');
+        Route::get('/edit/{id}',[EnquiryController::class,'edit'])->name('edit');
+        Route::put('/update',[EnquiryController::class,'update'])->name('update');
+        Route::delete('/destroy/{id}',[EnquiryController::class,'destroy'])->name('destroy');
+        Route::get('/change-status/{id}',[EnquiryController::class,'changeStatus'])->name('changeStatus');
+        Route::get('/convert-to-estimate/{id}',[EnquiryController::class,'convertToEstimate'])->name('convert_to_estimate');
+        Route::post('/get-product-detail',[EnquiryController::class,'getProductDetail'])->name('get_product_detail');
+        Route::post('/store_as_estimate',[EnquiryController::class,'store_as_estimate'])->name('store_as_estimate');
+    });
+
+    Route::group(['prefix'=>'estimates', 'as'=>'estimates.'], function() {
+        Route::get('/',[EstimateController::class,'index'])->name('index');
+        Route::get('/create',[EstimateController::class,'create'])->name('create');
+        Route::post('/store',[EstimateController::class,'store'])->name('store');
+        Route::get('/edit/{id}',[EstimateController::class,'edit'])->name('edit');
+        Route::put('/update',[EstimateController::class,'update'])->name('update');
+        Route::delete('/destroy/{id}',[EstimateController::class,'destroy'])->name('destroy');
+        Route::get('/change-status/{id}',[EstimateController::class,'changeStatus'])->name('changeStatus');
+        Route::post('/get-product-detail',[EstimateController::class,'getProductDetail'])->name('get_product_detail');
+    });
+
+    Route::group(['prefix'=>'activities', 'as'=>'activities.'], function() {
+        Route::get('/',[ActivityController::class,'index'])->name('index');
     });
 });
 

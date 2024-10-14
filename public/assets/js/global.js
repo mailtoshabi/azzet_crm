@@ -17,6 +17,14 @@ $(document).ready(function() {
         $(targetForm).submit();
 	});
 
+    $(document).on('click','.btn-close',function(e) {
+        e.preventDefault();
+        if (!confirm('Are you sure you want to delete?')) return;
+        var $this = $(this);
+        var item_container = $(this).data('target');
+        $(item_container).remove();
+    });
+
     table_min_height();
 
 });

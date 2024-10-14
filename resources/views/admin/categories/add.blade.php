@@ -5,10 +5,10 @@
 <link href="{{ URL::asset('assets/libs/dropzone/dropzone.min.css') }}" rel="stylesheet">
 @endsection
 @section('content')
-@component('admin.components.breadcrumb')
+@component('admin.dir_components.breadcrumb')
 @slot('li_1') @lang('translation.Catalogue_Manage') @endslot
 @slot('li_2') @lang('translation.Category_Manage') @endslot
-@slot('title') @lang('translation.Add_Category') @endslot
+@slot('title') @if(isset($category)) @lang('translation.Edit_Category') @else @lang('translation.Add_Category') @endif @endslot
 @endcomponent
 <div class="row">
     <form method="POST" action="{{ isset($category)? route('admin.categories.update') : route('admin.categories.store')  }}" enctype="multipart/form-data">
@@ -21,8 +21,8 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Basic Information</h4>
-                    <p class="card-title-desc">Fill all information below</p>
+                    <h4 class="card-title">Category Details</h4>
+                    <p class="card-title-desc">{{ isset($category)? 'Edit' : "Enter" }} the Details of your Category</p>
                 </div>
                 <div class="card-body">
                         <div class="row">
@@ -87,7 +87,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex flex-wrap gap-2">
-                        <button type="submit" class="btn btn-primary waves-effect waves-light">{{ isset($category) ? 'Update' : 'Add New' }}</button>
+                        <button type="submit" class="btn btn-primary waves-effect waves-light">{{ isset($category) ? 'Update' : 'Save' }}</button>
                         <button type="reset" class="btn btn-secondary waves-effect waves-light">Cancel</button>
                     </div>
                 </div>

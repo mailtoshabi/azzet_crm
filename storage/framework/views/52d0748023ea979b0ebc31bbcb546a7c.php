@@ -5,7 +5,7 @@
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
-<?php $__env->startComponent('admin.components.breadcrumb'); ?>
+<?php $__env->startComponent('admin.dir_components.breadcrumb'); ?>
 <?php $__env->slot('li_1'); ?> <?php echo app('translator')->get('translation.Catalogue_Manage'); ?> <?php $__env->endSlot(); ?>
 <?php $__env->slot('li_2'); ?> <?php echo app('translator')->get('translation.Product_Manage'); ?> <?php $__env->endSlot(); ?>
 <?php $__env->slot('title'); ?> <?php echo app('translator')->get('translation.Product_List'); ?> <?php $__env->endSlot(); ?>
@@ -62,7 +62,7 @@
                                     </th>
                                     <td>
                                         <?php if(!empty($product->image)): ?>
-                                            <img src="<?php echo e(URL::asset(App\Models\Category::DIR_STORAGE . $product->image)); ?>" alt="" class="avatar-sm rounded-circle me-2">
+                                            <img src="<?php echo e(URL::asset(App\Models\Product::DIR_STORAGE . $product->image)); ?>" alt="" class="avatar-sm rounded-circle me-2">
                                         <?php else: ?>
                                         <div class="avatar-sm d-inline-block align-middle me-2">
                                             <div class="avatar-title bg-soft-primary text-primary font-size-20 m-0 rounded-circle">

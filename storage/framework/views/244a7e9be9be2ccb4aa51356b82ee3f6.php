@@ -18,4 +18,4 @@
     </div>
 </div>
 <!-- end page title -->
-<?php /**PATH C:\xampp\htdocs\azzet_crm\resources\views\admin\components\breadcrumb.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp\htdocs\azzet_crm\resources\views/admin/dir_components/breadcrumb.blade.php ENDPATH**/ ?>

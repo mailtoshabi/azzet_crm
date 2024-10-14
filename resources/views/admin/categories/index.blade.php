@@ -6,7 +6,7 @@
 
 @endsection
 @section('content')
-@component('admin.components.breadcrumb')
+@component('admin.dir_components.breadcrumb')
 @slot('li_1') @lang('translation.Catalogue_Manage') @endslot
 @slot('li_2') @lang('translation.Category_Manage') @endslot
 @slot('title') @lang('translation.Category_List') @endslot

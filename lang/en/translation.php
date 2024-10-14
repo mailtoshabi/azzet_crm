@@ -206,14 +206,42 @@ return [
   "Vector_Maps" => "Vector Maps",
   "Leaflet_Maps" => "Leaflet Maps",
 
+    "Name" => "Name",
+
+    "Activity_Manage" => "Activity Manage",
+    "Activities" => "Activities",
+
     "Add_Menu" => "Add",
     "List_Menu" => "List",
     "Catalogue_Manage" => "Catalogue Management",
     "Product_Manage" => "Product Manage",
-    "Category_Manage" => "Categories",
+    "Category_Manage" => "Category Manage",
     "Add_Category" => "Add Category",
-    "Category_List" => "Category List",
+    "Edit_Category" => "Edit Category",
+    "Category_List" => "Categories",
+
+    "Add_Component" => "Add Component",
+    "Component_List" => "Components",
 
     "Add_Product" => "Add Product",
-    "Product_List" => "Product List",
+    "Edit_Product" => "Edit Product",
+    "Product_List" => "Products",
+
+    "Enquiry_Manage" => "Enquiry Manage",
+    "Add_Enquiry" => "Add Enquiry",
+    "Edit_Enquiry" => "Edit Enquiry",
+    "Enquiry_List" => "Enquiries",
+    "Add_As_Estimate" => "Add As Estimate",
+
+    "Estimate_Manage" => "Estimate Manage",
+    "Add_Estimate" => "Add Estimate",
+    "Edit_Estimate" => "Edit Estimate",
+    "Estimate_List" => "Estimates",
+
+    "Customer_Manage" => "Customer Manage",
+    "Add_Customer" => "Add Customer",
+    "Edit_Customer" => "Edit Customer",
+    "Customer_List" => "Customers",
+
+
 ];
