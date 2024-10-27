@@ -30,23 +30,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="mb-3">
-                                <label class="control-label">Branch</label>
-                                <select id="branch_id" name="branch_id" class="form-control select2">
-                                    <option value="">Select Branch</option>
-                                    <?php $__currentLoopData = $branches; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $branch): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($branch->id); ?>" <?php if(isset($customer)): ?> <?php echo e($branch->id==$customer->branch->id ? 'selected':''); ?> <?php endif; ?>><?php echo e($branch->name); ?></option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                </select>
-                                <?php $__errorArgs = ['branch_id'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> <p class="text-danger"><?php echo e($message); ?></p> <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                            </div>
+                            
                             <div class="mb-3 required">
                                 <label for="name"><?php echo app('translator')->get('translation.Name'); ?></label>
                                 <input id="name" name="name" type="text" class="form-control"  placeholder="<?php echo app('translator')->get('translation.Name'); ?>" value="<?php echo e(isset($customer)?$customer->name:old('name')); ?>">
@@ -100,16 +84,16 @@ unset($__errorArgs, $__bag); ?>
                                 <input id="address1" name="address1" type="text" class="form-control"  placeholder="Building Number" value="<?php echo e(isset($customer)?$customer->address1:old('address1')); ?>">
                                 
                             </div>
-
-
-
-                        </div>
-                        <div class="col-sm-6">
                             <div class="mb-3">
                                 <label for="address2">Address Line 2</label>
                                 <input id="address2" name="address2" type="text" class="form-control"  placeholder="Street" value="<?php echo e(isset($customer)?$customer->address2:old('address2')); ?>">
                                 
                             </div>
+
+
+                        </div>
+                        <div class="col-sm-6">
+
                             <div class="mb-3">
                                 <label for="address3">Address Line 3</label>
                                 <input id="address3" name="address3" type="text" class="form-control"  placeholder="Street" value="<?php echo e(isset($customer)?$customer->address3:old('address3')); ?>">
@@ -157,14 +141,15 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
-                        </div>
-
-                        <div class="col-sm-12">
                             <div class="mb-3">
                                 <label for="website">Website</label>
                                 <input id="website" name="website" type="text" class="form-control"  placeholder="Website" value="<?php echo e(isset($customer)?$customer->website:old('website')); ?>">
                                 
                             </div>
+                        </div>
+
+                        <div class="col-sm-12">
+
                         </div>
 
 

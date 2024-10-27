@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ $sale->invoice_no.'_' . date('YmdHis') }}</title>
+    <title><?php echo e($sale->invoice_no.'_' . date('YmdHis')); ?></title>
 <style>
     body{
         margin: 0px;
@@ -153,56 +153,57 @@
                 <td class="w-half">
                     <table class="w-full">
                         <tr class="left">
-                            <td class="w-quarter has-border">@if(!empty($sale->estimate->branch->image))<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('storage/branches/' . $sale->estimate->branch->image))) }}" class="w-full" style="background-color: black;" >@endif</td>
+                            <td class="w-quarter has-border"><?php if(!empty($sale->estimate->branch->image)): ?><img src="data:image/png;base64,<?php echo e(base64_encode(file_get_contents(public_path('storage/branches/' . $sale->estimate->branch->image)))); ?>" class="w-full" style="background-color: black;" ><?php endif; ?></td>
                             <td class="w-three-quarter has-border">
-                                <b>{{ !empty($sale->estimate->branch->trade_name) ? $sale->estimate->branch->trade_name : $sale->estimate->branch->name }}</b><br>
-                                @unless (empty($sale->estimate->branch->address1))
-                                    {{ $sale->estimate->branch->address1 }}<br>
-                                @endunless
-                                @unless (empty($sale->estimate->branch->address2))
-                                    {{ $sale->estimate->branch->address2 }}<br>
-                                @endunless
-                                @unless (empty($sale->estimate->branch->address3))
-                                    {{ $sale->estimate->branch->address3 }}<br>
-                                @endunless
-                                @unless (empty($sale->estimate->branch->city))
-                                    {{ $sale->estimate->branch->city }}<br>
-                                @endunless
-                                @unless (empty($sale->estimate->branch->district))
-                                    {{ $sale->estimate->branch->district->name }} District<br>
-                                @endunless
-                                @unless (empty($sale->estimate->branch->state))
-                                    {{ $sale->estimate->branch->state->name }} @if(!empty($sale->estimate->branch->postal_code)) - {{ $sale->estimate->branch->postal_code }} @endif<br>
-                                @endunless
-                                @unless (empty($sale->estimate->branch->phone))
-                                    Mob - {{ $sale->estimate->branch->phone }}<br>
-                                @endunless
-                                @unless (empty($sale->estimate->branch->gstin))
-                                    GSTIN/UIN : {{ $sale->estimate->branch->gstin }}<br>
-                                @endunless
-                                @unless (empty($sale->estimate->branch->state))
-                                    State Name : {{ $sale->estimate->branch->state->name }}, Code : {{ $sale->estimate->branch->state->gst_code }}<br>
-                                @endunless
-                                @unless (empty($sale->estimate->branch->cin)){!! 'CIN: '. $sale->estimate->branch->cin. '<br>' !!}@endunless
-                                @unless (empty($sale->estimate->branch->email))
-                                    Email : {{ $sale->estimate->branch->email }}
-                                @endunless
+                                <b><?php echo e(!empty($sale->estimate->branch->trade_name) ? $sale->estimate->branch->trade_name : $sale->estimate->branch->name); ?></b><br>
+                                <?php if (! (empty($sale->estimate->branch->address1))): ?>
+                                    <?php echo e($sale->estimate->branch->address1); ?><br>
+                                <?php endif; ?>
+                                <?php if (! (empty($sale->estimate->branch->address2))): ?>
+                                    <?php echo e($sale->estimate->branch->address2); ?><br>
+                                <?php endif; ?>
+                                <?php if (! (empty($sale->estimate->branch->address3))): ?>
+                                    <?php echo e($sale->estimate->branch->address3); ?><br>
+                                <?php endif; ?>
+                                <?php if (! (empty($sale->estimate->branch->city))): ?>
+                                    <?php echo e($sale->estimate->branch->city); ?><br>
+                                <?php endif; ?>
+                                <?php if (! (empty($sale->estimate->branch->district))): ?>
+                                    <?php echo e($sale->estimate->branch->district->name); ?> District<br>
+                                <?php endif; ?>
+                                <?php if (! (empty($sale->estimate->branch->state))): ?>
+                                    <?php echo e($sale->estimate->branch->state->name); ?> <?php if(!empty($sale->estimate->branch->postal_code)): ?> - <?php echo e($sale->estimate->branch->postal_code); ?> <?php endif; ?><br>
+                                <?php endif; ?>
+                                <?php if (! (empty($sale->estimate->branch->phone))): ?>
+                                    Mob - <?php echo e($sale->estimate->branch->phone); ?><br>
+                                <?php endif; ?>
+                                <?php if (! (empty($sale->estimate->branch->gstin))): ?>
+                                    GSTIN/UIN : <?php echo e($sale->estimate->branch->gstin); ?><br>
+                                <?php endif; ?>
+                                <?php if (! (empty($sale->estimate->branch->state))): ?>
+                                    State Name : <?php echo e($sale->estimate->branch->state->name); ?>, Code : <?php echo e($sale->estimate->branch->state->gst_code); ?><br>
+                                <?php endif; ?>
+                                <?php if (! (empty($sale->estimate->branch->cin))): ?><?php echo 'CIN: '. $sale->estimate->branch->cin. '<br>'; ?><?php endif; ?>
+                                <?php if (! (empty($sale->estimate->branch->email))): ?>
+                                    Email : <?php echo e($sale->estimate->branch->email); ?>
+
+                                <?php endif; ?>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2" class="w-full has-border notop nobottom">
                                 <small>Buyer (Bill to)</small><br>
-                                <b>{{ empty($sale->estimate->customer->trade_name)?$sale->estimate->customer->name:$sale->estimate->customer->trade_name }}</b><br>
-                                @unless (empty($sale->estimate->customer->address1)){!! $sale->estimate->customer->address1 . '<br>' !!}@endunless
-                                @unless (empty($sale->estimate->customer->address2)){!! $sale->estimate->customer->address2 . '<br>' !!}@endunless
-                                @unless (empty($sale->estimate->customer->address3)){!! $sale->estimate->customer->address3 . '<br>' !!}@endunless
-                                {{ $sale->estimate->customer->city }}<br>
-                                {{ $sale->estimate->customer->district->name }} District  - {{ $sale->estimate->customer->postal_code }}<br>
-                                PH NO: {{ $sale->estimate->customer->phone }}<br>
-                                @unless (empty($sale->estimate->customer->gstin)){!! 'GSTIN/UIN: '. $sale->estimate->customer->gstin. '<br>' !!}@endunless
-                                State Name :  {{ $sale->estimate->customer->state->name }}, Code : {{ $sale->estimate->customer->state->gst_code }} <br>
-                                @unless (empty($sale->estimate->customer->cin)){!! 'CIN: '. $sale->estimate->customer->cin. '<br>' !!}@endunless
-                                @unless (empty($sale->estimate->customer->email)){!! 'E-Mail: '. $sale->estimate->customer->email !!}@endunless
+                                <b><?php echo e(empty($sale->estimate->customer->trade_name)?$sale->estimate->customer->name:$sale->estimate->customer->trade_name); ?></b><br>
+                                <?php if (! (empty($sale->estimate->customer->address1))): ?><?php echo $sale->estimate->customer->address1 . '<br>'; ?><?php endif; ?>
+                                <?php if (! (empty($sale->estimate->customer->address2))): ?><?php echo $sale->estimate->customer->address2 . '<br>'; ?><?php endif; ?>
+                                <?php if (! (empty($sale->estimate->customer->address3))): ?><?php echo $sale->estimate->customer->address3 . '<br>'; ?><?php endif; ?>
+                                <?php echo e($sale->estimate->customer->city); ?><br>
+                                <?php echo e($sale->estimate->customer->district->name); ?> District  - <?php echo e($sale->estimate->customer->postal_code); ?><br>
+                                PH NO: <?php echo e($sale->estimate->customer->phone); ?><br>
+                                <?php if (! (empty($sale->estimate->customer->gstin))): ?><?php echo 'GSTIN/UIN: '. $sale->estimate->customer->gstin. '<br>'; ?><?php endif; ?>
+                                State Name :  <?php echo e($sale->estimate->customer->state->name); ?>, Code : <?php echo e($sale->estimate->customer->state->gst_code); ?> <br>
+                                <?php if (! (empty($sale->estimate->customer->cin))): ?><?php echo 'CIN: '. $sale->estimate->customer->cin. '<br>'; ?><?php endif; ?>
+                                <?php if (! (empty($sale->estimate->customer->email))): ?><?php echo 'E-Mail: '. $sale->estimate->customer->email; ?><?php endif; ?>
                             </td>
                         </tr>
                     </table>
@@ -210,8 +211,8 @@
                 <td class="w-half has-border noleft nobottom notop">
                     <table class="w-full">
                         <tr class="left height-20">
-                            <td class="w-half has-border noleft nobottom">Invoice No. <br>{{ $sale->invoice_no }}</td>
-                            <td class="w-half has-border noleft nobottom noright">Dated <br>{{ $sale->created_at->format('d-M-Y') }}</td>
+                            <td class="w-half has-border noleft nobottom">Invoice No. <br><?php echo e($sale->invoice_no); ?></td>
+                            <td class="w-half has-border noleft nobottom noright">Dated <br><?php echo e($sale->created_at->format('d-M-Y')); ?></td>
                         </tr>
                         <tr class="left height-20">
                             <td class="w-half has-border noleft nobottom">Deleivery Note</td>
@@ -252,19 +253,19 @@
                             <td class="has-border vertical-m">Amount</td>
                         </tr>
                         <?php $sino = 1; ?>
-                        @foreach($sale->products as $product)
+                        <?php $__currentLoopData = $sale->products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr class="center height-20" >
-                            <td class="has-border notop noright nobottom">{{ $sino }}</td>
-                            <td colspan="3" class="has-border notop noright nobottom left-align"><b>{{ $product->name }}</b><br><small>{{ $product->description }}</small></td>
-                            <td class="has-border notop noright nobottom">{{ $product->hsn->name }}</td>
-                            <td class="has-border notop noright nobottom">{{ $product->pivot->quantity }} {{ $product->uom->name }}</td>
-                            <td class="has-border notop noright nobottom">{{ Utility::formatPrice($product->pivot->price) }}</td>
-                            <td class="has-border notop noright nobottom">{{ $product->uom->name }}</td>
-                            <td class="has-border notop nobottom  right-align"><b>{{ Utility::formatPrice($product->pivot->price*$product->pivot->quantity) }}</b></td>
+                            <td class="has-border notop noright nobottom"><?php echo e($sino); ?></td>
+                            <td colspan="3" class="has-border notop noright nobottom left-align"><b><?php echo e($product->name); ?></b><br><small><?php echo e($product->description); ?></small></td>
+                            <td class="has-border notop noright nobottom"><?php echo e($product->hsn->name); ?></td>
+                            <td class="has-border notop noright nobottom"><?php echo e($product->pivot->quantity); ?> <?php echo e($product->uom->name); ?></td>
+                            <td class="has-border notop noright nobottom"><?php echo e(Utility::formatPrice($product->pivot->price)); ?></td>
+                            <td class="has-border notop noright nobottom"><?php echo e($product->uom->name); ?></td>
+                            <td class="has-border notop nobottom  right-align"><b><?php echo e(Utility::formatPrice($product->pivot->price*$product->pivot->quantity)); ?></b></td>
                         </tr>
 
                         <?php $sino++; ?>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         <tr class="center height-20" >
                             <td class="has-border notop noright nobottom"></td>
                             <td colspan="3" class="has-border notop noright nobottom right-align"></td>
@@ -272,9 +273,9 @@
                             <td class="has-border notop noright nobottom"></td>
                             <td class="has-border notop noright nobottom"></td>
                             <td class="has-border notop noright nobottom"></td>
-                            <td class="has-border nobottom right-align">{{ Utility::formatPrice($sale->sub_total) }}</td>
+                            <td class="has-border nobottom right-align"><?php echo e(Utility::formatPrice($sale->sub_total)); ?></td>
                         </tr>
-                        @unless (($sale->delivery_charge==0))
+                        <?php if (! (($sale->delivery_charge==0))): ?>
                         <tr class="center" >
                             <td class="has-border notop noright nobottom"></td>
                             <td colspan="3" class="has-border notop noright nobottom right-align"><b>Freight Outward</b></td>
@@ -282,9 +283,9 @@
                             <td class="has-border notop noright nobottom"></td>
                             <td class="has-border notop noright nobottom"></td>
                             <td class="has-border notop noright nobottom"></td>
-                            <td class="has-border notop nobottom right-align"><b>{{ Utility::formatPrice($sale->delivery_charge) }}</b></td>
+                            <td class="has-border notop nobottom right-align"><b><?php echo e(Utility::formatPrice($sale->delivery_charge)); ?></b></td>
                         </tr>
-                        @endunless
+                        <?php endif; ?>
                         <tr class="center" >
                             <td class="has-border notop noright nobottom"></td>
                             <td colspan="3" class="has-border notop noright nobottom right-align"><b>IGST</b></td>
@@ -292,9 +293,9 @@
                             <td class="has-border notop noright nobottom"></td>
                             <td class="has-border notop noright nobottom"></td>
                             <td class="has-border notop noright nobottom"></td>
-                            <td class="has-border notop nobottom right-align"><b>{{ Utility::formatPrice($sale->total_igst) }}</b></td>
+                            <td class="has-border notop nobottom right-align"><b><?php echo e(Utility::formatPrice($sale->total_igst)); ?></b></td>
                         </tr>
-                        @unless (($sale->round_off==0))
+                        <?php if (! (($sale->round_off==0))): ?>
                             <tr class="center" >
                                 <td class="has-border notop noright"></td>
                                 <td colspan="3" class="has-border notop noright right-align"><b>Round Off</b></td>
@@ -302,28 +303,28 @@
                                 <td class="has-border notop noright"></td>
                                 <td class="has-border notop noright"></td>
                                 <td class="has-border notop noright"></td>
-                                <td class="has-border notop right-align"><b>{{ Utility::formatPrice($sale->round_off) }}</b></td>
+                                <td class="has-border notop right-align"><b><?php echo e(Utility::formatPrice($sale->round_off)); ?></b></td>
                             </tr>
-                        @endunless
+                        <?php endif; ?>
 
                         <tr class="center height-20" >
                             <td class="has-border notop noright"></td>
                             <td colspan="3" class="has-border notop noright right-align vertical-m">Total</td>
                             <td class="has-border notop noright"></td>
-                            <td class="has-border notop noright vertical-m">{{ $sale->sub_quantity }} {{ $product->uom->name }}</td>
+                            <td class="has-border notop noright vertical-m"><?php echo e($sale->sub_quantity); ?> <?php echo e($product->uom->name); ?></td>
                             <td class="has-border notop noright"></td>
                             <td class="has-border notop noright"></td>
-                            <td class="has-border notop vertical-m right-align"><b>{{ Utility::formatPrice($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off) }}</b></td>
+                            <td class="has-border notop vertical-m right-align"><b><?php echo e(Utility::formatPrice($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off)); ?></b></td>
                         </tr>
 
                         <tr class="center height-20" >
                             <td colspan="8" class="has-border notop noright left-align"><small>Amount Chargeable (in words)</small><br>
-                                <b>{{ Utility::CURRENCY_DISPLAY . ' ' . Utility::currencyToWords(($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off)) }}</b>
+                                <b><?php echo e(Utility::CURRENCY_DISPLAY . ' ' . Utility::currencyToWords(($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off))); ?></b>
                             </td>
                             <td class="has-border notop noleft right-align">E. & O.E</td>
                         </tr>
 
-                        @if($sale->estimate->customer->state->id==Utility::STATE_ID_KERALA)
+                        <?php if($sale->estimate->customer->state->id==Utility::STATE_ID_KERALA): ?>
                             <tr class="center height-20" >
                                 <td rowspan="2" colspan="3" class="has-border notop noright vertical-m">HSN/SAC</td>
                                 <td rowspan="2" class="has-border notop noright vertical-m">Taxable Value</td>
@@ -337,27 +338,27 @@
                                 <td class="has-border notop norigh vertical-m">Rate</td>
                                 <td class="has-border notop norigh vertical-m">Amount</td>
                             </tr>
-                            @foreach($sale->products as $product)
+                            <?php $__currentLoopData = $sale->products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr class="center height-20" >
-                                <td colspan="3" class="has-border notop noright left-align w-quarter">{{ $product->hsn->name }}</td>
-                                <td class="has-border notop noright">{{ Utility::formatPrice($product->pivot->price*$product->pivot->quantity) }}</td>
-                                <td class="has-border notop noright">{{ $product->hsn->tax_slab->name/2 }}%</td>
-                                <td class="has-border notop noright">{{ Utility::formatPrice((($product->pivot->price*$product->pivot->quantity)*($product->hsn->tax_slab->name/100))/2) }}</td>
-                                <td class="has-border notop noright">{{ $product->hsn->tax_slab->name/2 }}%</td>
-                                <td class="has-border notop noright">{{ Utility::formatPrice((($product->pivot->price*$product->pivot->quantity)*($product->hsn->tax_slab->name/100))/2) }}</td>
-                                <td class="has-border notop">{{ Utility::formatPrice(($product->pivot->price*$product->pivot->quantity)*($product->hsn->tax_slab->name/100)) }}</td>
+                                <td colspan="3" class="has-border notop noright left-align w-quarter"><?php echo e($product->hsn->name); ?></td>
+                                <td class="has-border notop noright"><?php echo e(Utility::formatPrice($product->pivot->price*$product->pivot->quantity)); ?></td>
+                                <td class="has-border notop noright"><?php echo e($product->hsn->tax_slab->name/2); ?>%</td>
+                                <td class="has-border notop noright"><?php echo e(Utility::formatPrice((($product->pivot->price*$product->pivot->quantity)*($product->hsn->tax_slab->name/100))/2)); ?></td>
+                                <td class="has-border notop noright"><?php echo e($product->hsn->tax_slab->name/2); ?>%</td>
+                                <td class="has-border notop noright"><?php echo e(Utility::formatPrice((($product->pivot->price*$product->pivot->quantity)*($product->hsn->tax_slab->name/100))/2)); ?></td>
+                                <td class="has-border notop"><?php echo e(Utility::formatPrice(($product->pivot->price*$product->pivot->quantity)*($product->hsn->tax_slab->name/100))); ?></td>
                             </tr>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             <tr class="center height-40" >
                                 <td colspan="3" class="has-border notop noright right-align  vertical-m w-quarter"><b>Total</b></td>
-                                <td class="has-border notop noright  vertical-m"><b>{{ Utility::formatPrice($sale->sub_total) }}</b></td>
+                                <td class="has-border notop noright  vertical-m"><b><?php echo e(Utility::formatPrice($sale->sub_total)); ?></b></td>
                                 <td class="has-border notop noright"></td>
-                                <td class="has-border notop noright  vertical-m"><b>{{ Utility::formatPrice($sale->total_sgst) }}</b></td>
+                                <td class="has-border notop noright  vertical-m"><b><?php echo e(Utility::formatPrice($sale->total_sgst)); ?></b></td>
                                 <td class="has-border notop noright"></td>
-                                <td class="has-border notop  vertical-m"><b>{{ Utility::formatPrice($sale->total_sgst) }}</b></td>
-                                <td class="has-border notop vertical-m"><b>{{ Utility::formatPrice($sale->total_igst) }}</b></td>
+                                <td class="has-border notop  vertical-m"><b><?php echo e(Utility::formatPrice($sale->total_sgst)); ?></b></td>
+                                <td class="has-border notop vertical-m"><b><?php echo e(Utility::formatPrice($sale->total_igst)); ?></b></td>
                             </tr>
-                        @else
+                        <?php else: ?>
                             <tr class="center height-20" >
                                 <td rowspan="2" colspan="5" class="has-border notop noright vertical-m">HSN/SAC</td>
                                 <td rowspan="2" class="has-border notop noright vertical-m">Taxable Value</td>
@@ -368,41 +369,42 @@
                                 <td class="has-border notop norigh vertical-m">Rate</td>
                                 <td class="has-border notop noright vertical-m">Amount</td>
                             </tr>
-                            @foreach($sale->products as $product)
+                            <?php $__currentLoopData = $sale->products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr class="center height-20" >
-                                <td colspan="5" class="has-border notop noright left-align">{{ $product->hsn->name }}</td>
-                                <td class="has-border notop noright">{{ Utility::formatPrice($product->pivot->price*$product->pivot->quantity) }}</td>
-                                <td class="has-border notop noright">{{ $product->hsn->tax_slab->name }}%</td>
-                                <td class="has-border notop noright">{{ Utility::formatPrice(($product->pivot->price*$product->pivot->quantity)*($product->hsn->tax_slab->name/100)) }}</td>
-                                <td class="has-border notop">{{ Utility::formatPrice(($product->pivot->price*$product->pivot->quantity)*($product->hsn->tax_slab->name/100)) }}</td>
+                                <td colspan="5" class="has-border notop noright left-align"><?php echo e($product->hsn->name); ?></td>
+                                <td class="has-border notop noright"><?php echo e(Utility::formatPrice($product->pivot->price*$product->pivot->quantity)); ?></td>
+                                <td class="has-border notop noright"><?php echo e($product->hsn->tax_slab->name); ?>%</td>
+                                <td class="has-border notop noright"><?php echo e(Utility::formatPrice(($product->pivot->price*$product->pivot->quantity)*($product->hsn->tax_slab->name/100))); ?></td>
+                                <td class="has-border notop"><?php echo e(Utility::formatPrice(($product->pivot->price*$product->pivot->quantity)*($product->hsn->tax_slab->name/100))); ?></td>
                             </tr>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             <tr class="center height-40" >
                                 <td colspan="5" class="has-border notop noright right-align  vertical-m"><b>Total</b></td>
-                                <td class="has-border notop noright  vertical-m"><b>{{ Utility::formatPrice($sale->sub_total) }}</b></td>
+                                <td class="has-border notop noright  vertical-m"><b><?php echo e(Utility::formatPrice($sale->sub_total)); ?></b></td>
                                 <td class="has-border notop noright"></td>
-                                <td class="has-border notop noright  vertical-m"><b>{{ Utility::formatPrice($sale->total_igst) }}</b></td>
-                                <td class="has-border notop  vertical-m"><b>{{ Utility::formatPrice($sale->total_igst) }}</b></td>
+                                <td class="has-border notop noright  vertical-m"><b><?php echo e(Utility::formatPrice($sale->total_igst)); ?></b></td>
+                                <td class="has-border notop  vertical-m"><b><?php echo e(Utility::formatPrice($sale->total_igst)); ?></b></td>
                             </tr>
-                        @endif
+                        <?php endif; ?>
 
                         <tr class="center height-20" >
-                            <td colspan="9" class="has-border notop left-align"><small>Tax Amount (in words)  : </small>{{ Utility::CURRENCY_DISPLAY . ' ' . Utility::currencyToWords($sale->total_igst)}}</td>
+                            <td colspan="9" class="has-border notop left-align"><small>Tax Amount (in words)  : </small><?php echo e(Utility::CURRENCY_DISPLAY . ' ' . Utility::currencyToWords($sale->total_igst)); ?></td>
                         </tr>
 
 
                         <tr class="center" >
                             <td colspan="5" class="w-half has-border notop nobottom noright left-align vertical-b">
-                                @unless (empty($sale->estimate->customer->pan)){!! 'Company\'s PAN: '. $sale->estimate->customer->pan !!}@endunless
+                                <?php if (! (empty($sale->estimate->customer->pan))): ?><?php echo 'Company\'s PAN: '. $sale->estimate->customer->pan; ?><?php endif; ?>
                             </td>
                             <td colspan="4" class="w-half has-border notop noleft left-align">
-                                @if(!empty($sale->estimate->branch->bank->name))
+                                <?php if(!empty($sale->estimate->branch->bank->name)): ?>
                                 Company's Bank Details<br>
-                                Bank Name : {{ $sale->estimate->branch->bank->name }}<br>
-                                A/c Name : {{ $sale->estimate->branch->account_name }}<br>
-                                A/c No. : {{ $sale->estimate->branch->account_number }}<br>
-                                Branch & IFS Code: {{ $sale->estimate->branch->bank_branch }} & {{ $sale->estimate->branch->ifsc }}
-                                @endif
+                                Bank Name : <?php echo e($sale->estimate->branch->bank->name); ?><br>
+                                A/c Name : <?php echo e($sale->estimate->branch->account_name); ?><br>
+                                A/c No. : <?php echo e($sale->estimate->branch->account_number); ?><br>
+                                Branch & IFS Code: <?php echo e($sale->estimate->branch->bank_branch); ?> & <?php echo e($sale->estimate->branch->ifsc); ?>
+
+                                <?php endif; ?>
                             </td>
                         </tr>
                         <tr class="center" >
@@ -413,7 +415,7 @@
                                 correct.
                             </td>
                             <td colspan="4" class="w-half has-border notop right-align">
-                                for {{ !empty($sale->estimate->branch->trade_name) ? $sale->estimate->branch->trade_name : $sale->estimate->branch->name }}<br>
+                                for <?php echo e(!empty($sale->estimate->branch->trade_name) ? $sale->estimate->branch->trade_name : $sale->estimate->branch->name); ?><br>
                                 <br>
                                 <br>
                                 Authorised Signatory</td>
@@ -426,7 +428,8 @@
 
     <div class="footer margin-top ">
         <div style="text-align: center">This is a Computer Generated Invoice</div>
-        {{-- <div>&copy; Laravel Daily</div> --}}
+        
     </div>
 </body>
 </html>
+<?php /**PATH C:\xampp\htdocs\azzet_crm\resources\views/admin/sales/pdf.blade.php ENDPATH**/ ?>

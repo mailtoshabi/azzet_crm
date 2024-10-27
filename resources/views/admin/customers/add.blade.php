@@ -31,7 +31,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="mb-3">
+                            {{-- <div class="mb-3">
                                 <label class="control-label">Branch</label>
                                 <select id="branch_id" name="branch_id" class="form-control select2">
                                     <option value="">Select Branch</option>
@@ -40,7 +40,7 @@
                                     @endforeach
                                 </select>
                                 @error('branch_id') <p class="text-danger">{{ $message }}</p> @enderror
-                            </div>
+                            </div> --}}
                             <div class="mb-3 required">
                                 <label for="name">@lang('translation.Name')</label>
                                 <input id="name" name="name" type="text" class="form-control"  placeholder="@lang('translation.Name')" value="{{ isset($customer)?$customer->name:old('name')}}">
@@ -66,16 +66,16 @@
                                 <input id="address1" name="address1" type="text" class="form-control"  placeholder="Building Number" value="{{ isset($customer)?$customer->address1:old('address1')}}">
                                 {{-- @error('address1') <p class="text-danger">{{ $message }}</p> @enderror --}}
                             </div>
-
-
-
-                        </div>
-                        <div class="col-sm-6">
                             <div class="mb-3">
                                 <label for="address2">Address Line 2</label>
                                 <input id="address2" name="address2" type="text" class="form-control"  placeholder="Street" value="{{ isset($customer)?$customer->address2:old('address2')}}">
                                 {{-- @error('address2') <p class="text-danger">{{ $message }}</p> @enderror --}}
                             </div>
+
+
+                        </div>
+                        <div class="col-sm-6">
+
                             <div class="mb-3">
                                 <label for="address3">Address Line 3</label>
                                 <input id="address3" name="address3" type="text" class="form-control"  placeholder="Street" value="{{ isset($customer)?$customer->address3:old('address3')}}">
@@ -109,14 +109,15 @@
                                 </select>
                                 @error('district_id') <p class="text-danger">{{ $message }}</p> @enderror
                             </div>
-                        </div>
-
-                        <div class="col-sm-12">
                             <div class="mb-3">
                                 <label for="website">Website</label>
                                 <input id="website" name="website" type="text" class="form-control"  placeholder="Website" value="{{ isset($customer)?$customer->website:old('website')}}">
                                 {{-- @error('website') <p class="text-danger">{{ $message }}</p> @enderror --}}
                             </div>
+                        </div>
+
+                        <div class="col-sm-12">
+
                         </div>
 
 

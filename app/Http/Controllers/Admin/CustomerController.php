@@ -58,7 +58,6 @@ class CustomerController extends Controller
             'city' => 'required',
             'district_id' => 'required',
             'state_id' => 'required',
-            'branch_id' => 'required',
         ]);
         $input = request()->except(['_token','image','contact_names','phones','emails']);
         if(request()->hasFile('image')) {
@@ -68,6 +67,7 @@ class CustomerController extends Controller
             $input['image'] =$fileName;
         }
         $input['user_id'] =Auth::id();
+        $input['branch_id'] = default_branch()->id;
         $input['is_approved'] = 1;
         $customer = Customer::create($input);
 
