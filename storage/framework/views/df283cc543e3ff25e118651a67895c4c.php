@@ -3,12 +3,12 @@
 
     <head>
         <meta charset="utf-8" />
-        <title> <?php echo $__env->yieldContent('title'); ?> | Azzet - Customer Relationship Management Application</title>
+        <title> <?php echo $__env->yieldContent('title'); ?> | WBMAHALCRM - Customer Relationship Management Application</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- CSRF Token -->
         <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
-        <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
-        <meta content="Themesdesign" name="author" />
+        <meta content="WBMAHALCRM - Customer Relationship Management Application" name="description" />
+        <meta content="WebMahal.com" name="author" />
         <!-- App favicon -->
         <link rel="shortcut icon" href="<?php echo e(URL::asset('assets/images/favicon.ico')); ?>">
         <?php echo $__env->make('admin.layouts.head-css', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>

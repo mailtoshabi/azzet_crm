@@ -44,12 +44,23 @@
                             <div class="col-sm-12">
                                 <div class="mb-3">
                                     <label class="control-label"><?php echo app('translator')->get('translation.Customer'); ?></label>
+                                    <?php if(isset($enquiry) && !$enquiry->customer->is_approved ): ?>
+                                        <p class="text-danger">The Customer is yet to <a href="<?php echo e(route('admin.customers.index')); ?>" target="_blank">approve</a>
+                                    <?php endif; ?>
                                     <select id="customer_id" name="customer_id" class="form-control select2">
                                         <option value="">Select <?php echo app('translator')->get('translation.Customer'); ?></option>
                                         <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($customer->id); ?>" <?php if(isset($enquiry)): ?> <?php echo e($customer->id==$enquiry->customer->id ? 'selected':''); ?> <?php endif; ?>><?php echo e($customer->name); ?></option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
+                                    <?php $__errorArgs = ['customer_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <p class="text-danger"><?php echo e($message); ?></p> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
                                 <p><a href="<?php echo e(route('admin.customers.create')); ?>"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;New <?php echo app('translator')->get('translation.Customer'); ?></a></p>
                             </div>

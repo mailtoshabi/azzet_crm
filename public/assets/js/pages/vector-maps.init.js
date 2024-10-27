@@ -4,10 +4,10 @@ var __webpack_exports__ = {};
   !*** ./resources/js/pages/vector-maps.init.js ***!
   \************************************************/
 /*
-Template Name: Azzet - Customer Relationship Management Application
-Author: Themesdesign
-Website: https://themesdesign.in/
-Contact: themesdesign.in@gmail.com
+Template Name: WBMAHALCRM - Customer Relationship Management Application
+Author: WebMahal.com
+Website: https://WebMahal.com.in/
+Contact: WebMahal.com.in@gmail.com
 File: Vector Maps init Js File
 */
 !function ($) {

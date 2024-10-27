@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('invoice_no')->nullable(); //TODO: should suffix and prefix in settings.
             $table->foreignId('estimate_id')->constrained()->onDelete('cascade');
+            $table->foreignId('executive_id')->nullable()->constrained()->onDelete('cascade');
             $table->smallInteger('pay_method')->nullable();
             $table->double('round_off')->default(0);
             // $table->double('sub_total')->default(0);

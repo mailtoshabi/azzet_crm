@@ -29,6 +29,13 @@
                     </ul>
                 </li>
 
+                <li class="{{ set_active(['executive.sales.view']) }}">
+                    <a href="{{ route('executive.sales.index') }}">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <span data-key="t-email">@lang('translation.Proforma_Manage')</span>
+                    </a>
+                </li>
+
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i class="fas fa-boxes"></i>

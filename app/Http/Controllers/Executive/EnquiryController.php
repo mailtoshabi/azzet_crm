@@ -29,7 +29,7 @@ class EnquiryController extends Controller
 
     public function create() {
         $auth_id = Auth::guard('executive')->id();
-        $customers = Customer::where('status',Utility::ITEM_ACTIVE)->where('executive_id',$auth_id)->get();
+        $customers = Customer::where('executive_id',$auth_id)->get(); //where('status',Utility::ITEM_ACTIVE)->
         $products = Product::where('status',Utility::ITEM_ACTIVE)->get();
         return view('admin.executive.enquiries.add',compact('customers','products'));
     }

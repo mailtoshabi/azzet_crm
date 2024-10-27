@@ -4,10 +4,10 @@ var __webpack_exports__ = {};
   !*** ./resources/js/pages/validation.init.js ***!
   \***********************************************/
 /*
-Template Name: Azzet - Customer Relationship Management Application
-Author: Themesdesign
-Website: https://themesdesign.in/
-Contact: themesdesign.in@gmail.com
+Template Name: WBMAHALCRM - Customer Relationship Management Application
+Author: WebMahal.com
+Website: https://WebMahal.com.in/
+Contact: WebMahal.com.in@gmail.com
 File: validation Js File
 */
 // Example starter JavaScript for disabling form submissions if there are invalid fields

@@ -156,7 +156,8 @@ class EstimateController extends Controller
     public function convertToProforma($id) {
         $estimate = Estimate::find(decrypt($id));
         if(!$estimate->sale) {
-        $input_sale = ['invoice_no'=>'','estimate_id'=>$estimate->id,'delivery_charge'=>0];
+        $executive_id = $estimate->enquiry->executive?$estimate->enquiry->executive->id:null;
+        $input_sale = ['invoice_no'=>'','estimate_id'=>$estimate->id,'delivery_charge'=>0,'executive_id'=>$executive_id];
         $sale = Sale::create($input_sale);
 
         // $sum_price_components = DB::table('component_estimate_product')->where('estimate_product_id',4)->sum('cost');

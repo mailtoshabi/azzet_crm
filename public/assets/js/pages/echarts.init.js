@@ -6,10 +6,10 @@ var __webpack_exports__ = {};
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 /*
-Template Name: Azzet - Customer Relationship Management Application
-Author: Themesdesign
-Website: https://themesdesign.in/
-Contact: themesdesign.in@gmail.com
+Template Name: WBMAHALCRM - Customer Relationship Management Application
+Author: WebMahal.com
+Website: https://WebMahal.com.in/
+Contact: WebMahal.com.in@gmail.com
 File: Echarts Init Js File
 */
 // get colors array from the string

@@ -4,10 +4,10 @@ var __webpack_exports__ = {};
   !*** ./resources/js/pages/two-step-verification.init.js ***!
   \**********************************************************/
 /*
-Template Name: Azzet - Customer Relationship Management Application
-Author: Themesdesign
-Website: https://themesdesign.in/
-Contact: themesdesign.in@gmail.com
+Template Name: WBMAHALCRM - Customer Relationship Management Application
+Author: WebMahal.com
+Website: https://WebMahal.com.in/
+Contact: WebMahal.com.in@gmail.com
 File: two step verification Init Js File
 */
 // move next

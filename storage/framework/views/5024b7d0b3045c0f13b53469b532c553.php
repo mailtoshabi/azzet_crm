@@ -29,6 +29,13 @@
                     </ul>
                 </li>
 
+                <li class="<?php echo e(set_active(['executive.sales.view'])); ?>">
+                    <a href="<?php echo e(route('executive.sales.index')); ?>">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <span data-key="t-email"><?php echo app('translator')->get('translation.Proforma_Manage'); ?></span>
+                    </a>
+                </li>
+
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i class="fas fa-boxes"></i>

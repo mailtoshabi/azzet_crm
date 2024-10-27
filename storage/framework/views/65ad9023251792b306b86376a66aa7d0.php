@@ -432,4 +432,4 @@
     </div>
 </body>
 </html>
-<?php /**PATH C:\xampp\htdocs\azzet_crm\resources\views/admin/sales/pdf.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp\htdocs\azzet_crm\resources\views\admin\executive\sales\pdf.blade.php ENDPATH**/ ?>

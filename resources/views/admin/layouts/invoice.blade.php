@@ -4,7 +4,7 @@
     <head>
         {{-- <meta charset="utf-8" /> --}}
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <title> @yield('title') | Azzet - Customer Relationship Management Application</title>
+        <title> @yield('title') | WBMAHALCRM - Customer Relationship Management Application</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 

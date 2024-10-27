@@ -109,45 +109,26 @@
                     <div class="p-2">
                         <div class="row g-0">
                             <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="<?php echo e(URL::asset('assets/images/brands/github.png')); ?>" alt="Github">
-                                    <span>GitHub</span>
+                                <a class="dropdown-icon-item" href="<?php echo e(route('executive.enquiries.create')); ?>">
+                                    <i class="fas fa-binoculars"></i>
+                                    <span>Enquiry</span>
                                 </a>
                             </div>
                             <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="<?php echo e(URL::asset('assets/images/brands/bitbucket.png')); ?>" alt="bitbucket">
-                                    <span>Bitbucket</span>
+                                <a class="dropdown-icon-item" href="<?php echo e(route('executive.products.create')); ?>">
+                                    <i class="fas fa-boxes"></i>
+                                    <span>Products</span>
                                 </a>
                             </div>
                             <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="<?php echo e(URL::asset('assets/images/brands/dribbble.png')); ?>" alt="dribbble">
-                                    <span>Dribbble</span>
+                                <a class="dropdown-icon-item" href="<?php echo e(route('executive.customers.create')); ?>">
+                                    <i class="fas fa-city"></i>
+                                    <span><?php echo app('translator')->get('translation.Customer'); ?></span>
                                 </a>
                             </div>
                         </div>
 
-                        <div class="row g-0">
-                            <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="<?php echo e(URL::asset('assets/images/brands/dropbox.png')); ?>" alt="dropbox">
-                                    <span>Dropbox</span>
-                                </a>
-                            </div>
-                            <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="<?php echo e(URL::asset('assets/images/brands/mail_chimp.png')); ?>" alt="mail_chimp">
-                                    <span>Mail Chimp</span>
-                                </a>
-                            </div>
-                            <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="<?php echo e(URL::asset('assets/images/brands/slack.png')); ?>" alt="slack">
-                                    <span>Slack</span>
-                                </a>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>

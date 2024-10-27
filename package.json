@@ -2,7 +2,7 @@
     "private": true,
     "name": "WBMAHALCRM",
     "version": "1.2.0",
-    "author": "Themesdesign",
+    "author": "WebMahal.com",
     "scripts": {
         "dev": "npm run development",
         "development": "mix",

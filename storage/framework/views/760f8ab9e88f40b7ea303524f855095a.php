@@ -4,7 +4,7 @@
     <head>
         
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <title> <?php echo $__env->yieldContent('title'); ?> | Azzet - Customer Relationship Management Application</title>
+        <title> <?php echo $__env->yieldContent('title'); ?> | WBMAHALCRM - Customer Relationship Management Application</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 

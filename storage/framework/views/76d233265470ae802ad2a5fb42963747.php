@@ -106,24 +106,24 @@
                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i data-feather="grid" class="icon-lg"></i>
                 </button>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end top_bar">
                     <div class="p-2">
                         <div class="row g-0">
                             <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="<?php echo e(URL::asset('assets/images/brands/github.png')); ?>" alt="Github">
+                                <a class="dropdown-icon-item" href="<?php echo e(route('admin.enquiries.create')); ?>">
+                                    <i class="fas fa-binoculars"></i>
                                     <span>Enquiry</span>
                                 </a>
                             </div>
                             <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="<?php echo e(URL::asset('assets/images/brands/bitbucket.png')); ?>" alt="bitbucket">
+                                <a class="dropdown-icon-item" href="<?php echo e(route('admin.estimates.create')); ?>">
+                                    <i class="fas fa-clipboard"></i>
                                     <span>Estimate</span>
                                 </a>
                             </div>
                             <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="<?php echo e(URL::asset('assets/images/brands/dribbble.png')); ?>" alt="dribbble">
+                                <a class="dropdown-icon-item" href="<?php echo e(route('admin.sales.index')); ?>">
+                                    <i class="fas fa-file-invoice-dollar"></i>
                                     <span>Proforma</span>
                                 </a>
                             </div>
@@ -131,20 +131,20 @@
 
                         <div class="row g-0">
                             <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="<?php echo e(URL::asset('assets/images/brands/dropbox.png')); ?>" alt="dropbox">
+                                <a class="dropdown-icon-item" href="<?php echo e(route('admin.products.create')); ?>">
+                                    <i class="fas fa-boxes"></i>
                                     <span>Products</span>
                                 </a>
                             </div>
                             <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="<?php echo e(URL::asset('assets/images/brands/mail_chimp.png')); ?>" alt="mail_chimp">
-                                    <span>Customers</span>
+                                <a class="dropdown-icon-item" href="<?php echo e(route('admin.customers.create')); ?>">
+                                    <i class="fas fa-city"></i>
+                                    <span><?php echo app('translator')->get('translation.Customer'); ?></span>
                                 </a>
                             </div>
                             <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="<?php echo e(URL::asset('assets/images/brands/slack.png')); ?>" alt="slack">
+                                <a class="dropdown-icon-item" href="<?php echo e(route('admin.executives.create')); ?>">
+                                    <i class="fas fa-user-tie"></i>
                                     <span>Executives</span>
                                 </a>
                             </div>

@@ -1,9 +1,9 @@
 /*
 Template Name: WBMAHALCRM - Bootstrap 5 Admin & Dashboard Template
-Author: Themesdesign
+Author: WebMahal.com
 Version: 1.2.0.
-Website: https://themesdesign.in/
-Contact: themesdesign.in@gmail.com
+Website: https://WebMahal.com.in/
+Contact: WebMahal.com.in@gmail.com
 File: Main Js File
 */
 

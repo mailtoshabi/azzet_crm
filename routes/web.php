@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\EnquiryController;
 use App\Http\Controllers\Executive\EnquiryController as ExecutiveEnquiryController;
 use App\Http\Controllers\Admin\EstimateController;
 use App\Http\Controllers\Admin\SaleController;
+use App\Http\Controllers\Executive\SaleController as ExecutiveSaleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Executive\ProductController as ExecutiveProductController;
@@ -262,6 +263,16 @@ Route::group(['as'=>'executive.', 'prefix'=>'executive'], function() {
             // Route::get('/change-status/{id}',[ExecutiveCustomerController::class,'changeStatus'])->name('changeStatus');
             // Route::get('/approve/{id}',[ExecutiveCustomerController::class,'approve'])->name('approve');
             Route::post('/districts', [ExecutiveCustomerController::class,'distric_list'])->name('list.districts');
+        });
+
+        Route::group(['prefix'=>'proforma', 'as'=>'sales.'], function() {
+            Route::get('/',[ExecutiveSaleController::class,'index'])->name('index');
+            Route::get('/show/{id}',[ExecutiveSaleController::class,'show'])->name('view');
+            Route::get('/download-invoice/{id}',[ExecutiveSaleController::class,'download_invoice'])->name('download.invoice');
+            Route::get('/view-invoice/{id}',[ExecutiveSaleController::class,'view_invoice'])->name('view.invoice');
+            Route::post('/add-frieght',[ExecutiveSaleController::class,'addFreight'])->name('addFreight');
+            Route::post('/add-discount',[ExecutiveSaleController::class,'addDiscount'])->name('addDiscount');
+            Route::get('/change-status/{id}/{status}',[ExecutiveSaleController::class,'changeStatus'])->name('changeStatus');
         });
     });
 });

@@ -1,8 +1,8 @@
 /*
 Template Name: WBMAHALCRM - Admin & Dashboard Template
-Author: Themesdesign
-Website: https://themesdesign.in/
-Contact: themesdesign.in@gmail.com
+Author: WebMahal.com
+Website: https://WebMahal.com.in/
+Contact: WebMahal.com.in@gmail.com
 File: datatable for pages Js File
 */
 

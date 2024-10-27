@@ -153,7 +153,7 @@
                 <td class="w-half">
                     <table class="w-full">
                         <tr class="left">
-                            <td class="w-quarter has-border"><img src="data:image/png;base64,<?php echo e(base64_encode(file_get_contents(public_path('storage/branches/' . $sale->estimate->branch->image)))); ?>" class="w-full" style="background-color: black;" ></td>
+                            <td class="w-quarter has-border"><?php if(!empty($sale->estimate->branch->image)): ?><img src="data:image/png;base64,<?php echo e(base64_encode(file_get_contents(public_path('storage/branches/' . $sale->estimate->branch->image)))); ?>" class="w-full" style="background-color: black;" ><?php endif; ?></td>
                             <td class="w-three-quarter has-border">
                                 <b><?php echo e(!empty($sale->estimate->branch->trade_name) ? $sale->estimate->branch->trade_name : $sale->estimate->branch->name); ?></b><br>
                                 <?php if (! (empty($sale->estimate->branch->address1))): ?>
@@ -245,7 +245,7 @@
                     <table class="w-full">
                         <tr class="center height-20" >
                             <td class="has-border noright w-3 vertical-m">SI No</td>
-                            <td colspan="2" class="has-border noright w-35 vertical-m">Description of Goods</td>
+                            <td colspan="3" class="has-border noright w-35 vertical-m">Description of Goods</td>
                             <td class="has-border noright vertical-m">HSN/SAC</td>
                             <td class="has-border noright vertical-m">Quantity</td>
                             <td class="has-border noright vertical-m">Rate</td>
@@ -256,7 +256,7 @@
                         <?php $__currentLoopData = $sale->products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr class="center height-20" >
                             <td class="has-border notop noright nobottom"><?php echo e($sino); ?></td>
-                            <td colspan="2" class="has-border notop noright nobottom left-align"><b><?php echo e($product->name); ?></b><br><small><?php echo e($product->description); ?></small></td>
+                            <td colspan="3" class="has-border notop noright nobottom left-align"><b><?php echo e($product->name); ?></b><br><small><?php echo e($product->description); ?></small></td>
                             <td class="has-border notop noright nobottom"><?php echo e($product->hsn->name); ?></td>
                             <td class="has-border notop noright nobottom"><?php echo e($product->pivot->quantity); ?> <?php echo e($product->uom->name); ?></td>
                             <td class="has-border notop noright nobottom"><?php echo e(Utility::formatPrice($product->pivot->price)); ?></td>
@@ -268,7 +268,7 @@
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         <tr class="center height-20" >
                             <td class="has-border notop noright nobottom"></td>
-                            <td colspan="2" class="has-border notop noright nobottom right-align"></td>
+                            <td colspan="3" class="has-border notop noright nobottom right-align"></td>
                             <td class="has-border notop noright nobottom"></td>
                             <td class="has-border notop noright nobottom"></td>
                             <td class="has-border notop noright nobottom"></td>
@@ -278,7 +278,7 @@
                         <?php if (! (($sale->delivery_charge==0))): ?>
                         <tr class="center" >
                             <td class="has-border notop noright nobottom"></td>
-                            <td colspan="2" class="has-border notop noright nobottom right-align"><b>Freight Outward</b></td>
+                            <td colspan="3" class="has-border notop noright nobottom right-align"><b>Freight Outward</b></td>
                             <td class="has-border notop noright nobottom"></td>
                             <td class="has-border notop noright nobottom"></td>
                             <td class="has-border notop noright nobottom"></td>
@@ -288,7 +288,7 @@
                         <?php endif; ?>
                         <tr class="center" >
                             <td class="has-border notop noright nobottom"></td>
-                            <td colspan="2" class="has-border notop noright nobottom right-align"><b>IGST</b></td>
+                            <td colspan="3" class="has-border notop noright nobottom right-align"><b>IGST</b></td>
                             <td class="has-border notop noright nobottom"></td>
                             <td class="has-border notop noright nobottom"></td>
                             <td class="has-border notop noright nobottom"></td>
@@ -298,7 +298,7 @@
                         <?php if (! (($sale->round_off==0))): ?>
                             <tr class="center" >
                                 <td class="has-border notop noright"></td>
-                                <td colspan="2" class="has-border notop noright right-align"><b>Round Off</b></td>
+                                <td colspan="3" class="has-border notop noright right-align"><b>Round Off</b></td>
                                 <td class="has-border notop noright"></td>
                                 <td class="has-border notop noright"></td>
                                 <td class="has-border notop noright"></td>
@@ -309,7 +309,7 @@
 
                         <tr class="center height-20" >
                             <td class="has-border notop noright"></td>
-                            <td colspan="2" class="has-border notop noright right-align vertical-m">Total</td>
+                            <td colspan="3" class="has-border notop noright right-align vertical-m">Total</td>
                             <td class="has-border notop noright"></td>
                             <td class="has-border notop noright vertical-m"><?php echo e($sale->sub_quantity); ?> <?php echo e($product->uom->name); ?></td>
                             <td class="has-border notop noright"></td>
@@ -318,7 +318,7 @@
                         </tr>
 
                         <tr class="center height-20" >
-                            <td colspan="7" class="has-border notop noright left-align"><small>Amount Chargeable (in words)</small><br>
+                            <td colspan="8" class="has-border notop noright left-align"><small>Amount Chargeable (in words)</small><br>
                                 <b><?php echo e(Utility::CURRENCY_DISPLAY . ' ' . Utility::currencyToWords(($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off))); ?></b>
                             </td>
                             <td class="has-border notop noleft right-align">E. & O.E</td>
@@ -326,7 +326,7 @@
 
                         <?php if($sale->estimate->customer->state->id==Utility::STATE_ID_KERALA): ?>
                             <tr class="center height-20" >
-                                <td rowspan="2" colspan="2" class="has-border notop noright vertical-m w-quarter">HSN/SAC</td>
+                                <td rowspan="2" colspan="3" class="has-border notop noright vertical-m">HSN/SAC</td>
                                 <td rowspan="2" class="has-border notop noright vertical-m">Taxable Value</td>
                                 <td colspan="2" class="has-border notop norigh vertical-m">CGST</td>
                                 <td colspan="2" class="has-border notop norigh vertical-m">SGST/UTGST</td>
@@ -340,25 +340,27 @@
                             </tr>
                             <?php $__currentLoopData = $sale->products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr class="center height-20" >
-                                <td colspan="2" class="has-border notop noright left-align w-quarter"><?php echo e($product->hsn->name); ?></td>
+                                <td colspan="3" class="has-border notop noright left-align w-quarter"><?php echo e($product->hsn->name); ?></td>
                                 <td class="has-border notop noright"><?php echo e(Utility::formatPrice($product->pivot->price*$product->pivot->quantity)); ?></td>
-                                <td class="has-border notop noright"><?php echo e($product->hsn->tax_slab->name); ?>%</td>
-                                <td class="has-border notop noright"><?php echo e(Utility::formatPrice(($product->pivot->price*$product->pivot->quantity)*($product->hsn->tax_slab->name/100))); ?></td>
-                                <td class="has-border notop noright"><?php echo e($product->hsn->tax_slab->name); ?>%</td>
-                                <td class="has-border notop noright"><?php echo e(Utility::formatPrice(($product->pivot->price*$product->pivot->quantity)*($product->hsn->tax_slab->name/100))); ?></td>
+                                <td class="has-border notop noright"><?php echo e($product->hsn->tax_slab->name/2); ?>%</td>
+                                <td class="has-border notop noright"><?php echo e(Utility::formatPrice((($product->pivot->price*$product->pivot->quantity)*($product->hsn->tax_slab->name/100))/2)); ?></td>
+                                <td class="has-border notop noright"><?php echo e($product->hsn->tax_slab->name/2); ?>%</td>
+                                <td class="has-border notop noright"><?php echo e(Utility::formatPrice((($product->pivot->price*$product->pivot->quantity)*($product->hsn->tax_slab->name/100))/2)); ?></td>
                                 <td class="has-border notop"><?php echo e(Utility::formatPrice(($product->pivot->price*$product->pivot->quantity)*($product->hsn->tax_slab->name/100))); ?></td>
                             </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             <tr class="center height-40" >
-                                <td colspan="4" class="has-border notop noright right-align  vertical-m w-quarter"><b>Total</b></td>
+                                <td colspan="3" class="has-border notop noright right-align  vertical-m w-quarter"><b>Total</b></td>
                                 <td class="has-border notop noright  vertical-m"><b><?php echo e(Utility::formatPrice($sale->sub_total)); ?></b></td>
                                 <td class="has-border notop noright"></td>
-                                <td class="has-border notop noright  vertical-m"><b><?php echo e(Utility::formatPrice($sale->total_igst)); ?></b></td>
-                                <td class="has-border notop  vertical-m"><b><?php echo e(Utility::formatPrice($sale->total_igst)); ?></b></td>
+                                <td class="has-border notop noright  vertical-m"><b><?php echo e(Utility::formatPrice($sale->total_sgst)); ?></b></td>
+                                <td class="has-border notop noright"></td>
+                                <td class="has-border notop  vertical-m"><b><?php echo e(Utility::formatPrice($sale->total_sgst)); ?></b></td>
+                                <td class="has-border notop vertical-m"><b><?php echo e(Utility::formatPrice($sale->total_igst)); ?></b></td>
                             </tr>
                         <?php else: ?>
                             <tr class="center height-20" >
-                                <td rowspan="2" colspan="4" class="has-border notop noright vertical-m">HSN/SAC</td>
+                                <td rowspan="2" colspan="5" class="has-border notop noright vertical-m">HSN/SAC</td>
                                 <td rowspan="2" class="has-border notop noright vertical-m">Taxable Value</td>
                                 <td colspan="2" class="has-border notop norigh vertical-m">IGST</td>
                                 <td rowspan="2" class="has-border notop vertical-m"><b>Total Tax Amount</b></td>
@@ -369,7 +371,7 @@
                             </tr>
                             <?php $__currentLoopData = $sale->products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr class="center height-20" >
-                                <td colspan="4" class="has-border notop noright left-align"><?php echo e($product->hsn->name); ?></td>
+                                <td colspan="5" class="has-border notop noright left-align"><?php echo e($product->hsn->name); ?></td>
                                 <td class="has-border notop noright"><?php echo e(Utility::formatPrice($product->pivot->price*$product->pivot->quantity)); ?></td>
                                 <td class="has-border notop noright"><?php echo e($product->hsn->tax_slab->name); ?>%</td>
                                 <td class="has-border notop noright"><?php echo e(Utility::formatPrice(($product->pivot->price*$product->pivot->quantity)*($product->hsn->tax_slab->name/100))); ?></td>
@@ -377,7 +379,7 @@
                             </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             <tr class="center height-40" >
-                                <td colspan="4" class="has-border notop noright right-align  vertical-m"><b>Total</b></td>
+                                <td colspan="5" class="has-border notop noright right-align  vertical-m"><b>Total</b></td>
                                 <td class="has-border notop noright  vertical-m"><b><?php echo e(Utility::formatPrice($sale->sub_total)); ?></b></td>
                                 <td class="has-border notop noright"></td>
                                 <td class="has-border notop noright  vertical-m"><b><?php echo e(Utility::formatPrice($sale->total_igst)); ?></b></td>
@@ -386,29 +388,34 @@
                         <?php endif; ?>
 
                         <tr class="center height-20" >
-                            <td colspan="8" class="has-border notop left-align"><small>Tax Amount (in words)  : </small><?php echo e(Utility::CURRENCY_DISPLAY . ' ' . Utility::currencyToWords($sale->total_igst)); ?></td>
+                            <td colspan="9" class="has-border notop left-align"><small>Tax Amount (in words)  : </small><?php echo e(Utility::CURRENCY_DISPLAY . ' ' . Utility::currencyToWords($sale->total_igst)); ?></td>
                         </tr>
 
 
                         <tr class="center" >
-                            <td colspan="4" class="w-half has-border notop nobottom noright left-align vertical-b">
+                            <td colspan="5" class="w-half has-border notop nobottom noright left-align vertical-b">
                                 <?php if (! (empty($sale->estimate->customer->pan))): ?><?php echo 'Company\'s PAN: '. $sale->estimate->customer->pan; ?><?php endif; ?>
                             </td>
                             <td colspan="4" class="w-half has-border notop noleft left-align">
+                                <?php if(!empty($sale->estimate->branch->bank->name)): ?>
                                 Company's Bank Details<br>
-                                Bank Name : ICICI BANK<br>
-                                A/c No. : 016005008083<br>
-                                Branch & IFS Code: MODEL TOWN NEW DELHI & ICIC0000160</td>
+                                Bank Name : <?php echo e($sale->estimate->branch->bank->name); ?><br>
+                                A/c Name : <?php echo e($sale->estimate->branch->account_name); ?><br>
+                                A/c No. : <?php echo e($sale->estimate->branch->account_number); ?><br>
+                                Branch & IFS Code: <?php echo e($sale->estimate->branch->bank_branch); ?> & <?php echo e($sale->estimate->branch->ifsc); ?>
+
+                                <?php endif; ?>
+                            </td>
                         </tr>
                         <tr class="center" >
-                            <td colspan="4" class="w-half has-border notop noright left-align">
+                            <td colspan="5" class="w-half has-border notop noright left-align">
                                 <u><small>Declaration</small></u><br>
                                 We declare that this invoice shows the actual price of the
                                 goods described and that all particulars are true and
                                 correct.
                             </td>
                             <td colspan="4" class="w-half has-border notop right-align">
-                                for Fresco Print Pack Private Limited<br>
+                                for <?php echo e(!empty($sale->estimate->branch->trade_name) ? $sale->estimate->branch->trade_name : $sale->estimate->branch->name); ?><br>
                                 <br>
                                 <br>
                                 Authorised Signatory</td>

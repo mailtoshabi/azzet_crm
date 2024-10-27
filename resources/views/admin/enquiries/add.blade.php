@@ -44,12 +44,16 @@
                             <div class="col-sm-12">
                                 <div class="mb-3">
                                     <label class="control-label">@lang('translation.Customer')</label>
+                                    @if(isset($enquiry) && !$enquiry->customer->is_approved )
+                                        <p class="text-danger">The Customer is yet to <a href="{{ route('admin.customers.index') }}" target="_blank">approve</a>
+                                    @endif
                                     <select id="customer_id" name="customer_id" class="form-control select2">
                                         <option value="">Select @lang('translation.Customer')</option>
                                         @foreach ($customers as $customer)
                                         <option value="{{ $customer->id }}" @isset($enquiry) {{ $customer->id==$enquiry->customer->id ? 'selected':'' }} @endisset>{{ $customer->name }}</option>
                                         @endforeach
                                     </select>
+                                    @error('customer_id') <p class="text-danger">{{ $message }}</p> @enderror
                                 </div>
                                 <p><a href="{{ route('admin.customers.create') }}"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;New @lang('translation.Customer')</a></p>
                             </div>
