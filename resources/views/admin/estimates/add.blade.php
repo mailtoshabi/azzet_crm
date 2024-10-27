@@ -6,10 +6,15 @@
 @endsection
 @section('content')
 @component('admin.dir_components.breadcrumb')
-@slot('li_1') @lang('translation.Catalogue_Manage') @endslot
+@slot('li_1') @lang('translation.Proforma_Manage') @endslot
 @slot('li_2') @lang('translation.Estimate_Manage') @endslot
 @slot('title') @if(isset($estimate)) @lang('translation.Edit_Estimate') @else @lang('translation.Add_Estimate') @endif @endslot
 @endcomponent
+@if(isset($estimate) && !$estimate->sale )
+<div class="alert alert-warning alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-warning"></i><strong>Warning</strong> - This Estimate is yet to convert as Proforma !!
+</div>
+@endif
 <div class="row">
     <form method="POST" action="{{ isset($estimate)? route('admin.estimates.update') : route('admin.estimates.store')  }}" enctype="multipart/form-data">
         @csrf
@@ -28,15 +33,18 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="mb-3">
-                                    <label class="control-label">Customer</label>
+                                    <label class="control-label">@lang('translation.Customer')</label>
                                     <select id="customer_id" name="customer_id" class="form-control select2">
-                                        <option value="">Select Customer</option>
+                                        <option value="">Select @lang('translation.Customer')</option>
                                         @foreach ($customers as $customer)
                                         <option value="{{ $customer->id }}" @isset($estimate) {{ $customer->id==$estimate->customer->id ? 'selected':'' }} @endisset >{{ $customer->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <p><a href="{{ route('admin.customers.create') }}"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;New Customer</a></p>
+                                @if( isset($estimate) && $estimate->sale)
+                                @else
+                                <p><a href="{{ route('admin.customers.create') }}"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;New @lang('translation.Customer')</a></p>
+                                @endif
                             </div>
 
 
@@ -60,7 +68,7 @@
                                         <select id="products-{{ $index }}" name="products[{{ $index }}]" class="form-control select2" onChange="getProductDetail(this.value,{{ $index }});">
                                             <option value="">Select Product</option>
                                             @foreach ($products as $product)
-                                                <option value="{{ $product->id }}" {{ $product->id==$estimate_product->id ? 'selected':'' }}>{{ $product->name }}</option>
+                                                <option value="{{ $product->id }}" {{ $product->id==$estimate_product->id ? 'selected':'' }}>{{ $product->name }} @if(!empty($product->hsn->name))(HSN {{ $product->hsn->name }})@endif</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -72,7 +80,10 @@
                                         <input id="quantities-{{ $index }}" name="quantities[{{ $index }}]" type="text" class="form-control"  placeholder="Quantity" value="{{ $estimate_product->pivot->quantity }}">
                                     </div>
                                 </div>
+                                @if( isset($estimate) && $estimate->sale)
+                                @else
                                 <a class="btn-close" data-target="#close_container_{{ $index }}" style="font-size: 18px; padding-top:0;"><i class="fa fa-trash"></i></a>
+                                @endif
                                 <div id="product_detail-{{ $index }}" class="col-sm-12">
                                     <hr>
                                     <div class="row">
@@ -109,10 +120,15 @@
                                                     <input id="o_costs-{{ $index.'_'.$index_comp }}" name="o_costs[{{ $index }}][{{ $index_comp }}]" type="hidden" class="o_costs" value="{{ $prod_component->o_cost }}">
                                                 </div>
                                             </div>
+                                            @if( isset($estimate) && $estimate->sale)
+                                            @else
                                             <a class="btn-close" data-target="#component_close_container_{{ $index.'_'.$index_comp }}"><i class="fa fa-trash"></i></a>
+                                            @endif
                                         </div>
                                         @endforeach
                                         </div>
+                                        @if( isset($estimate) && $estimate->sale)
+                                        @else
                                         <div class="p-4 pt-1">
                                             <a href="#" data-toggle="add-more-component" data-template="#template_component"
                                             data-close=".wb-close" data-container="#component_container_{{ $index }}"
@@ -124,6 +140,7 @@
                                             data-increment='[{"selector":".component_names","attr":"id", "value":"component_names"},{"selector":".costs","attr":"id", "value":"costs"},{"selector":".o_costs","attr":"id", "value":"o_costs"}]'><i
                                             class="fa fa-plus-circle"></i>&nbsp;&nbsp;New Component</a>
                                         </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -140,7 +157,7 @@
                                     <select id="products-0" name="products[0]" class="form-control select2" onChange="getProductDetail(this.value,0);">
                                         <option value="">Select Product</option>
                                         @foreach ($products as $product)
-                                            <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                            <option value="{{ $product->id }}">{{ $product->name }} @if(!empty($product->hsn->name))(HSN {{ $product->hsn->name }})@endif</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -157,6 +174,8 @@
                         </div>
                     @endempty
                 </div>
+                @if( isset($estimate) && $estimate->sale)
+                @else
                 <div class="p-4 pt-1">
                     <a href="#" data-toggle="add-more" data-template="#template_product"
                     data-close=".wb-close" data-container="#product_container"
@@ -167,6 +186,7 @@
                     data-increment='[{"selector":".products","attr":"id", "value":"products"},{"selector":".quantities","attr":"id", "value":"quantities"},{"selector":".product_detail","attr":"id", "value":"product_detail"}]'><i
                                 class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add Item</a>
                 </div>
+                @endif
             </div>
 
 
@@ -178,7 +198,7 @@
                         <select id="" name="" class="form-control products" onChange="">
                             <option value="">Select Product</option>
                             @foreach ($products as $product)
-                                <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                <option value="{{ $product->id }}">{{ $product->name }} @if(!empty($product->hsn->name)) (HSN {{ $product->hsn->name }})@endif</option>
                             @endforeach
                         </select>
                     </div>
@@ -217,7 +237,8 @@
                     </div>
                 </div>
             </div>
-
+            @if( isset($estimate) && $estimate->sale)
+            @else
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex flex-wrap gap-2">
@@ -226,6 +247,7 @@
                     </div>
                 </div>
             </div>
+            @endif
         </div>
     </form>
 </div>

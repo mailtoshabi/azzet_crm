@@ -11,13 +11,13 @@
                         <div class="d-flex flex-column h-100">
                             <div class="mb-4 mb-md-5 text-center">
                                 <a href="index" class="d-block auth-logo">
-                                    <img src="<?php echo e(URL::asset('assets/images/logo-sm.svg')); ?>" alt="" height="28"> <span class="logo-txt">Dason</span>
+                                    <img src="<?php echo e(URL::asset('assets/images/logo-sm.svg')); ?>" alt="" height="28"> <span class="logo-txt">WBMAHALCRM</span>
                                 </a>
                             </div>
                             <div class="auth-content my-auto">
                                 <div class="text-center">
                                     <h5 class="mb-0">Reset Password</h5>
-                                    <p class="text-muted mt-2">Reset Password with Dason.</p>
+                                    <p class="text-muted mt-2">Reset Password with WBMAHALCRM.</p>
                                 </div>
                                 <div class="alert alert-success text-center my-4" role="alert">
                                     Enter your Email and instructions will be sent to you!
@@ -95,7 +95,7 @@ unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
                             <div class="mt-4 mt-md-5 text-center">
-                                <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Dason   . Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign</p>
+                                <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> WBMAHALCRM   . Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign</p>
                             </div>
                         </div>
                     </div>

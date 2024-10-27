@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\File;
 class ComponentController extends Controller
 {
     public function index() {
-        $components = Component::orderBy('id')->paginate(Utility::PAGINATE_COUNT);
+        $components = Component::orderBy('id','asc')->paginate(Utility::PAGINATE_COUNT);
         return view('admin.components.index',compact('components'));
     }
 

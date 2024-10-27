@@ -22,8 +22,9 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
         });
-        Category::create(['name' => 'Carry Bag', 'user_id' => Utility::ADMIN_ID,'created_at' => now()]);
-        Category::create(['name' => 'Signage', 'user_id' => Utility::ADMIN_ID,'created_at' => now()]);
+        Category::create(['name' => 'Carry Bag', 'user_id' => Utility::SUPER_ADMIN_ID,'created_at' => now()]);
+        Category::create(['name' => 'Signage', 'user_id' => Utility::SUPER_ADMIN_ID,'created_at' => now()]);
+        Category::create(['name' => 'Hospital Folders', 'user_id' => Utility::SUPER_ADMIN_ID,'created_at' => now()]);
     }
 
     /**

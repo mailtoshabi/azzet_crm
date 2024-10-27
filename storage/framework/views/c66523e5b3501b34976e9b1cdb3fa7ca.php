@@ -10,7 +10,24 @@
 <?php $__env->slot('li_2'); ?> <?php echo app('translator')->get('translation.Product_Manage'); ?> <?php $__env->endSlot(); ?>
 <?php $__env->slot('title'); ?> <?php echo app('translator')->get('translation.Product_List'); ?> <?php $__env->endSlot(); ?>
 <?php echo $__env->renderComponent(); ?>
-<?php if(session()->has('success')): ?> <p class="text-success"><?php echo e(session()->get('success')); ?> <?php endif; ?></p>
+<?php if(session()->has('success')): ?>
+<div class="alert alert-success alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-success"></i><strong>Success</strong> - <?php echo e(session()->get('success')); ?>
+
+</div>
+<?php endif; ?>
+<div class="row">
+    <div class="col-lg-12">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link <?php if($is_approved==0): ?> active <?php endif; ?>" <?php if($is_approved==0): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.products.index','status='.encrypt(0))); ?>">Pending</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <?php if($is_approved==1): ?> active <?php endif; ?>" <?php if($is_approved==1): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.products.index','status='.encrypt(1))); ?>">Approved</a>
+        </li>
+      </ul>
+    </div>
+</div>
 <div class="row">
     <div class="col-lg-12">
         <div class="card mb-0">
@@ -47,6 +64,8 @@
                                  </div>
                              </th>
                              <th scope="col">Name</th>
+                             <th scope="col">Category/HSN Code</th>
+                             <th scope="col">Created By</th>
                              <th style="width: 80px; min-width: 80px;">Action</th>
                          </tr>
                          </thead>
@@ -72,8 +91,14 @@
                                         <?php endif; ?>
 
                                         <a href="#" class="text-body"><?php echo e($product->name); ?></a>
+                                        <?php if (! (empty($product->description))): ?>
+                                           <p style="padding-left: 43px;"><small><?php echo e(\Illuminate\Support\Str::limit($product->description, $limit = 60   , $end = '...')); ?></small></p>
+                                        <?php endif; ?>
                                     </td>
-
+                                    <td><?php echo e($product->category->name); ?> <?php if(!empty($product->hsn->name)): ?> <?php echo e('/'. $product->hsn->name); ?> <?php endif; ?></td>
+                                    <td>
+                                        <a href="#" class="text-body"><?php echo e(!empty($product->executive)? 'Executive: ' . $product->executive->name : 'Admin: ' . $product->user->name); ?></a>
+                                    </td>
 
                                     <td>
                                         <div class="dropdown">
@@ -83,12 +108,19 @@
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li><a class="dropdown-item" href="<?php echo e(route('admin.products.edit',encrypt($product->id))); ?>"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>
                                                 
+                                                <?php if(!$product->is_approved): ?>
                                                 <li><a href="#" class="dropdown-item" data-plugin="delete-data" data-target-form="#form_delete_<?php echo e($loop->iteration); ?>"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>
                                                 <form id="form_delete_<?php echo e($loop->iteration); ?>" method="POST" action="<?php echo e(route('admin.products.destroy',encrypt($product->id))); ?>">
                                                     <?php echo csrf_field(); ?>
                                                     <input type="hidden" name="_method" value="DELETE" />
                                                 </form>
-                                                <li><a class="dropdown-item" href="<?php echo e(route('admin.products.changeStatus',encrypt($product->id))); ?>"><i class="mdi mdi-cursor-pointer font-size-16 text-success me-1"></i> <?php echo e($product->status?'Deactivate':'Activate'); ?></a></li>
+                                                <?php endif; ?>
+                                                <?php if($product->executive): ?>
+                                                <li><a class="dropdown-item" href="<?php echo e(route('admin.products.approve',encrypt($product->id))); ?>"><?php echo $product->is_approved?'<i class="fas fa-thumbs-down font-size-16 text-danger me-1"></i> Reject':'<i class="fas fa-thumbs-up font-size-16 text-primary me-1"></i> Approve'; ?></a></li>
+                                                <?php endif; ?>
+                                                <?php if($product->is_approved): ?>
+                                                    <li><a class="dropdown-item" href="<?php echo e(route('admin.products.changeStatus',encrypt($product->id))); ?>"><?php echo $product->status?'<i class="fas fa-power-off font-size-16 text-danger me-1"></i> Unpublish':'<i class="fas fa-circle-notch font-size-16 text-primary me-1"></i> Publish'; ?></a></li>
+                                                <?php endif; ?>
                                             </ul>
                                         </div>
                                     </td>

@@ -9,6 +9,11 @@
 <?php $__env->slot('li_2'); ?> <?php echo app('translator')->get('translation.Product_Manage'); ?> <?php $__env->endSlot(); ?>
 <?php $__env->slot('title'); ?> <?php if(isset($product)): ?> <?php echo app('translator')->get('translation.Edit_Product'); ?> <?php else: ?> <?php echo app('translator')->get('translation.Add_Product'); ?> <?php endif; ?> <?php $__env->endSlot(); ?>
 <?php echo $__env->renderComponent(); ?>
+<?php if(isset($product) && !$product->is_approved ): ?>
+<div class="alert alert-warning alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-warning"></i><strong>Warning</strong> - This Product is yet to approve !!
+</div>
+<?php endif; ?>
 <div class="row">
     <form method="POST" action="<?php echo e(isset($product)? route('admin.products.update') : route('admin.products.store')); ?>" enctype="multipart/form-data">
         <?php echo csrf_field(); ?>
@@ -87,6 +92,52 @@ unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
 
+                            <div class="col-sm-12">
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Notes</label>
+                                    <textarea class="form-control" rows="2" placeholder="Enter notes, if any" id="description" name="description"><?php echo e(isset($product)?$product->description:old('description ')); ?></textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="control-label">Unit of Measure</label>
+                                    <select id="uom_id" name="uom_id" class="form-control select2">
+                                        <option value="">Select Unit</option>
+                                        <?php $__currentLoopData = $uoms; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $uom): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($uom->id); ?>" <?php if(isset($product)): ?> <?php echo e($uom->id==$product->uom_id ? 'selected':''); ?> <?php endif; ?>><?php echo e($uom->name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                                    <?php $__errorArgs = ['uom_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <p class="text-danger"><?php echo e($message); ?></p> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                    <a target="_blank" href="<?php echo e(route('admin.uoms.create')); ?>"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add New Unit</a>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="control-label">HSN Code</label>
+                                    <select id="hsn_id" name="hsn_id" class="form-control select2">
+                                        <option value="">Select Code</option>
+                                        <?php $__currentLoopData = $hsns; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $hsn): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($hsn->id); ?>" <?php if(isset($product)): ?> <?php echo e($hsn->id==$product->hsn_id ? 'selected':''); ?> <?php endif; ?>><?php echo e($hsn->name); ?> - GST <?php echo e($hsn->tax_slab->name); ?>%</option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                                    <?php $__errorArgs = ['hsn_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <p class="text-danger"><?php echo e($message); ?></p> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                    <a target="_blank" href="<?php echo e(route('admin.hsns.create')); ?>"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add New Code</a>
+                                </div>
+                            </div>
                         </div>
                 </div>
             </div>
@@ -188,7 +239,7 @@ unset($__errorArgs, $__bag); ?>
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex flex-wrap gap-2">
-                        <button type="submit" class="btn btn-primary waves-effect waves-light"><?php echo e(isset($product) ? 'Update' : 'Save'); ?></button>
+                        <button type="submit" class="btn btn-primary waves-effect waves-light"><?php echo e(isset($product) ? $product->is_approved?'Update':'Update & Approve' : 'Save'); ?></button>
                         <button type="reset" class="btn btn-secondary waves-effect waves-light">Cancel</button>
                     </div>
                 </div>

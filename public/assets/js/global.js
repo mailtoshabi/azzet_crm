@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    $('input[id="name"]').focus();
 
     $(document).on('click','[data-plugin="delete-data"]',function(e) {
 		e.preventDefault();
@@ -25,13 +26,58 @@ $(document).ready(function() {
         $(item_container).remove();
     });
 
+    $(document).on('click','[data-plugin="confirm-data"]',function(e) {
+		e.preventDefault();
+        var targetUrl = $(this).attr('href');
+        var confirmText = $(this).data('confirmtext');
+        // console.log(confirmText);
+        // SweetAlert2 confirmation dialog
+        Swal.fire({
+            title: 'Are you sure?',
+            text: confirmText,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                goBlankLink(targetUrl)
+                // Action to take if confirmed (e.g., delete or submit)
+                // Swal.fire(
+                //     'Deleted!',
+                //     'Your item has been deleted.',
+                //     'success'
+                // );
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // Action to take if canceled
+                // Swal.fire(
+                //     'Cancelled',
+                //     'Your item is safe.',
+                //     'info'
+                // );
+            }
+        });
+
+
+        // if (!confirm('Are you sure you want to delete?')) return;
+        // e.preventDefault();
+        // $(targetForm).submit();
+	});
+
     table_min_height();
 
 });
 
 
 function goLink(url) {
-    location.href = url
+    window.location.href = url
+}
+
+function goBlankLink(url) {
+    // window.location.href = url
+    window.open(url, '_blank');
 }
 
 function refreshPage() {

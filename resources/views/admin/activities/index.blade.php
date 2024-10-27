@@ -11,7 +11,11 @@
 @slot('li_2') @lang('translation.Activity_Manage') @endslot
 @slot('title') @lang('translation.Activities') @endslot
 @endcomponent
-@if(session()->has('success')) <p class="text-success">{{ session()->get('success') }} @endif</p>
+@if(session()->has('success'))
+<div class="alert alert-success alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-success"></i><strong>Success</strong> - {{ session()->get('success') }}
+</div>
+@endif
 <div class="row">
     <div class="col-lg-12">
         <div class="card mb-0">

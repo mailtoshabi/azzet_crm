@@ -18,13 +18,18 @@ use Illuminate\Support\Facades\File;
 class EnquiryController extends Controller
 {
     public function index() {
-        $enquiries = Enquiry::orderBy('id')->paginate(Utility::PAGINATE_COUNT);
-        return view('admin.enquiries.index',compact('enquiries'));
+
+        $status = request('status');
+        $count_pending = Enquiry::where('is_approved',Utility::ITEM_INACTIVE)->where('branch_id',default_branch()->id)->count();
+        $is_approved = isset($status)? decrypt(request('status')) : ($count_pending==0?1:0);
+
+        $enquiries = Enquiry::orderBy('id','desc')->where('branch_id',default_branch()->id)->where('is_approved',$is_approved)->paginate(Utility::PAGINATE_COUNT);
+        return view('admin.enquiries.index',compact('enquiries','is_approved'));
     }
 
     public function create() {
-        $customers = Customer::where('status',Utility::ITEM_ACTIVE)->get();
-        $products = Product::where('status',Utility::ITEM_ACTIVE)->get();
+        $customers = Customer::where('status',Utility::ITEM_ACTIVE)->where('branch_id',default_branch()->id)->orderBy('id','desc')->get();
+        $products = Product::where('status',Utility::ITEM_ACTIVE)->orderBy('id','desc')->get();
         return view('admin.enquiries.add',compact('customers','products'));
     }
 
@@ -34,7 +39,11 @@ class EnquiryController extends Controller
             'customer_id' => 'required',
         ]);
         $input = request()->only(['customer_id']);
+
+        $branch_id = (Auth::id()==Utility::SUPER_ADMIN_ID)? default_branch()->id : Auth::user()->branch_id;
         $input['user_id'] =Auth::id();
+        $input['is_approved'] =1;
+        $input['branch_id'] = $branch_id;
         $enquiry = Enquiry::create($input);
 
         if(!empty(request('products'))) {
@@ -50,26 +59,31 @@ class EnquiryController extends Controller
 
     public function edit($id) {
         $enquiry = Enquiry::findOrFail(decrypt($id));
-        $customers = Customer::where('status',Utility::ITEM_ACTIVE)->get();
-        $products = Product::where('status',Utility::ITEM_ACTIVE)->get();
+        if(!$enquiry->estimate) {
+        $customers = Customer::where('status',Utility::ITEM_ACTIVE)->where('branch_id',default_branch()->id)->orderBy('id','desc')->get();
+        $products = Product::where('status',Utility::ITEM_ACTIVE)->orderBy('id','desc')->get();
         return view('admin.enquiries.add',compact('customers','products','enquiry'));
+        }else {
+            abort(404);
+        }
     }
 
     public function update () {
         $estimate = request('estimate');
         $id = decrypt(request('enquiry_id'));
         $comp_customer_id = request('customer_id');
-        $sess_products = request('sess_products');
         // return $sess_products;
         $enquiry = Enquiry::find($id);
+        if(!$enquiry->estimate) {
         $validated = request()->validate([
             'customer_id' => 'required',
         ]);
         $input = request()->only(['customer_id']);
         if(isset($estimate)) {
-            return redirect()->route('admin.estimates.create')->with(['sess_customer_id'=>$comp_customer_id, 'sess_products'=>$sess_products]);
+            return redirect()->route('admin.estimates.create')->with(['sess_customer_id'=>$comp_customer_id]);
         }else {
             $input['user_id'] =Auth::id();
+            $input['is_approved'] =1;
             $enquiry->update($input);
             $enquiry->products()->detach();
             if(!empty(request('products'))) {
@@ -81,29 +95,56 @@ class EnquiryController extends Controller
             }
         }
         return redirect()->route('admin.enquiries.index')->with(['success'=>'Enquiry Updated Successfully']);
+    }else {
+        abort(404);
+    }
     }
 
     public function destroy($id) {
         $enquiry = Enquiry::find(decrypt($id));
-
+        if(!$enquiry->estimate) {
         $enquiry->delete();
         return redirect()->route('admin.enquiries.index')->with(['success'=>'Enquiry Deleted Successfully']);
+        }else {
+            abort(404);
+        }
     }
 
     public function changeStatus($id) {
         $enquiry = Enquiry::find(decrypt($id));
-        $currentStatus = $enquiry->status;
+        if($enquiry->executive) {
+        if(!$enquiry->estimate) {
+        $currentStatus = $enquiry->is_approved;
         $status = $currentStatus ? 0 : 1;
-        $enquiry->update(['status'=>$status]);
-        return redirect()->route('admin.enquiries.index')->with(['success'=>'Status changed Successfully']);
+        // $status_unapproved = encrypt(0);
+        foreach($enquiry->products as $product) {
+            if(!$product->is_approved) {
+                return redirect()->route('admin.enquiries.index','status='.encrypt(0))->with(['error'=>'Unapproved products Found!!']);
+            }
+        }
+
+        $enquiry->update(['is_approved'=>$status]);
+        // $status_enc = ;
+        return redirect()->route('admin.enquiries.index','status='.encrypt($status))->with(['success'=>'Status changed Successfully']);
+        }else {
+            abort(404);
+        }
+    }else {
+        abort(404);
+    }
     }
 
-    public function convertToEstimate($id) {
+    public function convertToEstimate(Request $request, $id) {
         $enquiry = Enquiry::findOrFail(decrypt($id));
-        $customers = Customer::where('status',Utility::ITEM_ACTIVE)->get();
-        $products = Product::where('status',Utility::ITEM_ACTIVE)->get();
-        $components = Component::where('status',Utility::ITEM_ACTIVE)->get();
+        $status = $request->has('status')? request('status'):0;
+        if($enquiry->is_approved || $status==1) {
+        $customers = Customer::where('status',Utility::ITEM_ACTIVE)->orderBy('id','desc')->get();
+        $products = Product::where('status',Utility::ITEM_ACTIVE)->orderBy('id','desc')->get();
+        $components = Component::where('status',Utility::ITEM_ACTIVE)->orderBy('id','asc')->get();
         return view('admin.enquiries.add_as_estimate',compact('customers','products','enquiry','components'));
+        }else {
+            return redirect()->route('admin.enquiries.edit',$id); //->with(['error'=>'Enquiry should be approved first'])
+        }
     }
 
     public function getProductDetail(Request $request) {
@@ -111,7 +152,7 @@ class EnquiryController extends Controller
         $position = $request->position;
         $product = Product::find($product_id);
 
-        $components = Component::where('status',Utility::ITEM_ACTIVE)->get();
+        $components = Component::where('status',Utility::ITEM_ACTIVE)->orderBy('id','asc')->get();
 
 
         $data='<hr><div class="row">
@@ -182,7 +223,7 @@ class EnquiryController extends Controller
         // return request()->all();
         $enquiry_id = decrypt(request('enquiry_id'));
         $enquiry = Enquiry::find($enquiry_id);
-            if(!$enquiry->estimate) {
+            if(!$enquiry->estimate&&$enquiry->is_approved) {
                 $validated = request()->validate([
                     'customer_id' => 'required',
                     'enquiry_id' => 'required',
@@ -190,6 +231,7 @@ class EnquiryController extends Controller
                 $input = request()->only(['customer_id']);
                 $input['user_id'] =Auth::id();
                 $input['enquiry_id'] = $enquiry_id;
+                $input['branch_id'] = $enquiry->branch_id;
                 $estimate = Estimate::create($input);
 
                 if(!empty(request('products'))) {
@@ -202,12 +244,14 @@ class EnquiryController extends Controller
                             foreach(request('component_names')[$index] as $index_comp => $component_id) {
                                 if(!empty($component_id)) {
                                     $data_comp = ['estimate_product_id' => $lastInsertedId, 'component_id' => $component_id, 'cost' => request('costs')[$index][$index_comp],'o_cost' => request('o_costs')[$index][$index_comp],'created_at' => now(),'updated_at' => now()];
-                                    $estimate_product_comp = DB::table('estimate_product_component')->insert($data_comp);
+                                    $estimate_product_comp = DB::table('component_estimate_product')->insert($data_comp);
                                 }
                             }
                         }
                     }
                 }
+                $input_enquiry['is_approved'] = 1;
+                $enquiry->update($input_enquiry);
 
                 return redirect()->route('admin.estimates.index')->with(['success'=>'New Estimate Added Successfully']);
             }else {

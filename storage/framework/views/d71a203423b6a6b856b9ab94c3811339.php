@@ -10,7 +10,12 @@
 <?php $__env->slot('li_2'); ?> <?php echo app('translator')->get('translation.Category_Manage'); ?> <?php $__env->endSlot(); ?>
 <?php $__env->slot('title'); ?> <?php echo app('translator')->get('translation.Category_List'); ?> <?php $__env->endSlot(); ?>
 <?php echo $__env->renderComponent(); ?>
-<?php if(session()->has('success')): ?> <p class="text-success"><?php echo e(session()->get('success')); ?> <?php endif; ?></p>
+<?php if(session()->has('success')): ?>
+<div class="alert alert-success alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-success"></i><strong>Success</strong> - <?php echo e(session()->get('success')); ?>
+
+</div>
+<?php endif; ?>
 <div class="row">
     <div class="col-lg-12">
         <div class="card mb-0">
@@ -88,7 +93,7 @@
                                                     <?php echo csrf_field(); ?>
                                                     <input type="hidden" name="_method" value="DELETE" />
                                                 </form>
-                                                <li><a class="dropdown-item" href="<?php echo e(route('admin.categories.changeStatus',encrypt($category->id))); ?>"><i class="mdi mdi-cursor-pointer font-size-16 text-success me-1"></i> <?php echo e($category->status?'Deactivate':'Activate'); ?></a></li>
+                                                <li><a class="dropdown-item" href="<?php echo e(route('admin.categories.changeStatus',encrypt($category->id))); ?>"><?php echo $category->status?'<i class="fas fa-power-off font-size-16 text-danger me-1"></i> Unpublish':'<i class="fas fa-circle-notch font-size-16 text-primary me-1"></i> Publish'; ?></a></li>
                                             </ul>
                                         </div>
                                     </td>

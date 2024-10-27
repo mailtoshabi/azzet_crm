@@ -6,10 +6,25 @@
 @endsection
 @section('content')
 @component('admin.dir_components.breadcrumb')
-@slot('li_1') @lang('translation.Catalogue_Manage') @endslot
+@slot('li_1') @lang('translation.Proforma_Manage') @endslot
 @slot('li_2') @lang('translation.Enquiry_Manage') @endslot
 @slot('title') @if(isset($enquiry)) @lang('translation.Edit_Enquiry') @else @lang('translation.Add_Enquiry') @endif @endslot
 @endcomponent
+@if(session()->has('error'))
+<div class="alert alert-danger alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-danger"></i><strong>Error</strong> - {{ session()->get('error') }}
+</div>
+@endif
+@if(isset($enquiry) && !$enquiry->is_approved )
+<div class="alert alert-warning alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-warning"></i><strong>Warning</strong> - This Enquiry is yet to approve !!
+</div>
+@endif
+@if(isset($enquiry) && $enquiry->is_approved && !$enquiry->estimate )
+<div class="alert alert-warning alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-warning"></i><strong>Warning</strong> - This Enquiry is yet to convert as Estimate !!
+</div>
+@endif
 <div class="row">
     <form method="POST" action="{{ isset($enquiry)? route('admin.enquiries.update') : route('admin.enquiries.store')  }}" enctype="multipart/form-data">
         @csrf
@@ -28,15 +43,15 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="mb-3">
-                                    <label class="control-label">Customer</label>
+                                    <label class="control-label">@lang('translation.Customer')</label>
                                     <select id="customer_id" name="customer_id" class="form-control select2">
-                                        <option value="">Select Customer</option>
+                                        <option value="">Select @lang('translation.Customer')</option>
                                         @foreach ($customers as $customer)
                                         <option value="{{ $customer->id }}" @isset($enquiry) {{ $customer->id==$enquiry->customer->id ? 'selected':'' }} @endisset>{{ $customer->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <p><a href="{{ route('admin.customers.create') }}"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;New Customer</a></p>
+                                <p><a href="{{ route('admin.customers.create') }}"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;New @lang('translation.Customer')</a></p>
                             </div>
 
                         </div>
@@ -137,9 +152,9 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex flex-wrap gap-2">
-                        <button type="submit" class="btn btn-primary waves-effect waves-light">{{ isset($enquiry) ? 'Update Enquiry' : 'Save' }}</button>
-                            @if((isset($enquiry) && (!$enquiry->estimate)))
-                                <a href="{{ route('admin.enquiries.convert_to_estimate',encrypt($enquiry->id)) }}" class="btn btn-primary waves-effect waves-light" >Create Estimate</a>
+                        <button type="submit" class="btn btn-primary waves-effect waves-light">{{ isset($enquiry) ? $enquiry->is_approved?'Update':'Update & Approve' : 'Save' }}</button>
+                            @if((isset($enquiry) && (!$enquiry->estimate)&&$enquiry->is_approved))
+                                <a href="{{ route('admin.enquiries.convert_to_estimate',encrypt($enquiry->id)).'?status=1' }}" class="btn btn-primary waves-effect waves-light" >Save as Estimate</a>
                             @endif
                         <button type="reset" class="btn btn-secondary waves-effect waves-light">Cancel</button>
                     </div>

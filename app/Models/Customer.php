@@ -23,27 +23,14 @@ class Customer extends Model
 
     protected $cast = [
         'status' => 'boolean',
+        'is_approved' => 'boolean',
     ];
-
-    protected $fillable = [
-        'name',
-        'email',
-        'phone',
-        'building_no',
-        'street',
-        'city',
-        'postal_code',
-        'district_id',
-        'state_id',
-        'image',
-        'website',
-        'status'
-    ];
+    protected $guarded = [];
 
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logOnly(['id', 'name', 'email', 'phone', 'building_no', 'street', 'city', 'postal_code', 'district_id', 'state_id', 'image', 'website',])
+        ->logOnly(['id', 'name', 'email', 'phone', 'city', 'postal_code', 'district_id', 'state_id', 'image', 'website',])
         ->setDescriptionForEvent(fn(string $eventName) => "The Customer has been {$eventName}");
     }
 
@@ -65,6 +52,36 @@ class Customer extends Model
     public function estimates(): HasMany
     {
         return $this->hasMany(Enquiry::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function executive()
+    {
+        return $this->belongsTo(Executive::class);
+    }
+
+    public function bank()
+    {
+        return $this->belongsTo(Bank::class);
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class);
+    }
+
+    public function state()
+    {
+        return $this->belongsTo(State::class);
+    }
+
+    public function branch()
+    {
+        return $this->belongsTO(Branch::class);
     }
 
 }

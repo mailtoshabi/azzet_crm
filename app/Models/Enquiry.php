@@ -10,7 +10,10 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Enquiry extends Model
 {
     use HasFactory;
-    protected $fillable = ['customer_id','user_id'];
+    protected $fillable = ['customer_id','user_id','executive_id','is_approved','branch_id'];
+    protected $cast = [
+        'is_approved' => 'boolean',
+    ];
 
     public function user()
     {
@@ -37,5 +40,9 @@ class Enquiry extends Model
         return $this->hasOne(Estimate::class);
     }
 
+    public function branch()
+    {
+        return $this->belongsTO(Branch::class);
+    }
 
 }

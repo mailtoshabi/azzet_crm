@@ -7,11 +7,28 @@
 @endsection
 @section('content')
 @component('admin.dir_components.breadcrumb')
-@slot('li_1') @lang('translation.Catalogue_Manage') @endslot
+@slot('li_1') @lang('translation.Proforma_Manage') @endslot
 @slot('li_2') @lang('translation.Estimate_Manage') @endslot
 @slot('title') @lang('translation.Estimate_List') @endslot
 @endcomponent
-@if(session()->has('success')) <p class="text-success">{{ session()->get('success') }} @endif</p>
+@if(session()->has('success'))
+<div class="alert alert-success alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-success"></i><strong>Success</strong> - {{ session()->get('success') }}
+</div>
+@endif
+@if(request()->get('success') && (request()->get('success')==1)) <p class="text-success">Proforma Created Successfully <a href="{{ route('admin.sales.index') }}">View Proforma</a></p>@endif
+<div class="row">
+    <div class="col-lg-12">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link @if($has_proforma==0) active @endif" @if($has_proforma==0)aria-current="page"@endif href="{{ route('admin.estimates.index','status='.encrypt(0)) }}">Active</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link @if($has_proforma==1) active @endif" @if($has_proforma==1)aria-current="page"@endif href="{{ route('admin.estimates.index','status='.encrypt(1)) }}">History</a>
+        </li>
+      </ul>
+    </div>
+</div>
 <div class="row">
     <div class="col-lg-12">
         <div class="card mb-0">
@@ -19,7 +36,7 @@
                  <div class="row align-items-center">
                      <div class="col-md-6">
                          <div class="mb-3">
-                             <h5 class="card-title">@lang('translation.Estimate_List') <span class="text-muted fw-normal ms-2">({{ $estimates->count() }})</span></h5>
+                             <h5 class="card-title">@if($has_proforma==0) Estimate Active List @else Estimate History List @endif <span class="text-muted fw-normal ms-2">({{ $estimates->count() }})</span></h5>
                          </div>
                      </div>
 
@@ -66,9 +83,13 @@
                                      <label class="form-check-label" for="checkAll"></label>
                                  </div>
                              </th>
-                             <th scope="col">Customer</th>
+                             <th scope="col">ID</th>
+                             <th scope="col">@lang('translation.Customer')</th>
                              <th scope="col">Items</th>
+                             <th scope="col">Sub Total</th>
+                             {{-- @if((request()->has('status')==false)|| (request()->has('status') && decrypt(request()->get('status'))==0)) --}}
                              <th style="width: 80px; min-width: 80px;">Action</th>
+                             {{-- @endif --}}
                          </tr>
                          </thead>
                          <tbody>
@@ -82,7 +103,10 @@
                                         </div>
                                     </th>
                                     <td>
-                                        <a href="#" class="text-body">{{ $estimate->customer->name }}</a>
+                                        <a href="#" class="text-body">{{ $estimate->id }}</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="text-body">{{ $estimate->customer->name. ' ' . $estimate->customer->city }}</a>
                                     </td>
 
                                     <td>
@@ -95,23 +119,29 @@
                                         <a href="#" class="text-body">{{ $data }}</a>
                                     </td>
 
+                                    <td>{{ $estimate->sub_total }}</td>
+
                                     <td>
                                         <div class="dropdown">
                                             <button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="bx bx-dots-horizontal-rounded"></i>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="{{ route('admin.estimates.edit',encrypt($estimate->id))}}"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('admin.estimates.edit',encrypt($estimate->id))}}"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit/View</a></li>
                                                 {{-- <li><a class="dropdown-item" href="{{ route('admin.estimates.destroy',encrypt($estimate->id))}}"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li> --}}
+                                                @if(!$estimate->sale)
                                                 <li><a href="#" class="dropdown-item" data-plugin="delete-data" data-target-form="#form_delete_{{ $loop->iteration }}"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>
                                                 <form id="form_delete_{{ $loop->iteration }}" method="POST" action="{{ route('admin.estimates.destroy',encrypt($estimate->id))}}">
                                                     @csrf
                                                     <input type="hidden" name="_method" value="DELETE" />
                                                 </form>
-                                                {{-- <li><a class="dropdown-item" href="{{ route('admin.estimates.changeStatus',encrypt($estimate->id))}}"><i class="mdi mdi-cursor-pointer font-size-16 text-success me-1"></i> {{ $estimate->status?'Deactivate':'Activate'}}</a></li> --}}
+
+                                                <li><a class="dropdown-item" data-plugin="convert-profoma" href="{{ route('admin.estimates.convertToProforma',encrypt($estimate->id))}}"><i class="mdi mdi-cursor-pointer font-size-16 text-success me-1"></i> Convert to Proforma</a></li>
+                                                @endif
                                             </ul>
                                         </div>
                                     </td>
+
                                 </tr>
                              @endforeach
 
@@ -132,4 +162,26 @@
 <script src="{{ URL::asset('assets/libs/datatables.net-responsive/datatables.net-responsive.min.js') }}"></script>
 <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>
 <script src="{{ URL::asset('assets/js/pages/datatable-pages.init.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        /*X-CSRF-TOKEN*/
+        $.ajaxSetup({
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+        });
+
+        $(document).on('click','[data-plugin="convert-profoma"]',function(e) {
+		e.preventDefault();
+        if (!confirm('Do you want to create a proforma for this estimate?')) return;
+        var url = $(this).attr('href');
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (data) {
+                goLink(data)
+            }
+        });
+	});
+
+    });
+</script>
 @endsection

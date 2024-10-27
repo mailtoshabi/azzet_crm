@@ -1,5 +1,5 @@
 /*
-Template Name: Dason - Admin & Dashboard Template
+Template Name: Azzet - Customer Relationship Management Application
 Author: Themesdesign
 Website: https://themesdesign.in/
 Contact: themesdesign.in@gmail.com
@@ -105,7 +105,7 @@ File: Calendar init js
                 modalTitle.text('Add Event');
                 newEventData = info;
             }
-            
+
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 plugins: [ 'bootstrap', 'interaction', 'dayGrid', 'timeGrid'],
@@ -135,7 +135,7 @@ File: Calendar init js
                 events : defaultEvents
             });
             calendar.render();
-            
+
              /*Add new event*/
             // Form to add new event
 
@@ -144,7 +144,7 @@ File: Calendar init js
                 var inputs = $('#form-event :input');
                 var updatedTitle = $("#event-title").val();
                 var updatedCategory =  $('#event-category').val();
-                
+
                 // validation
                 if (forms[0].checkValidity() === false) {
                         event.preventDefault();
@@ -184,7 +184,7 @@ File: Calendar init js
     $.CalendarPage = new CalendarPage, $.CalendarPage.Constructor = CalendarPage
 }(window.jQuery),
 
-//initializing 
+//initializing
 function($) {
     "use strict";
     $.CalendarPage.init()

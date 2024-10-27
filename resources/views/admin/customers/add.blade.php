@@ -6,10 +6,15 @@
 @endsection
 @section('content')
 @component('admin.dir_components.breadcrumb')
-@slot('li_1') @lang('translation.Customer_Manage') @endslot
+@slot('li_1') @lang('translation.Account_Manage') @endslot
 @slot('li_2') @lang('translation.Customer_Manage') @endslot
 @slot('title') @if(isset($customer)) @lang('translation.Edit_Customer') @else @lang('translation.Add_Customer') @endif @endslot
 @endcomponent
+@if(isset($customer) && !$customer->is_approved )
+<div class="alert alert-warning alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-warning"></i><strong>Warning</strong> - This @lang('translation.Customer') is yet to approve !!
+</div>
+@endif
 <div class="row">
     <form method="POST" action="{{ isset($customer)? route('admin.customers.update') : route('admin.customers.store')  }}" enctype="multipart/form-data">
         @csrf
@@ -20,18 +25,33 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Customer Details</h4>
-                    <p class="card-title-desc">{{ isset($customer)? 'Edit' : "Enter" }} the Details of your Customer</p>
+                    <h4 class="card-title">@lang('translation.Customer') Details</h4>
+                    <p class="card-title-desc  required">{{ isset($customer)? 'Edit' : "Enter" }} the Details of your @lang('translation.Customer'), Noted with <label></label> are mandatory.</p>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-3">
+                                <label class="control-label">Branch</label>
+                                <select id="branch_id" name="branch_id" class="form-control select2">
+                                    <option value="">Select Branch</option>
+                                    @foreach ($branches as $branch)
+                                    <option value="{{ $branch->id }}" @isset($customer) {{ $branch->id==$customer->branch->id ? 'selected':'' }} @endisset>{{ $branch->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('branch_id') <p class="text-danger">{{ $message }}</p> @enderror
+                            </div>
+                            <div class="mb-3 required">
                                 <label for="name">@lang('translation.Name')</label>
                                 <input id="name" name="name" type="text" class="form-control"  placeholder="@lang('translation.Name')" value="{{ isset($customer)?$customer->name:old('name')}}">
                                 @error('name') <p class="text-danger">{{ $message }}</p> @enderror
                             </div>
                             <div class="mb-3">
+                                <label for="trade_name">@lang('translation.Trade_Name')</label>
+                                <input id="trade_name" name="trade_name" type="text" class="form-control"  placeholder="@lang('translation.Trade_Name')" value="{{ isset($customer)?$customer->trade_name:old('trade_name')}}">
+                                @error('trade_name') <p class="text-danger">{{ $message }}</p> @enderror
+                            </div>
+                            <div class="mb-3 required">
                                 <label for="phone">Phone</label>
                                 <input id="phone" name="phone" type="text" class="form-control"  placeholder="Phone" value="{{ isset($customer)?$customer->phone:old('phone')}}">
                                 @error('phone') <p class="text-danger">{{ $message }}</p> @enderror
@@ -42,19 +62,26 @@
                                 @error('email') <p class="text-danger">{{ $message }}</p> @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="building_no">Building Number</label>
-                                <input id="building_no" name="building_no" type="text" class="form-control"  placeholder="Building Number" value="{{ isset($customer)?$customer->building_no:old('building_no')}}">
-                                {{-- @error('building_no') <p class="text-danger">{{ $message }}</p> @enderror --}}
+                                <label for="address1">Address Line 1</label>
+                                <input id="address1" name="address1" type="text" class="form-control"  placeholder="Building Number" value="{{ isset($customer)?$customer->address1:old('address1')}}">
+                                {{-- @error('address1') <p class="text-danger">{{ $message }}</p> @enderror --}}
                             </div>
-                            <div class="mb-3">
-                                <label for="street">Street</label>
-                                <input id="street" name="street" type="text" class="form-control"  placeholder="Street" value="{{ isset($customer)?$customer->street:old('street')}}">
-                                {{-- @error('street') <p class="text-danger">{{ $message }}</p> @enderror --}}
-                            </div>
+
+
 
                         </div>
                         <div class="col-sm-6">
                             <div class="mb-3">
+                                <label for="address2">Address Line 2</label>
+                                <input id="address2" name="address2" type="text" class="form-control"  placeholder="Street" value="{{ isset($customer)?$customer->address2:old('address2')}}">
+                                {{-- @error('address2') <p class="text-danger">{{ $message }}</p> @enderror --}}
+                            </div>
+                            <div class="mb-3">
+                                <label for="address3">Address Line 3</label>
+                                <input id="address3" name="address3" type="text" class="form-control"  placeholder="Street" value="{{ isset($customer)?$customer->address3:old('address3')}}">
+                                {{-- @error('address3') <p class="text-danger">{{ $message }}</p> @enderror --}}
+                            </div>
+                            <div class="mb-3 required">
                                 <label for="city">City</label>
                                 <input id="city" name="city" type="text" class="form-control"  placeholder="City" value="{{ isset($customer)?$customer->city:old('city')}}">
                                 {{-- @error('city') <p class="text-danger">{{ $message }}</p> @enderror --}}
@@ -65,23 +92,26 @@
                                 {{-- @error('postal_code') <p class="text-danger">{{ $message }}</p> @enderror --}}
                             </div>
 
-                            <div class="mb-3">
+                            <div class="mb-3 required">
                                 <label class="control-label">State</label>
-                                <select id="state_id" name="state_id" class="form-control select2" onChange="getdistrict(this.value);">
+                                <select id="state_id" name="state_id" class="form-control select2" onChange="getdistrict(this.value,0);">
                                     <option value="">Select State</option>
                                     @foreach ($states as $state)
                                     <option value="{{ $state->id }}" {{ $state->id==Utility::STATE_ID_KERALA ? 'selected':'' }}>{{ $state->name }}</option>
                                     @endforeach
                                 </select>
+                                @error('state_id') <p class="text-danger">{{ $message }}</p> @enderror
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 required">
                                 <label class="control-label">District</label>
                                 <select name="district_id" id="district-list" class="form-control select2">
                                     <option value="">Select District</option>
-
                                 </select>
+                                @error('district_id') <p class="text-danger">{{ $message }}</p> @enderror
                             </div>
+                        </div>
 
+                        <div class="col-sm-12">
                             <div class="mb-3">
                                 <label for="website">Website</label>
                                 <input id="website" name="website" type="text" class="form-control"  placeholder="Website" value="{{ isset($customer)?$customer->website:old('website')}}">
@@ -98,7 +128,7 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title mb-0">Image</h4>
-                    <p class="card-title-desc">Upload Image of your Customer, if any</p>
+                    <p class="card-title-desc">Upload Image of your @lang('translation.Customer'), if any</p>
                 </div>
                 <div class="card-body">
 
@@ -119,6 +149,79 @@
                                             <button type="button" class="btn-close" aria-label="Close"></button>
                                         @endif
                                     </span>
+                                </div>
+                            </div>
+                        </div>
+
+                </div>
+
+            </div> <!-- end card-->
+
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">Tax & Banking</h4>
+                    <p class="card-title-desc">Add GST & Bank Account Details of your @lang('translation.Customer')</p>
+                </div>
+                <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="mb-3">
+                                    <label class="control-label">Bank</label>
+                                    <select id="bank_id" name="bank_id" class="form-control select2">
+                                        <option value="">Select Bank</option>
+                                        @foreach ($banks as $bank)
+                                            <option value="{{ $bank->id }}" @if(isset($customer) && isset($customer->bank)) {{ $bank->id==$customer->bank->id ? 'selected':'' }} @endisset>{{ $bank->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('bank_id') <p class="text-danger">{{ $message }}</p> @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="bank_branch">Bank branch</label>
+                                    <input id="bank_branch" name="bank_branch" type="text" class="form-control"  placeholder="Bank branch" value="{{ isset($customer)?$customer->bank_branch:old('bank_branch')}}">
+                                    @error('bank_branch') <p class="text-danger">{{ $message }}</p> @enderror
+                                </div>
+
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="mb-3">
+                                    <label for="account_name">Account Name</label>
+                                    <input id="account_name" name="account_name" type="text" class="form-control" placeholder="Account Name" value="{{ isset($customer)?$customer->account_name:old('account_name')}}">
+                                    @error('account_name') <p class="text-danger">{{ $message }}</p> @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="account_number">Account Number</label>
+                                    <input id="account_number" name="account_number" type="text" class="form-control" placeholder="Account Number" value="{{ isset($customer)?$customer->account_number:old('account_number')}}">
+                                    @error('account_number') <p class="text-danger">{{ $message }}</p> @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="mb-3">
+                                    <label for="ifsc">IFSC Code</label>
+                                    <input id="ifsc" name="ifsc" type="text" class="form-control"  placeholder="IFSC Code" value="{{ isset($customer)?$customer->ifsc:old('ifsc')}}">
+                                </div>
+                            </div>
+                            <p></p>
+                            <p></p>
+                            <div class="col-sm-4">
+                                <div class="mb-3">
+                                    <label for="gstin">GSTIN Number</label>
+                                    <input id="gstin" name="gstin" type="text" class="form-control" placeholder="GSTIN Number" value="{{ isset($customer)?$customer->gstin:old('gstin')}}">
+                                    @error('gstin') <p class="text-danger">{{ $message }}</p> @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="mb-3">
+                                    <label for="cin">CIN Number</label>
+                                    <input id="cin" name="cin" type="text" class="form-control" placeholder="CIN Number" value="{{ isset($customer)?$customer->cin:old('cin')}}">
+                                    @error('cin') <p class="text-danger">{{ $message }}</p> @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="mb-3">
+                                    <label for="pan">PAN Number</label>
+                                    <input id="pan" name="pan" type="text" class="form-control" placeholder="PAN Number" value="{{ isset($customer)?$customer->pan:old('pan')}}">
+                                    @error('pan') <p class="text-danger">{{ $message }}</p> @enderror
                                 </div>
                             </div>
                         </div>
@@ -268,16 +371,21 @@
         $.ajaxSetup({
             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
         });
-        getdistrict({{ Utility::STATE_ID_KERALA }});
+        @if(isset($customer))
+            getdistrict({{ Utility::STATE_ID_KERALA }},{{ $customer->district_id }});
+        @else
+            getdistrict({{ Utility::STATE_ID_KERALA }},0);
+        @endif
     });
-    function getdistrict(val) {
+    function getdistrict(val,d_id) {
+        var formData = {'s_id' : val, 'd_id':d_id};
         $.ajax({
             type: "POST",
             url: "{{ route('admin.customers.list.districts') }}",
-            data:'state_id='+val,
+            data:formData,
             success: function(data){
                 $("#district-list").html(data);
-                // console.log(data);
+                console.log(data);
             }
         });
     }

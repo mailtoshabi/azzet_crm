@@ -21,7 +21,7 @@ class Product extends Model
 
     protected $guarded = [];
 
-    protected $casts = ['status'=>'boolean','images' => 'array'];
+    protected $casts = ['status'=>'boolean', 'is_approved'=>'boolean', 'images' => 'array'];
 
     /**
      * Boot the model.
@@ -67,4 +67,28 @@ class Product extends Model
         return $this->belongsToMany(Estimate::class)->withPivot('id','quantity','profit')->withTimestamps();
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function executive()
+    {
+        return $this->belongsTo(Executive::class);
+    }
+
+    public function uom()
+    {
+        return $this->belongsTo(Uom::class);
+    }
+
+    public function hsn()
+    {
+        return $this->belongsTo(Hsn::class);
+    }
+
+    public function branch()
+    {
+        return $this->belongsTO(Branch::class);
+    }
 }

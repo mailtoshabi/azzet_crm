@@ -10,6 +10,11 @@
 @slot('li_2') @lang('translation.Product_Manage') @endslot
 @slot('title') @if(isset($product)) @lang('translation.Edit_Product') @else @lang('translation.Add_Product') @endif @endslot
 @endcomponent
+@if(isset($product) && !$product->is_approved )
+<div class="alert alert-warning alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-warning"></i><strong>Warning</strong> - This Product is yet to approve !!
+</div>
+@endif
 <div class="row">
     <form method="POST" action="{{ isset($product)? route('admin.products.update') : route('admin.products.store')  }}" enctype="multipart/form-data">
         @csrf
@@ -67,6 +72,38 @@
                                 </div>
                             </div>
 
+                            <div class="col-sm-12">
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Notes</label>
+                                    <textarea class="form-control" rows="2" placeholder="Enter notes, if any" id="description" name="description">{{ isset($product)?$product->description:old('description ')}}</textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="control-label">Unit of Measure</label>
+                                    <select id="uom_id" name="uom_id" class="form-control select2">
+                                        <option value="">Select Unit</option>
+                                        @foreach ($uoms as $uom)
+                                        <option value="{{ $uom->id }}" @isset($product) {{ $uom->id==$product->uom_id ? 'selected':'' }} @endisset>{{ $uom->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('uom_id') <p class="text-danger">{{ $message }}</p> @enderror
+                                    <a target="_blank" href="{{ route('admin.uoms.create') }}"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add New Unit</a>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="control-label">HSN Code</label>
+                                    <select id="hsn_id" name="hsn_id" class="form-control select2">
+                                        <option value="">Select Code</option>
+                                        @foreach ($hsns as $hsn)
+                                        <option value="{{ $hsn->id }}" @isset($product) {{ $hsn->id==$product->hsn_id ? 'selected':'' }} @endisset>{{ $hsn->name }} - GST {{ $hsn->tax_slab->name }}%</option>
+                                        @endforeach
+                                    </select>
+                                    @error('hsn_id') <p class="text-danger">{{ $message }}</p> @enderror
+                                    <a target="_blank" href="{{ route('admin.hsns.create') }}"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add New Code</a>
+                                </div>
+                            </div>
                         </div>
                 </div>
             </div>
@@ -168,7 +205,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex flex-wrap gap-2">
-                        <button type="submit" class="btn btn-primary waves-effect waves-light">{{ isset($product) ? 'Update' : 'Save' }}</button>
+                        <button type="submit" class="btn btn-primary waves-effect waves-light">{{ isset($product) ? $product->is_approved?'Update':'Update & Approve' : 'Save' }}</button>
                         <button type="reset" class="btn btn-secondary waves-effect waves-light">Cancel</button>
                     </div>
                 </div>

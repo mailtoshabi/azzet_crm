@@ -8,4 +8,5 @@ use Shanmuga\LaravelEntrust\Models\EntrustPermission;
 class Permission extends EntrustPermission
 {
     use HasFactory;
+    protected $guarded=[];
 }

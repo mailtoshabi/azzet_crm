@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
-class Executive extends Model
+class Executive extends Authenticatable
 {
     use HasFactory;
     use LogsActivity;
@@ -31,6 +31,7 @@ class Executive extends Model
         'email_verified_at',
         'phone',
         'building_no',
+        'password',
         'street',
         'city',
         'postal_code',
@@ -38,7 +39,8 @@ class Executive extends Model
         'state_id',
         'image',
         'website',
-        'status'
+        'status',
+        'branch_id'
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -51,6 +53,11 @@ class Executive extends Model
     public function enquiries()
     {
         return $this->hasMany(Enquiry::class);
+    }
+
+    public function branch()
+    {
+        return $this->belongsTO(Branch::class);
     }
 
     // public function contactPersons()

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\File;
 class CategoryController extends Controller
 {
     public function index() {
-        $categories = Category::orderBy('id')->paginate(Utility::PAGINATE_COUNT);
+        $categories = Category::orderBy('id','desc')->paginate(Utility::PAGINATE_COUNT);
         return view('admin.categories.index',compact('categories'));
     }
 

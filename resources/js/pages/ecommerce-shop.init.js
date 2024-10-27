@@ -1,5 +1,5 @@
 /*
-Template Name: Dason - Admin & Dashboard Template
+Template Name: Azzet - Customer Relationship Management Application
 Author: Themesdesign
 Website: https://themesdesign.in/
 Contact: themesdesign.in@gmail.com
@@ -22,7 +22,7 @@ function getChartColorsArray(chartId) {
 }
 
 // MAp
-    
+
 var vectormapColors = getChartColorsArray("#sales-by-locations");
 $('#sales-by-locations').vectorMap({
     map: 'world_mill_en',

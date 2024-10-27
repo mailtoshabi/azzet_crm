@@ -30,7 +30,7 @@
                                 <div class="mb-3">
                                     <label for="name">Name</label>
                                     <input id="name" name="name" type="text" class="form-control"  placeholder="Category Name" value="{{ isset($category)?$category->name:old('name')}}">
-                                    @error('name') <p>{{ $message }}</p> @enderror
+                                    @error('name') <p class="text-danger">{{ $message }}</p> @enderror
                                 </div>
                             </div>
                             <div class="col-sm-6">

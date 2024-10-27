@@ -4,7 +4,7 @@ var __webpack_exports__ = {};
   !*** ./resources/js/pages/calendar.init.js ***!
   \*********************************************/
 /*
-Template Name: Dason - Admin & Dashboard Template
+Template Name: Azzet - Customer Relationship Management Application
 Author: Themesdesign
 Website: https://themesdesign.in/
 Contact: themesdesign.in@gmail.com
@@ -173,7 +173,7 @@ File: Calendar init js
     });
   }, //init
   $.CalendarPage = new CalendarPage(), $.CalendarPage.Constructor = CalendarPage;
-}(window.jQuery), //initializing 
+}(window.jQuery), //initializing
 function ($) {
   "use strict";
 

@@ -7,11 +7,27 @@
 @endsection
 @section('content')
 @component('admin.dir_components.breadcrumb')
-@slot('li_1') @lang('translation.Customer_Manage') @endslot
+@slot('li_1') @lang('translation.Account_Manage') @endslot
 @slot('li_2') @lang('translation.Customer_Manage') @endslot
-@slot('title') @lang('translation.Customers') @endslot
+@slot('title') @lang('translation.Customer_List') @endslot
 @endcomponent
-@if(session()->has('success')) <p class="text-success">{{ session()->get('success') }} @endif</p>
+@if(session()->has('success'))
+<div class="alert alert-success alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-success"></i><strong>Success</strong> - {{ session()->get('success') }}
+</div>
+@endif
+<div class="row">
+    <div class="col-lg-12">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link @if($is_approved==0) active @endif" @if($is_approved==0)aria-current="page"@endif href="{{ route('admin.customers.index','status='.encrypt(0)) }}">Pending</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link @if($is_approved==1) active @endif" @if($is_approved==1)aria-current="page"@endif href="{{ route('admin.customers.index','status='.encrypt(1)) }}">Approved</a>
+        </li>
+      </ul>
+    </div>
+</div>
 <div class="row">
     <div class="col-lg-12">
         <div class="card mb-0">
@@ -67,6 +83,7 @@
                                     <th scope="col">Mobile</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">City</th>
+                                    <th scope="col">Created</th>
                                     <th style="width: 80px; min-width: 80px;">View</th>
                                 </tr>
                                 </thead>
@@ -95,7 +112,16 @@
 
                                            <td>{{ $customer->phone }}</td>
                                            <td>{{ $customer->email }}</td>
-                                           <td>{{ $customer->city }}</td>
+                                           <td>
+                                            {{ $customer->city }}
+                                            <br> <small>{{ $customer->district->name }} District</small>
+                                           </td>
+                                           <td>
+                                            <a href="#" class="text-body">
+                                                On {{ $customer->created_at->format('d M Y') }}<br>
+                                                By {{ !empty($customer->executive)? $customer->executive->name . ' (Executive)' : $customer->user->name . ' (Admin)' }}
+                                            </a>
+                                        </td>
                                            {{-- <td>
                                                 <a href="{{ route('admin.customers.view',encrypt($customer->id))}}" class="btn btn-primary btn-sm btn-rounded" >
                                                     Details
@@ -109,12 +135,19 @@
                                                     <ul class="dropdown-menu dropdown-menu-end">
                                                         <li><a class="dropdown-item" href="{{ route('admin.customers.edit',encrypt($customer->id))}}"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>
                                                         {{-- <li><a class="dropdown-item" href="{{ route('admin.customers.destroy',encrypt($customer->id))}}"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li> --}}
+                                                        @if(!$customer->is_approved)
                                                         <li><a href="#" class="dropdown-item" data-plugin="delete-data" data-target-form="#form_delete_{{ $loop->iteration }}"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>
                                                         <form id="form_delete_{{ $loop->iteration }}" method="POST" action="{{ route('admin.customers.destroy',encrypt($customer->id))}}">
                                                             @csrf
                                                             <input type="hidden" name="_method" value="DELETE" />
                                                         </form>
-                                                        <li><a class="dropdown-item" href="{{ route('admin.customers.changeStatus',encrypt($customer->id))}}"><i class="mdi mdi-cursor-pointer font-size-16 text-success me-1"></i> {{ $customer->status?'Deactivate':'Activate'}}</a></li>
+                                                        @endif
+                                                        @if($customer->executive)
+                                                            <li><a class="dropdown-item" href="{{ route('admin.customers.approve',encrypt($customer->id))}}">{!! $customer->is_approved?'<i class="fas fa-thumbs-down font-size-16 text-danger me-1"></i> Reject':'<i class="fas fa-thumbs-up font-size-16 text-primary me-1"></i> Approve' !!}</a></li>
+                                                        @endif
+                                                        @if($customer->is_approved)
+                                                            <li><a class="dropdown-item" href="{{ route('admin.customers.changeStatus',encrypt($customer->id))}}">{!! $customer->status?'<i class="fas fa-power-off font-size-16 text-danger me-1"></i> Unpublish':'<i class="fas fa-circle-notch font-size-16 text-primary me-1"></i> Publish'!!}</a></li>
+                                                        @endif
                                                         <li><a class="dropdown-item" href="{{ route('admin.customers.view',encrypt($customer->id))}}"><i class="fa fa-eye font-size-16 text-success me-1"></i> Details</a></li>
                                                     </ul>
                                                 </div>

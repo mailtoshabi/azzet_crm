@@ -7,7 +7,7 @@
 @section('content')
 @component('admin.dir_components.breadcrumb')
 @slot('li_1') @lang('translation.Catalogue_Manage') @endslot
-@slot('li_2') @lang('translation.Component_Manage') @endslot
+@slot('li_2') @lang('translation.Product_Manage') @endslot
 @slot('title') @lang('translation.Add_Component') @endslot
 @endcomponent
 <div class="row">
@@ -30,7 +30,7 @@
                                 <div class="mb-3">
                                     <label for="name">Name</label>
                                     <input id="name" name="name" type="text" class="form-control"  placeholder="Component Name" value="{{ isset($component)?$component->name:old('name')}}">
-                                    @error('name') <p>{{ $message }}</p> @enderror
+                                    @error('name') <p class="text-danger">{{ $message }}</p> @enderror
                                 </div>
                             </div>
                             <div class="col-sm-6">

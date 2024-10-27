@@ -8,7 +8,7 @@
                         <img src="<?php echo e(URL::asset('assets/images/logo-sm.svg')); ?>" alt="" height="24">
                     </span>
                     <span class="logo-lg">
-                        <img src="<?php echo e(URL::asset('assets/images/logo-sm.svg')); ?>" alt="" height="24"> <span class="logo-txt">Dason</span>
+                        <img src="<?php echo e(URL::asset('assets/images/logo-sm.svg')); ?>" alt="" height="24"> <span class="logo-txt">WBMAHALCRM</span>
                     </span>
                 </a>
 
@@ -17,7 +17,7 @@
                         <img src="<?php echo e(URL::asset('assets/images/logo-sm.svg')); ?>" alt="" height="24">
                     </span>
                     <span class="logo-lg">
-                        <img src="<?php echo e(URL::asset('assets/images/logo-sm.svg')); ?>" alt="" height="24"> <span class="logo-txt">Dason</span>
+                        <img src="<?php echo e(URL::asset('assets/images/logo-sm.svg')); ?>" alt="" height="24"> <span class="logo-txt">WBMAHALCRM</span>
                     </span>
                 </a>
             </div>

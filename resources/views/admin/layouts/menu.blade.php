@@ -1,6 +1,6 @@
 
-@include("layouts.topbar")
+@include("admin.layouts.topbar")
 
-@include("layouts.sidebar")
+@include("admin.layouts.sidebar")
 
- {{-- @include("layouts.horizontal") --}}
+ {{-- @include("admin.layouts.horizontal") --}}

@@ -1,5 +1,5 @@
 /*
-Template Name: Dason - Admin & Dashboard Template
+Template Name: Azzet - Customer Relationship Management Application
 Author: Themesdesign
 Website: https://themesdesign.in/
 Contact: themesdesign.in@gmail.com
@@ -48,11 +48,11 @@ $(document).ready(function () {
     });
 
     $("select#TaskStatus").change(function(){
-        selectedstatus = $(this).children("option:selected").val();  
+        selectedstatus = $(this).children("option:selected").val();
     });
 
     //Add New Task with Validation
-    
+
     $("#addtask").click(function(){
         $('#updatetaskdetail').css('display','none');
         $('#addtask').css('display','block');
@@ -93,7 +93,7 @@ $(document).ready(function () {
         else if(selectedstatus == "Pending"){
             statuscolor="badge-soft-warning";
         }
-        
+
         if(taskname.length == 0 || taskbudget.length == 0 || selectedstatus.length == 0 || taskassignee.length == 0) {
             $("#NewtaskForm").validate().element("#taskname");
             $("#NewtaskForm").validate().element("#taskassignee input:checkbox");
@@ -141,7 +141,7 @@ $(document).ready(function () {
 
     //Update Task Details with Validation
 
-    $("#updatetaskdetail").click(function(){ 
+    $("#updatetaskdetail").click(function(){
         var statuscolor ;
         if(selectedstatus == "Waiting"){
             statuscolor="badge-soft-secondary";
@@ -160,8 +160,8 @@ $(document).ready(function () {
         var strDate = d.getDate() + " " + (d.toLocaleString('default', { month: 'short' })) + ", " + d.getFullYear();
         var taskdesc=$("#taskdesc").val();
         var taskbudget=$("#taskbudget").val();
-        var taskassignee = new Array();        
-        var taskassigneevalue = new Array();        
+        var taskassignee = new Array();
+        var taskassigneevalue = new Array();
 
         var src = "";
         $('#taskassignee input[type=checkbox]:checked').each(function() {
@@ -215,7 +215,7 @@ $(document).ready(function () {
 
     //Edit Task Details with Validation
 
-    $('.main-content').on('click', '.edittask-details', function(event){ 
+    $('.main-content').on('click', '.edittask-details', function(event){
         var id= $(this).attr('data-id');
         updateid = id;
         var validator = $("#NewtaskForm").validate();
@@ -233,15 +233,15 @@ $(document).ready(function () {
             var assigneusers = $(this).attr('value');
             $("#"+assigneusers).prop("checked", true);
         });
-        $('#taskname').val(name); 
-        $('#taskdesc').val(desc); 
+        $('#taskname').val(name);
+        $('#taskdesc').val(desc);
         $('#taskbudget').val(budget);
         $('#TaskStatus').val(status);
         selectedstatus=status;
     });
-    
+
     //Delete Task
-    $('.main-content').on('click', '.deletetask', function(event){  
+    $('.main-content').on('click', '.deletetask', function(event){
         var id= $(this).attr('data-id');
         console.log('Task Deleted Successfully');
         $(id).remove();

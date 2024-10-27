@@ -1,13 +1,14 @@
 @extends('admin.layouts.master')
-@section('title') @lang('translation.Customer_Details') @endsection
+@section('title') Details of {{ $customer->name }} @endsection
 @section('css')
 <link href="{{ URL::asset('assets/libs/select2/select2.min.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('assets/libs/dropzone/dropzone.min.css') }}" rel="stylesheet">
+<link href="{{ URL::asset('assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet">
 @endsection
 @section('content')
 @component('admin.dir_components.breadcrumb')
-@slot('li_1') @lang('translation.Customer_Manage') @endslot
-@slot('li_2') @lang('translation.Customer_Details') @endslot
+@slot('li_1') @lang('translation.Account_Manage') @endslot
+@slot('li_2') @lang('translation.Customer_Manage') @endslot
 @slot('title') Details of {{ $customer->name }} @endslot
 @endcomponent
 <div class="row">
@@ -41,7 +42,9 @@
                             <h6 class="text-danger"><i class="fa fa-globe font-size-16 align-middle text-success me-1"></i>{{ $customer->website }}</h6>
                             @endunless
                             {{-- <h5 class="mb-4">Price : <span class="text-muted me-2"><del>$240 USD</del></span> <b>$225 USD</b></h5> --}}
-                            <p class="text-muted mb-0">@unless (empty($customer->building_no)){{ $customer->building_no }}@endunless @unless (empty($customer->street)), {{ $customer->street }}@endunless</p>
+                            @unless (empty($customer->address1))<p class="text-muted mb-0">{{ $customer->address1 }}</p>@endunless
+                            @unless (empty($customer->address2))<p class="text-muted mb-0">{{ $customer->address2 }}</p>@endunless
+                            @unless (empty($customer->address3))<p class="text-muted mb-0">{{ $customer->address3 }}</p>@endunless
                             @unless (empty($customer->city))
                             <p class="text-muted mb-0">{{ $customer->city }}</p>
                             @endunless
@@ -50,6 +53,13 @@
                             @unless (empty($customer->postal_code))
                             <p class="text-muted mb-4">{{ $customer->postal_code }}</p>
                             @endunless
+
+                            @unless (empty($customer->executive))
+                                <p class="text-muted mb-0"><b>Executive Name : {{ $customer->executive->name }}</b> <a id="add_executive" href="#">Change</a></p>
+                            @endunless
+                            @empty($customer->executive)
+                            <p class="text-muted mb-0"><a id="add_executive" href="#">Assign to an Executive</a></p>
+                            @endempty
                             {{-- <div class="row mb-3">
                                 <div class="col-md-6">
                                     <div>
@@ -253,6 +263,76 @@
 </div>
 <!-- end row -->
 @endsection
+
 @section('script')
 <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>
+<script src="{{ URL::asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        /*X-CSRF-TOKEN*/
+        $.ajaxSetup({
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+        });
+    });
+    $(document).ready(function(){
+        $('#add_executive').on('click', function() {
+
+        // SweetAlert2 popup with input fields
+        Swal.fire({
+            title: 'Assign to an Executive',
+            html:
+                '<select id="executive_id" name="executive_id" class="form-control select2">' +
+                                '<option value="">Select Executive</option>' +
+                                '@foreach ($executives as $executive)' +
+                                '<option value="{{ $executive->id }}" @isset($customer->executive) {{ $executive->id==$customer->executive->id ? "selected":"" }} @endisset>{{ $executive->name }}</option>' +
+                                '@endforeach' +
+                            '</select><br>' +
+                '<input type="hidden" id="customer_id" class="form-control" value="{{ encrypt($customer->id) }}">',
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: 'Submit',
+            preConfirm: () => {
+                const executive_id = document.getElementById('executive_id').value;
+                const customer_id = document.getElementById('customer_id').value;
+
+                // Check if the inputs are valid
+                if (!executive_id) {
+                    Swal.showValidationMessage('Please Select an Executive');
+                    return false;
+                }
+                return { executive_id: executive_id, customer_id: customer_id };
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Get input values from the SweetAlert2 popup
+                const executive_id = result.value.executive_id;
+                const customer_id = result.value.customer_id;
+
+                // Send the data using AJAX
+                $.ajax({
+                    url: '{{ route("admin.customers.addExecutive") }}',
+                    type: 'POST',
+                    data: { executive_id: executive_id, customer_id: customer_id },
+                    success: function(response) {
+                        Swal.fire(
+                            'Success!',
+                            'Your data has been submitted.',
+                            'success'
+                        ).then((result) => {
+                            refreshPage();
+                        });
+                    },
+                    error: function() {
+                        Swal.fire(
+                            'Error!',
+                            'There was a problem with the submission.',
+                            'error'
+                        );
+                    }
+                });
+            }
+        });
+        });
+    });
+</script>
 @endsection

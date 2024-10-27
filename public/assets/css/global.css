@@ -11,7 +11,7 @@ body[data-topbar=dark] #page-topbar, body[data-topbar=dark] .navbar-brand-box {
     display: none;
 }
 
-.btn-close {
+a.btn-close {
     background: none;
     top: 32px;
     cursor: pointer;
@@ -20,4 +20,33 @@ body[data-topbar=dark] #page-topbar, body[data-topbar=dark] .navbar-brand-box {
 
 .select2-container {
     width: 100% !important;
+}
+
+.avatar-title {
+    background-color: #1c84ee !important;
+}
+
+.azzet_invoice .dropdown-menu-end[style] {
+    left: 200px !important;
+    right: auto !important;
+}
+
+.required label::after {
+    content: " *";
+    color: red;
+  }
+.branch_logo {
+/* line-height: 20px; */
+}
+img.branch_logo_list{
+    background-color: black;
+    height: 25px;
+}
+.branch_logo_text {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.top_bar i {
+    font-size: 20px;
+    color: #1c84ee;
 }

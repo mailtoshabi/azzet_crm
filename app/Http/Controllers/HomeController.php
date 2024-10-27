@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Utilities\Utility;
+use App\Models\Estimate;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -130,12 +132,32 @@ class HomeController extends Controller
             }
         }
     }
+    public function productPrice($estimate_id,$product_id) {
+        $estimate_product = DB::table('estimate_product')->where('estimate_id',$estimate_id)->where('product_id',$product_id)->first();
+        // $quantity = $estimate_product->quantity;
+        $profit = $estimate_product->profit;
+        // $estimate_product_components = DB::table('component_estimate_product')->where('estimate_product_id',$estimate_product->id)->get();
+        $sum_price_components = DB::table('component_estimate_product')->where('estimate_product_id',$estimate_product->id)->sum('cost');
+        $price = $profit + $sum_price_components;
+        return $price;
+    }
+
+    public function subTotal($estimate_id) {
+        $estimate_product = DB::table('estimate_product')->where('estimate_id',$estimate_id)->sum('cost');
+        $profit = $estimate_product->profit;
+        $sum_price_components = DB::table('component_estimate_product')->where('estimate_product_id',$estimate_product->id)->sum('cost');
+        $price = $profit + $sum_price_components;
+        return $price;
+    }
 
     public function test() {
         $var = 'Password updated successfully!';
+        return $this->productPrice(1,5);
 
         // return Utility::cleanString($var);
         // return set_active('test');
-        return Utility::numToWords(4);
+        // return Utility::numToWords(4);
+
+
     }
 }

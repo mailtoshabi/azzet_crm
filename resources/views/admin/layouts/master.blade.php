@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title> @yield('title') | Dason - Admin & Dashboard Template</title>
+    <title> @yield('title') | Azzet - Customer Relationship Management Application</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesdesign" name="author" />
@@ -19,7 +19,11 @@
     <!-- Begin page -->
     <div id="layout-wrapper">
         @include('admin.layouts.topbar')
+        @if (request()->is('executive/*'))
+        @include('admin.layouts.executive.sidebar')
+        @else
         @include('admin.layouts.sidebar')
+        @endif
         <!-- ============================================================== -->
         <!-- Start right Content here -->
         <!-- ============================================================== -->

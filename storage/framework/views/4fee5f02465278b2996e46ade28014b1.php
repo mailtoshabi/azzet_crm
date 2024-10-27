@@ -10,7 +10,12 @@
 <?php $__env->slot('li_2'); ?> <?php echo app('translator')->get('translation.Activity_Manage'); ?> <?php $__env->endSlot(); ?>
 <?php $__env->slot('title'); ?> <?php echo app('translator')->get('translation.Activities'); ?> <?php $__env->endSlot(); ?>
 <?php echo $__env->renderComponent(); ?>
-<?php if(session()->has('success')): ?> <p class="text-success"><?php echo e(session()->get('success')); ?> <?php endif; ?></p>
+<?php if(session()->has('success')): ?>
+<div class="alert alert-success alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-success"></i><strong>Success</strong> - <?php echo e(session()->get('success')); ?>
+
+</div>
+<?php endif; ?>
 <div class="row">
     <div class="col-lg-12">
         <div class="card mb-0">

@@ -7,11 +7,32 @@
 @endsection
 @section('content')
 @component('admin.dir_components.breadcrumb')
-@slot('li_1') @lang('translation.Catalogue_Manage') @endslot
+@slot('li_1') @lang('translation.Proforma_Manage') @endslot
 @slot('li_2') @lang('translation.Enquiry_Manage') @endslot
 @slot('title') @lang('translation.Enquiry_List') @endslot
 @endcomponent
-@if(session()->has('success')) <p class="text-success">{{ session()->get('success') }} @endif</p>
+@if(session()->has('success'))
+<div class="alert alert-success alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-success"></i><strong>Success</strong> - {{ session()->get('success') }}
+</div>
+@endif
+@if(session()->has('error'))
+<div class="alert alert-danger alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-danger"></i><strong>Error</strong> - {{ session()->get('error') }}
+</div>
+@endif
+<div class="row">
+    <div class="col-lg-12">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link @if($is_approved==0) active @endif" @if($is_approved==0)aria-current="page"@endif href="{{ route('admin.enquiries.index','status='.encrypt(0)) }}">Pending</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link @if($is_approved==1) active @endif" @if($is_approved==1)aria-current="page"@endif href="{{ route('admin.enquiries.index','status='.encrypt(1)) }}">Approved</a>
+        </li>
+      </ul>
+    </div>
+</div>
 <div class="row">
     <div class="col-lg-12">
         <div class="card mb-0">
@@ -66,8 +87,8 @@
                                      <label class="form-check-label" for="checkAll"></label>
                                  </div>
                              </th>
-                             <th scope="col">Customer</th>
-                             <th scope="col">Executive</th>
+                             <th scope="col">@lang('translation.Customer')</th>
+                             <th scope="col">Enquiry By</th>
                              <th scope="col">Items</th>
                              <th scope="col">Status</th>
                              <th style="width: 80px; min-width: 80px;">Action</th>
@@ -95,14 +116,18 @@
                                         <?php $data = ''; $count = 1;  ?>
                                         @foreach ($enquiry->products as $product )
                                                 <?php
-                                                $comma= $count==1? '':', ';
-                                                $data .= $comma . $product->name . ' (' . $product->pivot->quantity . ')'; $count++; ?>
+                                                $comma= $count==1? '':'<br>';
+                                                $data .= $comma . '<a target="_blank" href="'. route('admin.products.edit',encrypt($product->id)) . '">' . $product->name . ' (' . $product->pivot->quantity . ')'; $count++; ?>
+                                                @if(!$product->is_approved)
+                                                <?php $data .= ' <span class="badge badge-pill badge-soft-danger font-size-12">Product Not Approved</span>'; ?>
+                                                @endif
+                                                <?php $data .="</a>" ?>
                                         @endforeach
-                                        <a href="#" class="text-body">{{ $data }}</a>
+                                        <a href="#" class="text-body">{!! $data !!}</a>
                                     </td>
 
                                     <td>
-                                        <a> {!! $enquiry->estimate?'<span class="badge badge-pill badge-soft-success font-size-12">Estimate Created</span>':'<span class="badge badge-pill badge-soft-danger font-size-12">Pending</span>' !!} </a>
+                                        <a> {!! $enquiry->estimate?'<span class="badge badge-pill badge-soft-success font-size-12">Estimate Created</span>':'<span class="badge badge-pill badge-soft-danger font-size-12">Estimate Not Created</span>' !!} </a>
                                     </td>
 
                                     <td>
@@ -118,10 +143,15 @@
                                                     @csrf
                                                     <input type="hidden" name="_method" value="DELETE" />
                                                 </form>
+
+                                                @if($enquiry->executive)
                                                 @if(!$enquiry->estimate)
+                                                <li><a class="dropdown-item" href="{{ route('admin.enquiries.changeStatus',encrypt($enquiry->id))}}">{!! $enquiry->is_approved?'<i class="fas fa-thumbs-down font-size-16 text-danger me-1"></i> Reject':'<i class="fas fa-thumbs-up font-size-16 text-primary me-1"></i> Approve' !!}</a></li>
+                                                @endif
+                                                @endif
+                                                @if(!$enquiry->estimate&&$enquiry->is_approved)
                                                     <li><a class="dropdown-item" href="{{ route('admin.enquiries.convert_to_estimate',encrypt($enquiry->id)) }}"><i class="mdi mdi-cursor-pointer font-size-16 text-success me-1"></i> Create Estimate</a></li>
                                                 @endif
-                                                <li><a class="dropdown-item" href="{{ route('admin.enquiries.changeStatus',encrypt($enquiry->id))}}"><i class="mdi mdi-cursor-pointer font-size-16 text-success me-1"></i> {{ $enquiry->status?'Reject':'Approve'}}</a></li>
                                             </ul>
                                         </div>
                                     </td>

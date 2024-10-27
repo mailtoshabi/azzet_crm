@@ -8,10 +8,14 @@
 @section('content')
 @component('admin.dir_components.breadcrumb')
 @slot('li_1') @lang('translation.Catalogue_Manage') @endslot
-@slot('li_2') @lang('translation.Component_Manage') @endslot
+@slot('li_2') @lang('translation.Product_Manage') @endslot
 @slot('title') @lang('translation.Component_List') @endslot
 @endcomponent
-@if(session()->has('success')) <p class="text-success">{{ session()->get('success') }} @endif</p>
+@if(session()->has('success'))
+<div class="alert alert-success alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-success"></i><strong>Success</strong> - {{ session()->get('success') }}
+</div>
+@endif
 <div class="row">
     <div class="col-lg-12">
         <div class="card mb-0">
@@ -101,7 +105,7 @@
                                                     @csrf
                                                     <input type="hidden" name="_method" value="DELETE" />
                                                 </form>
-                                                <li><a class="dropdown-item" href="{{ route('admin.components.changeStatus',encrypt($component->id))}}"><i class="mdi mdi-cursor-pointer font-size-16 text-success me-1"></i> {{ $component->status?'Deactivate':'Activate'}}</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('admin.components.changeStatus',encrypt($component->id))}}">{!! $component->status?'<i class="fas fa-power-off font-size-16 text-danger me-1"></i> Unpublish':'<i class="fas fa-circle-notch font-size-16 text-primary me-1"></i> Publish'!!}</a></li>
                                             </ul>
                                         </div>
                                     </td>

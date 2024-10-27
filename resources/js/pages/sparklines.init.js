@@ -1,5 +1,5 @@
 /*
-Template Name: Dason - Admin & Dashboard Template
+Template Name: Azzet - Customer Relationship Management Application
 Author: Themesdesign
 Website: https://themesdesign.in/
 Contact: themesdesign.in@gmail.com
@@ -23,7 +23,7 @@ function getChartColorsArray(chartId) {
 
 $(document).ready(function() {
     var SparklineCharts = function() {
-      
+
       var pieChartColors = getChartColorsArray("#sparkline1");
       $('#sparkline1').sparkline([20, 40, 30], {
         type: 'pie',
@@ -31,7 +31,7 @@ $(document).ready(function() {
         resize: true,
         sliceColors: pieChartColors
       });
-  
+
       var bar2ChartColors = getChartColorsArray("#sparkline2");
       $("#sparkline2").sparkline([5,6,2,8,9,4,7,10,11,12,10,4,7,10], {
         type: 'bar',
@@ -40,7 +40,7 @@ $(document).ready(function() {
         barSpacing: 7,
         barColor: bar2ChartColors
       });
-  
+
       var sparkline3ChartColors = getChartColorsArray("#sparkline3");
       $('#sparkline3').sparkline([5, 6, 2, 9, 4, 7, 10, 12,4,7,10], {
         type: 'bar',
@@ -60,7 +60,7 @@ $(document).ready(function() {
         highlightLineColor: 'rgba(0,0,0,.1)',
         highlightSpotColor: 'rgba(0,0,0,.2)'
       });
-  
+
       var sparkline4ChartColors = getChartColorsArray("#sparkline4");
       $("#sparkline4").sparkline([0, 23, 43, 35, 44, 45, 56, 37, 40, 45, 56, 7, 10], {
         type: 'line',
@@ -88,7 +88,7 @@ $(document).ready(function() {
         highlightLineColor: 'rgba(0,0,0,.1)',
         highlightSpotColor: 'rgba(0,0,0,.2)',
       });
-  
+
       $('#sparkline5').sparkline([0, 13, 10, 14, 15, 10, 18, 20, 0], {
         type: 'line',
         width: '100%',
@@ -101,7 +101,7 @@ $(document).ready(function() {
         highlightLineColor: 'rgba(0,0,0,.1)',
         highlightSpotColor: 'rgba(0,0,0,.2)',
       });
-  
+
       var sparkline6ChartColors = getChartColorsArray("#sparkline6");
       $("#sparkline6").sparkline([4, 6, 7, 7, 4, 3, 2, 1, 4, 4, 5, 6, 3, 4, 5, 8, 7, 6, 9, 3, 2, 4, 1, 5, 6, 4, 3, 7], {
         type: 'discrete',
@@ -109,7 +109,7 @@ $(document).ready(function() {
         height: '200',
         lineColor: sparkline6ChartColors
       });
-  
+
       var sparkline7ChartColors = getChartColorsArray("#sparkline7");
       $('#sparkline7').sparkline([10,12,12,9,7], {
         type: 'bullet',
@@ -143,16 +143,16 @@ $(document).ready(function() {
         barSpacing: 3,
         zeroAxis: false
       });
-  
-  
-  
+
+
+
     }
     var sparkResize;
-  
+
     $(window).resize(function(e) {
       clearTimeout(sparkResize);
       sparkResize = setTimeout(SparklineCharts, 500);
     });
     SparklineCharts();
-  
+
   });

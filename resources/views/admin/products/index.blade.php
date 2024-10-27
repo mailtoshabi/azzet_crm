@@ -11,7 +11,23 @@
 @slot('li_2') @lang('translation.Product_Manage') @endslot
 @slot('title') @lang('translation.Product_List') @endslot
 @endcomponent
-@if(session()->has('success')) <p class="text-success">{{ session()->get('success') }} @endif</p>
+@if(session()->has('success'))
+<div class="alert alert-success alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-success"></i><strong>Success</strong> - {{ session()->get('success') }}
+</div>
+@endif
+<div class="row">
+    <div class="col-lg-12">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link @if($is_approved==0) active @endif" @if($is_approved==0)aria-current="page"@endif href="{{ route('admin.products.index','status='.encrypt(0)) }}">Pending</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link @if($is_approved==1) active @endif" @if($is_approved==1)aria-current="page"@endif href="{{ route('admin.products.index','status='.encrypt(1)) }}">Approved</a>
+        </li>
+      </ul>
+    </div>
+</div>
 <div class="row">
     <div class="col-lg-12">
         <div class="card mb-0">
@@ -67,6 +83,8 @@
                                  </div>
                              </th>
                              <th scope="col">Name</th>
+                             <th scope="col">Category/HSN Code</th>
+                             <th scope="col">Created By</th>
                              <th style="width: 80px; min-width: 80px;">Action</th>
                          </tr>
                          </thead>
@@ -92,8 +110,14 @@
                                         @endif
 
                                         <a href="#" class="text-body">{{ $product->name }}</a>
+                                        @unless (empty($product->description))
+                                           <p style="padding-left: 43px;"><small>{{ \Illuminate\Support\Str::limit($product->description, $limit = 60   , $end = '...') }}</small></p>
+                                        @endunless
                                     </td>
-
+                                    <td>{{ $product->category->name }} @if(!empty($product->hsn->name)) {{ '/'. $product->hsn->name }} @endif</td>
+                                    <td>
+                                        <a href="#" class="text-body">{{ !empty($product->executive)? 'Executive: ' . $product->executive->name : 'Admin: ' . $product->user->name }}</a>
+                                    </td>
 
                                     <td>
                                         <div class="dropdown">
@@ -103,12 +127,19 @@
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li><a class="dropdown-item" href="{{ route('admin.products.edit',encrypt($product->id))}}"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>
                                                 {{-- <li><a class="dropdown-item" href="{{ route('admin.products.destroy',encrypt($product->id))}}"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li> --}}
+                                                @if(!$product->is_approved)
                                                 <li><a href="#" class="dropdown-item" data-plugin="delete-data" data-target-form="#form_delete_{{ $loop->iteration }}"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>
                                                 <form id="form_delete_{{ $loop->iteration }}" method="POST" action="{{ route('admin.products.destroy',encrypt($product->id))}}">
                                                     @csrf
                                                     <input type="hidden" name="_method" value="DELETE" />
                                                 </form>
-                                                <li><a class="dropdown-item" href="{{ route('admin.products.changeStatus',encrypt($product->id))}}"><i class="mdi mdi-cursor-pointer font-size-16 text-success me-1"></i> {{ $product->status?'Deactivate':'Activate'}}</a></li>
+                                                @endif
+                                                @if($product->executive)
+                                                <li><a class="dropdown-item" href="{{ route('admin.products.approve',encrypt($product->id))}}">{!! $product->is_approved?'<i class="fas fa-thumbs-down font-size-16 text-danger me-1"></i> Reject':'<i class="fas fa-thumbs-up font-size-16 text-primary me-1"></i> Approve' !!}</a></li>
+                                                @endif
+                                                @if($product->is_approved)
+                                                    <li><a class="dropdown-item" href="{{ route('admin.products.changeStatus',encrypt($product->id))}}">{!! $product->status?'<i class="fas fa-power-off font-size-16 text-danger me-1"></i> Unpublish':'<i class="fas fa-circle-notch font-size-16 text-primary me-1"></i> Publish'!!}</a></li>
+                                                @endif
                                             </ul>
                                         </div>
                                     </td>

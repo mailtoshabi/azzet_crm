@@ -1,5 +1,5 @@
 /*
-Template Name: Dason - Bootstrap 5 Admin & Dashboard Template
+Template Name: WBMAHALCRM - Bootstrap 5 Admin & Dashboard Template
 Author: Themesdesign
 Version: 1.2.0.
 Website: https://themesdesign.in/
@@ -11,7 +11,7 @@ File: Main Js File
 
     'use strict';
 
-    var language = localStorage.getItem('Dason-language');
+    var language = localStorage.getItem('WBMAHALCRM-language');
     // Default Language
     var default_lang = 'en';
 
@@ -28,8 +28,8 @@ File: Main Js File
             } else if (lang == 'ru') {
                 document.getElementById("header-lang-img").src = "assets/images/flags/russia.jpg";
             }
-            localStorage.setItem('Dason-language', lang);
-            language = localStorage.getItem('Dason-language');
+            localStorage.setItem('WBMAHALCRM-language', lang);
+            language = localStorage.getItem('WBMAHALCRM-language');
             getLanguage();
         }
     }

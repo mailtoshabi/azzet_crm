@@ -14,6 +14,9 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
     use LaravelEntrustUserTrait;
 
+    const DIR_STORAGE = 'storage/users/';
+    const DIR_PUBLIC = 'users/';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -22,8 +25,12 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
         'avatar',
+        'status',
+        'created_by',
+        'branch_id'
     ];
 
     /**
@@ -32,6 +39,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
+        'id',
         'password',
         'remember_token',
     ];
@@ -44,4 +52,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function branch()
+    {
+        return $this->belongsTO(Branch::class);
+    }
 }

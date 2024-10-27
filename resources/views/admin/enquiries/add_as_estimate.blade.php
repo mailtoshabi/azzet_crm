@@ -6,10 +6,15 @@
 @endsection
 @section('content')
 @component('admin.dir_components.breadcrumb')
-@slot('li_1') @lang('translation.Catalogue_Manage') @endslot
+@slot('li_1') @lang('translation.Proforma_Manage') @endslot
 @slot('li_2') @lang('translation.Enquiry_Manage') @endslot
 @slot('title') @lang('translation.Add_As_Estimate') @endslot
 @endcomponent
+@if(isset($enquiry) && $enquiry->is_approved && !$enquiry->estimate )
+<div class="alert alert-warning alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-warning"></i><strong>Warning</strong> - This Enquiry is yet to convert as Estimate !!
+</div>
+@endif
 <div class="row">
     <form method="POST" action="{{ route('admin.enquiries.store_as_estimate')  }}" enctype="multipart/form-data">
         @csrf
@@ -27,15 +32,15 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="mb-3">
-                                    <label class="control-label">Customer</label>
+                                    <label class="control-label">@lang('translation.Customer')</label>
                                     <select id="customer_id" name="customer_id" class="form-control select2">
-                                        <option value="">Select Customer</option>
+                                        <option value="">Select @lang('translation.Customer')</option>
                                         @foreach ($customers as $customer)
                                         <option value="{{ $customer->id }}" @isset($enquiry) {{ $customer->id==$enquiry->customer->id ? 'selected':'' }} @endisset >{{ $customer->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <p><a href="{{ route('admin.customers.create') }}"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;New Customer</a></p>
+                                <p><a href="{{ route('admin.customers.create') }}"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;New @lang('translation.Customer')</a></p>
                             </div>
 
 

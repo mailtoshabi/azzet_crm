@@ -4,7 +4,7 @@ var __webpack_exports__ = {};
   !*** ./resources/js/pages/apexcharts.init.js ***!
   \***********************************************/
 /*
-Template Name: Dason - Admin & Dashboard Template
+Template Name: Azzet - Customer Relationship Management Application
 Author: Themesdesign
 Website: https://themesdesign.in/
 Contact: themesdesign.in@gmail.com
@@ -108,7 +108,7 @@ var options = {
   }]
 };
 var chart = new ApexCharts(document.querySelector("#line_chart_datalabel"), options);
-chart.render(); //  line chart datalabel  
+chart.render(); //  line chart datalabel
 
 var lineDashedColors = getChartColorsArray("#line_chart_dashed");
 var options = {

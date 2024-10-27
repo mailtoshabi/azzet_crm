@@ -134,6 +134,10 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+
+        'name_tax' => [
+            'numeric' => 'The GST Percentage must be a number.',
+        ],
     ],
 
     /*

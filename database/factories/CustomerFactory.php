@@ -18,13 +18,17 @@ class CustomerFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'email' => $this->faker->safeEmail,
+            'email' => $this->faker->unique()->safeEmail,
             'phone' => $this->faker->unique()->numberBetween(9800000000,9899999999),
-            'building_no' => $this->faker->buildingNumber,
-            'street' => $this->faker->streetName,
+            'address1' => $this->faker->buildingNumber,
+            'address2' => $this->faker->streetName,
             'city' => $this->faker->city,
             // 'postal_code' => $this->faker->postcode,
             'postal_code' => $this->faker->unique()->numberBetween(612121,692121),
+            'state_id' => 12,
+            'district_id' => $this->faker->numberBetween(221,234),
+            'branch_id' => $this->faker->numberBetween(1,2),
+            'is_approved' => 1,
             'user_id' => 1,
         ];
     }

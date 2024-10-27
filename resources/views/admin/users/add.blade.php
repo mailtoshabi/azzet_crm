@@ -1,12 +1,13 @@
-@extends('layouts.master')
+@extends('admin.layouts.master')
 @section('title') @lang('translation.Add_User') @endsection
 @section('css')
 <link href="{{ URL::asset('assets/libs/select2/select2.min.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('assets/libs/dropzone/dropzone.min.css') }}" rel="stylesheet">
 @endsection
 @section('content')
-@component('components.breadcrumb')
-@slot('li_1') @lang('translation.User_Management') @endslot
+@component('admin.dir_components.breadcrumb')
+@slot('li_1') @lang('translation.Account_Manage') @endslot
+@slot('li_2') @lang('translation.User_Management') @endslot
 @slot('title') @lang('translation.Add_User') @endslot
 @endcomponent
 <div class="row">
@@ -24,40 +25,32 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="mb-3">
-                                <label for="first_name">First Name</label>
-                                <input id="first_name" name="first_name" type="text" class="form-control"  placeholder="First Name" value="{{ isset($user)?$user->first_name:old('first_name')}}">
-                                @error('first_name') <p class="text-danger">{{ $message }}</p> @enderror
+                                <label for="name">Name</label>
+                                <input id="name" name="name" type="text" class="form-control"  placeholder="Name" value="{{ isset($user)?$user->name:old('name')}}">
+                                @error('name') <p class="text-danger">{{ $message }}</p> @enderror
                             </div>
+                        </div>
 
-                            <div class="mb-3">
-                                <label for="location">Place</label>
-                                <input id="location" name="location" type="text" class="form-control" placeholder="Place" value="{{ isset($user)?$user->location:old('location')}}">
-                            </div>
-
+                        <div class="col-sm-4">
                             <div class="mb-3">
                                 <label for="phone">Mobile</label>
                                 <input id="phone" name="phone" type="text" class="form-control" placeholder="Mobile" value="{{ isset($user)?$user->phone:old('phone')}}">
                             </div>
-
-
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="mb-3">
-                                <label for="last_name">Last Name</label>
-                                <input id="last_name" name="last_name" type="text" class="form-control"  placeholder="Last Name" value="{{ isset($user)?$user->last_name:old('last_name')}}">
-                                @error('last_name') <p class="text-danger">{{ $message }}</p> @enderror
+                                <label class="control-label">Branch</label>
+                                <select id="branch_id" name="branch_id" class="form-control select2">
+                                    <option value="">Select Branch</option>
+                                    @foreach ($branches as $branch)
+                                    <option value="{{ $branch->id }}" @isset($user) {{ $branch->id==$user->branch->id ? 'selected':'' }} @endisset>{{ $branch->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('branch_id') <p class="text-danger">{{ $message }}</p> @enderror
                             </div>
-
-
-                            <div class="mb-3">
-                                <label for="address">Address</label>
-                                <textarea class="form-control" id="address" name="address"  rows="5" placeholder="Address">{{ isset($user)?$user->address:old('address')}}</textarea>
-                            </div>
-
-
                         </div>
                     </div>
                 </div>

@@ -6,11 +6,34 @@
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
 <?php $__env->startComponent('admin.dir_components.breadcrumb'); ?>
-<?php $__env->slot('li_1'); ?> <?php echo app('translator')->get('translation.Catalogue_Manage'); ?> <?php $__env->endSlot(); ?>
+<?php $__env->slot('li_1'); ?> <?php echo app('translator')->get('translation.Proforma_Manage'); ?> <?php $__env->endSlot(); ?>
 <?php $__env->slot('li_2'); ?> <?php echo app('translator')->get('translation.Enquiry_Manage'); ?> <?php $__env->endSlot(); ?>
 <?php $__env->slot('title'); ?> <?php echo app('translator')->get('translation.Enquiry_List'); ?> <?php $__env->endSlot(); ?>
 <?php echo $__env->renderComponent(); ?>
-<?php if(session()->has('success')): ?> <p class="text-success"><?php echo e(session()->get('success')); ?> <?php endif; ?></p>
+<?php if(session()->has('success')): ?>
+<div class="alert alert-success alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-success"></i><strong>Success</strong> - <?php echo e(session()->get('success')); ?>
+
+</div>
+<?php endif; ?>
+<?php if(session()->has('error')): ?>
+<div class="alert alert-danger alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-danger"></i><strong>Error</strong> - <?php echo e(session()->get('error')); ?>
+
+</div>
+<?php endif; ?>
+<div class="row">
+    <div class="col-lg-12">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link <?php if($is_approved==0): ?> active <?php endif; ?>" <?php if($is_approved==0): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.enquiries.index','status='.encrypt(0))); ?>">Pending</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <?php if($is_approved==1): ?> active <?php endif; ?>" <?php if($is_approved==1): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.enquiries.index','status='.encrypt(1))); ?>">Approved</a>
+        </li>
+      </ul>
+    </div>
+</div>
 <div class="row">
     <div class="col-lg-12">
         <div class="card mb-0">
@@ -46,9 +69,10 @@
                                      <label class="form-check-label" for="checkAll"></label>
                                  </div>
                              </th>
-                             <th scope="col">Customer</th>
-                             <th scope="col">Executive</th>
+                             <th scope="col"><?php echo app('translator')->get('translation.Customer'); ?></th>
+                             <th scope="col">Enquiry By</th>
                              <th scope="col">Items</th>
+                             <th scope="col">Status</th>
                              <th style="width: 80px; min-width: 80px;">Action</th>
                          </tr>
                          </thead>
@@ -67,17 +91,25 @@
                                     </td>
 
                                     <td>
-                                        <a href="#" class="text-body"><?php echo e(!empty($enquiry->executive)?$enquiry->executive->name : 'Admin'); ?></a>
+                                        <a href="#" class="text-body"><?php echo e(!empty($enquiry->executive)? 'Executive: ' . $enquiry->executive->name : 'Admin: ' . $enquiry->user->name); ?></a>
                                     </td>
 
                                     <td>
                                         <?php $data = ''; $count = 1;  ?>
                                         <?php $__currentLoopData = $enquiry->products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <?php
-                                                $comma= $count==1? '':', ';
-                                                $data .= $comma . $product->name . ' (' . $product->pivot->quantity . ')'; $count++; ?>
+                                                $comma= $count==1? '':'<br>';
+                                                $data .= $comma . '<a target="_blank" href="'. route('admin.products.edit',encrypt($product->id)) . '">' . $product->name . ' (' . $product->pivot->quantity . ')'; $count++; ?>
+                                                <?php if(!$product->is_approved): ?>
+                                                <?php $data .= ' <span class="badge badge-pill badge-soft-danger font-size-12">Product Not Approved</span>'; ?>
+                                                <?php endif; ?>
+                                                <?php $data .="</a>" ?>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                        <a href="#" class="text-body"><?php echo e($data); ?></a>
+                                        <a href="#" class="text-body"><?php echo $data; ?></a>
+                                    </td>
+
+                                    <td>
+                                        <a> <?php echo $enquiry->estimate?'<span class="badge badge-pill badge-soft-success font-size-12">Estimate Created</span>':'<span class="badge badge-pill badge-soft-danger font-size-12">Estimate Not Created</span>'; ?> </a>
                                     </td>
 
                                     <td>
@@ -93,7 +125,15 @@
                                                     <?php echo csrf_field(); ?>
                                                     <input type="hidden" name="_method" value="DELETE" />
                                                 </form>
-                                                <li><a class="dropdown-item" href="<?php echo e(route('admin.enquiries.changeStatus',encrypt($enquiry->id))); ?>"><i class="mdi mdi-cursor-pointer font-size-16 text-success me-1"></i> <?php echo e($enquiry->status?'Reject':'Approve'); ?></a></li>
+
+                                                <?php if($enquiry->executive): ?>
+                                                <?php if(!$enquiry->estimate): ?>
+                                                <li><a class="dropdown-item" href="<?php echo e(route('admin.enquiries.changeStatus',encrypt($enquiry->id))); ?>"><?php echo $enquiry->is_approved?'<i class="fas fa-thumbs-down font-size-16 text-danger me-1"></i> Reject':'<i class="fas fa-thumbs-up font-size-16 text-primary me-1"></i> Approve'; ?></a></li>
+                                                <?php endif; ?>
+                                                <?php endif; ?>
+                                                <?php if(!$enquiry->estimate&&$enquiry->is_approved): ?>
+                                                    <li><a class="dropdown-item" href="<?php echo e(route('admin.enquiries.convert_to_estimate',encrypt($enquiry->id))); ?>"><i class="mdi mdi-cursor-pointer font-size-16 text-success me-1"></i> Create Estimate</a></li>
+                                                <?php endif; ?>
                                             </ul>
                                         </div>
                                     </td>

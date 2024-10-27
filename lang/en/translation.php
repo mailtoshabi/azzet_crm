@@ -207,41 +207,84 @@ return [
   "Leaflet_Maps" => "Leaflet Maps",
 
     "Name" => "Name",
+    "Trade_Name" => "Trade Name",
 
     "Activity_Manage" => "Activity Manage",
     "Activities" => "Activities",
 
-    "Add_Menu" => "Add",
+    "Add_Menu" => "Add New",
     "List_Menu" => "List",
+
     "Catalogue_Manage" => "Catalogue Management",
-    "Product_Manage" => "Product Manage",
-    "Category_Manage" => "Category Manage",
+    "Proforma_Manage" => "Proforma Management",
+    "Account_Manage" => "Account Management",
+    "Account_Settings" => "Account Settings",
+
+    "Category_Manage" => "Categories",
     "Add_Category" => "Add Category",
     "Edit_Category" => "Edit Category",
-    "Category_List" => "Categories",
+    "Category_List" => "Category List",
 
     "Add_Component" => "Add Component",
     "Component_List" => "Components",
 
+    "Uom_Manage" => "Unit of Measurments",
+    "Add_Uom" => "Add Unit of Measurment",
+    "Edit_Uom" => "Edit Unit of Measurment",
+    "Uom_List" => "UOM List",
+
+    "Hsn_Manage" => "HSN Codes",
+    "Add_Hsn" => "Add HSN Code",
+    "Edit_Hsn" => "Edit HSN Code",
+    "Hsn_List" => "HSN Code List",
+
+    "Tax_Manage" => "GST Slabs",
+    "Add_Tax" => "Add GST Slab",
+    "Edit_Tax" => "Edit GST Slab",
+    "Tax_List" => "GST Slab List",
+
+    "Product_Manage" => "Products",
     "Add_Product" => "Add Product",
     "Edit_Product" => "Edit Product",
-    "Product_List" => "Products",
+    "Product_List" => "Product List",
 
-    "Enquiry_Manage" => "Enquiry Manage",
+    "Enquiry_Manage" => "Enquiries",
     "Add_Enquiry" => "Add Enquiry",
     "Edit_Enquiry" => "Edit Enquiry",
-    "Enquiry_List" => "Enquiries",
+    "Enquiry_List" => "Enquiry List",
     "Add_As_Estimate" => "Add As Estimate",
 
-    "Estimate_Manage" => "Estimate Manage",
+    "Estimate_Manage" => "Estimates",
     "Add_Estimate" => "Add Estimate",
     "Edit_Estimate" => "Edit Estimate",
-    "Estimate_List" => "Estimates",
+    "Estimate_List" => "Estimate List",
 
-    "Customer_Manage" => "Customer Manage",
-    "Add_Customer" => "Add Customer",
-    "Edit_Customer" => "Edit Customer",
-    "Customer_List" => "Customers",
+    "Proforma_Invoice" => "Sales Invoices",
+    "Proforma_List" => "Invoice List",
+    "Proforma_Details" => "Proforma Invoice Details",
 
+    "Branch_Manage" => "Branches",
+    "Branch" => "Branch",
+    "Add_Branch" => "Add Branch",
+    "Edit_Branch" => "Edit Branch",
+    "Branch_List" => "Branch List",
 
+    "Customer_Manage" => "Parties",
+    "Customer" => "Party",
+    "Add_Customer" => "Add Party",
+    "Edit_Customer" => "Edit Party",
+    "Customer_List" => "Party List",
+
+    "Executive_Manage" => "Executives",
+    "Add_Executive" => "Add Executive",
+    "Edit_Executive" => "Edit Executive",
+    "Executive_List" => "Executive List",
+
+    "User_Management" => "Users",
+    "Add_User" => "Add User",
+    "UserList" => "User List",
+
+    "Role_Management" => "Roles",
+    "Add_Role" => "Add Role",
+    "Role_List" => "Role List",
 ];

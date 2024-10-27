@@ -5,10 +5,15 @@
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
 <?php $__env->startComponent('admin.dir_components.breadcrumb'); ?>
-<?php $__env->slot('li_1'); ?> <?php echo app('translator')->get('translation.Catalogue_Manage'); ?> <?php $__env->endSlot(); ?>
+<?php $__env->slot('li_1'); ?> <?php echo app('translator')->get('translation.Proforma_Manage'); ?> <?php $__env->endSlot(); ?>
 <?php $__env->slot('li_2'); ?> <?php echo app('translator')->get('translation.Estimate_Manage'); ?> <?php $__env->endSlot(); ?>
 <?php $__env->slot('title'); ?> <?php if(isset($estimate)): ?> <?php echo app('translator')->get('translation.Edit_Estimate'); ?> <?php else: ?> <?php echo app('translator')->get('translation.Add_Estimate'); ?> <?php endif; ?> <?php $__env->endSlot(); ?>
 <?php echo $__env->renderComponent(); ?>
+<?php if(isset($estimate) && !$estimate->sale ): ?>
+<div class="alert alert-warning alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-warning"></i><strong>Warning</strong> - This Estimate is yet to convert as Proforma !!
+</div>
+<?php endif; ?>
 <div class="row">
     <form method="POST" action="<?php echo e(isset($estimate)? route('admin.estimates.update') : route('admin.estimates.store')); ?>" enctype="multipart/form-data">
         <?php echo csrf_field(); ?>
@@ -27,15 +32,18 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="mb-3">
-                                    <label class="control-label">Customer</label>
+                                    <label class="control-label"><?php echo app('translator')->get('translation.Customer'); ?></label>
                                     <select id="customer_id" name="customer_id" class="form-control select2">
-                                        <option value="">Select Customer</option>
+                                        <option value="">Select <?php echo app('translator')->get('translation.Customer'); ?></option>
                                         <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($customer->id); ?>" <?php if(isset($estimate)): ?> <?php echo e($customer->id==$estimate->customer->id ? 'selected':''); ?> <?php endif; ?> ><?php echo e($customer->name); ?></option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                 </div>
-                                <p><a href="<?php echo e(route('admin.customers.create')); ?>"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;New Customer</a></p>
+                                <?php if( isset($estimate) && $estimate->sale): ?>
+                                <?php else: ?>
+                                <p><a href="<?php echo e(route('admin.customers.create')); ?>"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;New <?php echo app('translator')->get('translation.Customer'); ?></a></p>
+                                <?php endif; ?>
                             </div>
 
 
@@ -59,7 +67,7 @@
                                         <select id="products-<?php echo e($index); ?>" name="products[<?php echo e($index); ?>]" class="form-control select2" onChange="getProductDetail(this.value,<?php echo e($index); ?>);">
                                             <option value="">Select Product</option>
                                             <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <option value="<?php echo e($product->id); ?>" <?php echo e($product->id==$estimate_product->id ? 'selected':''); ?>><?php echo e($product->name); ?></option>
+                                                <option value="<?php echo e($product->id); ?>" <?php echo e($product->id==$estimate_product->id ? 'selected':''); ?>><?php echo e($product->name); ?> <?php if(!empty($product->hsn->name)): ?>(HSN <?php echo e($product->hsn->name); ?>)<?php endif; ?></option>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </select>
                                     </div>
@@ -71,7 +79,10 @@
                                         <input id="quantities-<?php echo e($index); ?>" name="quantities[<?php echo e($index); ?>]" type="text" class="form-control"  placeholder="Quantity" value="<?php echo e($estimate_product->pivot->quantity); ?>">
                                     </div>
                                 </div>
+                                <?php if( isset($estimate) && $estimate->sale): ?>
+                                <?php else: ?>
                                 <a class="btn-close" data-target="#close_container_<?php echo e($index); ?>" style="font-size: 18px; padding-top:0;"><i class="fa fa-trash"></i></a>
+                                <?php endif; ?>
                                 <div id="product_detail-<?php echo e($index); ?>" class="col-sm-12">
                                     <hr>
                                     <div class="row">
@@ -108,10 +119,15 @@
                                                     <input id="o_costs-<?php echo e($index.'_'.$index_comp); ?>" name="o_costs[<?php echo e($index); ?>][<?php echo e($index_comp); ?>]" type="hidden" class="o_costs" value="<?php echo e($prod_component->o_cost); ?>">
                                                 </div>
                                             </div>
+                                            <?php if( isset($estimate) && $estimate->sale): ?>
+                                            <?php else: ?>
                                             <a class="btn-close" data-target="#component_close_container_<?php echo e($index.'_'.$index_comp); ?>"><i class="fa fa-trash"></i></a>
+                                            <?php endif; ?>
                                         </div>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </div>
+                                        <?php if( isset($estimate) && $estimate->sale): ?>
+                                        <?php else: ?>
                                         <div class="p-4 pt-1">
                                             <a href="#" data-toggle="add-more-component" data-template="#template_component"
                                             data-close=".wb-close" data-container="#component_container_<?php echo e($index); ?>"
@@ -123,6 +139,7 @@
                                             data-increment='[{"selector":".component_names","attr":"id", "value":"component_names"},{"selector":".costs","attr":"id", "value":"costs"},{"selector":".o_costs","attr":"id", "value":"o_costs"}]'><i
                                             class="fa fa-plus-circle"></i>&nbsp;&nbsp;New Component</a>
                                         </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -139,7 +156,7 @@
                                     <select id="products-0" name="products[0]" class="form-control select2" onChange="getProductDetail(this.value,0);">
                                         <option value="">Select Product</option>
                                         <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($product->id); ?>"><?php echo e($product->name); ?></option>
+                                            <option value="<?php echo e($product->id); ?>"><?php echo e($product->name); ?> <?php if(!empty($product->hsn->name)): ?>(HSN <?php echo e($product->hsn->name); ?>)<?php endif; ?></option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                 </div>
@@ -156,6 +173,8 @@
                         </div>
                     <?php endif; ?>
                 </div>
+                <?php if( isset($estimate) && $estimate->sale): ?>
+                <?php else: ?>
                 <div class="p-4 pt-1">
                     <a href="#" data-toggle="add-more" data-template="#template_product"
                     data-close=".wb-close" data-container="#product_container"
@@ -166,6 +185,7 @@
                     data-increment='[{"selector":".products","attr":"id", "value":"products"},{"selector":".quantities","attr":"id", "value":"quantities"},{"selector":".product_detail","attr":"id", "value":"product_detail"}]'><i
                                 class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add Item</a>
                 </div>
+                <?php endif; ?>
             </div>
 
 
@@ -177,7 +197,7 @@
                         <select id="" name="" class="form-control products" onChange="">
                             <option value="">Select Product</option>
                             <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <option value="<?php echo e($product->id); ?>"><?php echo e($product->name); ?></option>
+                                <option value="<?php echo e($product->id); ?>"><?php echo e($product->name); ?> <?php if(!empty($product->hsn->name)): ?> (HSN <?php echo e($product->hsn->name); ?>)<?php endif; ?></option>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                     </div>
@@ -216,7 +236,8 @@
                     </div>
                 </div>
             </div>
-
+            <?php if( isset($estimate) && $estimate->sale): ?>
+            <?php else: ?>
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex flex-wrap gap-2">
@@ -225,6 +246,7 @@
                     </div>
                 </div>
             </div>
+            <?php endif; ?>
         </div>
     </form>
 </div>

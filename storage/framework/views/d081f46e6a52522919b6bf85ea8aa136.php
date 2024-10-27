@@ -6,11 +6,28 @@
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
 <?php $__env->startComponent('admin.dir_components.breadcrumb'); ?>
-<?php $__env->slot('li_1'); ?> <?php echo app('translator')->get('translation.Customer_Manage'); ?> <?php $__env->endSlot(); ?>
+<?php $__env->slot('li_1'); ?> <?php echo app('translator')->get('translation.Account_Manage'); ?> <?php $__env->endSlot(); ?>
 <?php $__env->slot('li_2'); ?> <?php echo app('translator')->get('translation.Customer_Manage'); ?> <?php $__env->endSlot(); ?>
-<?php $__env->slot('title'); ?> <?php echo app('translator')->get('translation.Customers'); ?> <?php $__env->endSlot(); ?>
+<?php $__env->slot('title'); ?> <?php echo app('translator')->get('translation.Customer_List'); ?> <?php $__env->endSlot(); ?>
 <?php echo $__env->renderComponent(); ?>
-<?php if(session()->has('success')): ?> <p class="text-success"><?php echo e(session()->get('success')); ?> <?php endif; ?></p>
+<?php if(session()->has('success')): ?>
+<div class="alert alert-success alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-success"></i><strong>Success</strong> - <?php echo e(session()->get('success')); ?>
+
+</div>
+<?php endif; ?>
+<div class="row">
+    <div class="col-lg-12">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link <?php if($is_approved==0): ?> active <?php endif; ?>" <?php if($is_approved==0): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.customers.index','status='.encrypt(0))); ?>">Pending</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <?php if($is_approved==1): ?> active <?php endif; ?>" <?php if($is_approved==1): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.customers.index','status='.encrypt(1))); ?>">Approved</a>
+        </li>
+      </ul>
+    </div>
+</div>
 <div class="row">
     <div class="col-lg-12">
         <div class="card mb-0">
@@ -39,6 +56,7 @@
                                     <th scope="col">Mobile</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">City</th>
+                                    <th scope="col">Created</th>
                                     <th style="width: 80px; min-width: 80px;">View</th>
                                 </tr>
                                 </thead>
@@ -62,7 +80,18 @@
 
                                            <td><?php echo e($customer->phone); ?></td>
                                            <td><?php echo e($customer->email); ?></td>
-                                           <td><?php echo e($customer->city); ?></td>
+                                           <td>
+                                            <?php echo e($customer->city); ?>
+
+                                            <br> <small><?php echo e($customer->district->name); ?> District</small>
+                                           </td>
+                                           <td>
+                                            <a href="#" class="text-body">
+                                                On <?php echo e($customer->created_at->format('d M Y')); ?><br>
+                                                By <?php echo e(!empty($customer->executive)? $customer->executive->name . ' (Executive)' : $customer->user->name . ' (Admin)'); ?>
+
+                                            </a>
+                                        </td>
                                            
                                             <td>
                                                 <div class="dropdown">
@@ -72,12 +101,19 @@
                                                     <ul class="dropdown-menu dropdown-menu-end">
                                                         <li><a class="dropdown-item" href="<?php echo e(route('admin.customers.edit',encrypt($customer->id))); ?>"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>
                                                         
+                                                        <?php if(!$customer->is_approved): ?>
                                                         <li><a href="#" class="dropdown-item" data-plugin="delete-data" data-target-form="#form_delete_<?php echo e($loop->iteration); ?>"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>
                                                         <form id="form_delete_<?php echo e($loop->iteration); ?>" method="POST" action="<?php echo e(route('admin.customers.destroy',encrypt($customer->id))); ?>">
                                                             <?php echo csrf_field(); ?>
                                                             <input type="hidden" name="_method" value="DELETE" />
                                                         </form>
-                                                        <li><a class="dropdown-item" href="<?php echo e(route('admin.customers.changeStatus',encrypt($customer->id))); ?>"><i class="mdi mdi-cursor-pointer font-size-16 text-success me-1"></i> <?php echo e($customer->status?'Deactivate':'Activate'); ?></a></li>
+                                                        <?php endif; ?>
+                                                        <?php if($customer->executive): ?>
+                                                            <li><a class="dropdown-item" href="<?php echo e(route('admin.customers.approve',encrypt($customer->id))); ?>"><?php echo $customer->is_approved?'<i class="fas fa-thumbs-down font-size-16 text-danger me-1"></i> Reject':'<i class="fas fa-thumbs-up font-size-16 text-primary me-1"></i> Approve'; ?></a></li>
+                                                        <?php endif; ?>
+                                                        <?php if($customer->is_approved): ?>
+                                                            <li><a class="dropdown-item" href="<?php echo e(route('admin.customers.changeStatus',encrypt($customer->id))); ?>"><?php echo $customer->status?'<i class="fas fa-power-off font-size-16 text-danger me-1"></i> Unpublish':'<i class="fas fa-circle-notch font-size-16 text-primary me-1"></i> Publish'; ?></a></li>
+                                                        <?php endif; ?>
                                                         <li><a class="dropdown-item" href="<?php echo e(route('admin.customers.view',encrypt($customer->id))); ?>"><i class="fa fa-eye font-size-16 text-success me-1"></i> Details</a></li>
                                                     </ul>
                                                 </div>

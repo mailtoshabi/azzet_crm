@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Utilities\Utility;
 use App\Models\Category;
 use App\Models\Component;
+use App\Models\Hsn;
 use App\Models\Product;
+use App\Models\TaxSlab;
+use App\Models\Uom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -15,29 +18,42 @@ use Illuminate\Support\Facades\File;
 class ProductController extends Controller
 {
     public function index() {
-        $products = Product::orderBy('id')->paginate(Utility::PAGINATE_COUNT);
-        return view('admin.products.index',compact('products'));
+        $status = request('status');
+        $count_pending = Product::where('is_approved',0)->count();
+        $is_approved = isset($status)? decrypt(request('status')) : ($count_pending==0 ? 1: 0);
+        $products = Product::orderBy('id','desc')->where('is_approved',$is_approved)->paginate(Utility::PAGINATE_COUNT);
+        return view('admin.products.index',compact('products','is_approved'));
     }
 
     public function create() {
-        $categories = Category::where('status',Utility::ITEM_ACTIVE)->get();
-        $components = Component::where('status',Utility::ITEM_ACTIVE)->get();
-        return view('admin.products.add',compact('categories','components'));
+        $categories = Category::where('status',Utility::ITEM_ACTIVE)->orderBy('id','desc')->get();
+        $uoms = Uom::where('status',Utility::ITEM_ACTIVE)->orderBy('id','asc')->get();
+        $hsns = Hsn::where('status',Utility::ITEM_ACTIVE)->orderBy('id','asc')->get();
+        $tax_slabs = TaxSlab::where('status',Utility::ITEM_ACTIVE)->orderBy('id','asc')->get();
+        $components = Component::where('status',Utility::ITEM_ACTIVE)->orderBy('id','asc')->get();
+        return view('admin.products.add',compact('categories','components','uoms','hsns','tax_slabs'));
     }
 
     public function store () {
         $validated = request()->validate([
             'name' => 'required|unique:products,name',
             'category_id' => 'required',
+            'hsn_id' => 'required',
+            'uom_id' => 'required',
         ]);
-        $input = request()->only(['name','category_id','profit']);
+        $input = request()->only(['name','category_id','description','uom_id','hsn_id']);
         if(request()->hasFile('image')) {
             $extension = request('image')->extension();
             $fileName = Utility::cleanString(request()->name) . date('YmdHis') . '.' . $extension;
             request('image')->storeAs('products', $fileName);
             $input['image'] =$fileName;
         }
+        $profit = empty(request('profit')) ? 0 : request('profit');
+        $branch_id = (Auth::id()==Utility::SUPER_ADMIN_ID)? default_branch()->id : Auth::user()->branch_id;
+        $input['profit'] =$profit;
+        $input['is_approved'] =1;
         $input['user_id'] =Auth::id();
+        $input['branch_id'] = $branch_id;
         $product = Product::create($input);
 
         if(!empty(request('component_names'))) {
@@ -54,9 +70,12 @@ class ProductController extends Controller
 
     public function edit($id) {
         $product = Product::findOrFail(decrypt($id));
-        $categories = Category::where('status',Utility::ITEM_ACTIVE)->get();
-        $components = Component::where('status',Utility::ITEM_ACTIVE)->get();
-        return view('admin.products.add',compact('categories','components','product'));
+        $categories = Category::where('status',Utility::ITEM_ACTIVE)->orderBy('id','desc')->get();
+        $uoms = Uom::where('status',Utility::ITEM_ACTIVE)->orderBy('id','asc')->get();
+        $hsns = Hsn::where('status',Utility::ITEM_ACTIVE)->orderBy('id','asc')->get();
+        $tax_slabs = TaxSlab::where('status',Utility::ITEM_ACTIVE)->orderBy('id','asc')->get();
+        $components = Component::where('status',Utility::ITEM_ACTIVE)->orderBy('id','asc')->get();
+        return view('admin.products.add',compact('categories','components','product','uoms','hsns','tax_slabs'));
     }
 
     public function update () {
@@ -65,8 +84,11 @@ class ProductController extends Controller
         //return Product::DIR_PUBLIC . $product->image;
         $validated = request()->validate([
             'name' => 'required|unique:products,name,'. $id,
+            'category_id' => 'required',
+            'hsn_id' => 'required',
+            'uom_id' => 'required',
         ]);
-        $input = request()->only(['name','category_id','profit']);
+        $input = request()->only(['name','category_id','description','uom_id','hsn_id']);
         if(request('isImageDelete')==1) {
             Storage::delete(Product::DIR_PUBLIC . $product->image);
             $input['image'] =null;
@@ -77,7 +99,10 @@ class ProductController extends Controller
             request('image')->storeAs('products', $fileName);
             $input['image'] =$fileName;
         }
-        $input['user_id'] =Auth::id();
+        $profit = empty(request('profit')) ? 0 : request('profit');
+        $input['profit'] =$profit;
+        $input['is_approved'] =1;
+        // $input['user_id'] =Auth::id();
         $product->update($input);
         $product->components()->detach();
         if(!empty(request('component_names'))) {
@@ -93,20 +118,41 @@ class ProductController extends Controller
 
     public function destroy($id) {
         $product = Product::find(decrypt($id));
+        if(!$product->is_approved) {
         if(!empty($product->image)) {
             Storage::delete(Product::DIR_PUBLIC . $product->image);
             $input['image'] =null;
         }
         $product->delete();
         return redirect()->route('admin.products.index')->with(['success'=>'Product Deleted Successfully']);
+    }else{
+        abort(404);
+    }
     }
 
     public function changeStatus($id) {
         $product = Product::find(decrypt($id));
+        if($product->is_approved) {
         $currentStatus = $product->status;
         $status = $currentStatus ? 0 : 1;
         $product->update(['status'=>$status]);
         return redirect()->route('admin.products.index')->with(['success'=>'Status changed Successfully']);
+        }else{
+            abort(404);
+        }
+    }
+
+    public function approve($id) {
+        $product = Product::find(decrypt($id));
+        if($product->executive) {
+        $currentStatus = $product->is_approved;
+        $status = $currentStatus ? 0 : 1;
+        $product->update(['is_approved'=>$status, 'status'=>$status]);
+        $status = encrypt($status);
+        return redirect()->route('admin.products.index','status='.$status)->with(['success'=>'Data Approved Successfully']);
+        }else{
+            abort(404);
+        }
     }
 
     public function getCost(Request $request) {

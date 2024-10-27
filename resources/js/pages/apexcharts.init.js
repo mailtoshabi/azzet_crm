@@ -1,5 +1,5 @@
 /*
-Template Name: Dason - Admin & Dashboard Template
+Template Name: Azzet - Customer Relationship Management Application
 Author: Themesdesign
 Website: https://themesdesign.in/
 Contact: themesdesign.in@gmail.com
@@ -103,16 +103,16 @@ var options = {
       }
     }]
 }
-  
+
 var chart = new ApexCharts(
     document.querySelector("#line_chart_datalabel"),
     options
 );
-  
+
 chart.render();
 
 
-//  line chart datalabel  
+//  line chart datalabel
 var lineDashedColors = getChartColorsArray("#line_chart_dashed");
 var options = {
     chart: {
@@ -226,7 +226,7 @@ var options = {
     colors: splneAreaColors,
     xaxis: {
         type: 'datetime',
-        categories: ["2018-09-19T00:00:00", "2018-09-19T01:30:00", "2018-09-19T02:30:00", "2018-09-19T03:30:00", "2018-09-19T04:30:00", "2018-09-19T05:30:00", "2018-09-19T06:30:00"],                
+        categories: ["2018-09-19T00:00:00", "2018-09-19T01:30:00", "2018-09-19T02:30:00", "2018-09-19T03:30:00", "2018-09-19T04:30:00", "2018-09-19T05:30:00", "2018-09-19T06:30:00"],
     },
     grid: {
         borderColor: '#f1f1f1',
@@ -523,7 +523,7 @@ var options = {
                     return y.toFixed(0) + " points";
                 }
                 return y;
-  
+
             }
         }
     },
@@ -531,7 +531,7 @@ var options = {
         borderColor: '#f1f1f1'
     }
   }
-  
+
   var chart = new ApexCharts(
     document.querySelector("#mixed_chart"),
     options
@@ -589,7 +589,7 @@ var options = {
   chart: {
       height: 320,
       type: 'pie',
-  }, 
+  },
   series: [44, 55, 41, 17, 15],
   labels: ['Series 1', 'Series 2', 'Series 3', 'Series 4', 'Series 5'],
   colors: pieColors,
@@ -630,7 +630,7 @@ var options = {
   chart: {
       height: 320,
       type: 'donut',
-  }, 
+  },
   series: [44, 55, 41, 17, 15],
   labels: ['Series 1', 'Series 2', 'Series 3', 'Series 4', 'Series 5'],
   colors: donutColors,

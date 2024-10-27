@@ -5,10 +5,26 @@
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
 <?php $__env->startComponent('admin.dir_components.breadcrumb'); ?>
-<?php $__env->slot('li_1'); ?> <?php echo app('translator')->get('translation.Catalogue_Manage'); ?> <?php $__env->endSlot(); ?>
+<?php $__env->slot('li_1'); ?> <?php echo app('translator')->get('translation.Proforma_Manage'); ?> <?php $__env->endSlot(); ?>
 <?php $__env->slot('li_2'); ?> <?php echo app('translator')->get('translation.Enquiry_Manage'); ?> <?php $__env->endSlot(); ?>
 <?php $__env->slot('title'); ?> <?php if(isset($enquiry)): ?> <?php echo app('translator')->get('translation.Edit_Enquiry'); ?> <?php else: ?> <?php echo app('translator')->get('translation.Add_Enquiry'); ?> <?php endif; ?> <?php $__env->endSlot(); ?>
 <?php echo $__env->renderComponent(); ?>
+<?php if(session()->has('error')): ?>
+<div class="alert alert-danger alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-danger"></i><strong>Error</strong> - <?php echo e(session()->get('error')); ?>
+
+</div>
+<?php endif; ?>
+<?php if(isset($enquiry) && !$enquiry->is_approved ): ?>
+<div class="alert alert-warning alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-warning"></i><strong>Warning</strong> - This Enquiry is yet to approve !!
+</div>
+<?php endif; ?>
+<?php if(isset($enquiry) && $enquiry->is_approved && !$enquiry->estimate ): ?>
+<div class="alert alert-warning alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-warning"></i><strong>Warning</strong> - This Enquiry is yet to convert as Estimate !!
+</div>
+<?php endif; ?>
 <div class="row">
     <form method="POST" action="<?php echo e(isset($enquiry)? route('admin.enquiries.update') : route('admin.enquiries.store')); ?>" enctype="multipart/form-data">
         <?php echo csrf_field(); ?>
@@ -27,15 +43,15 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="mb-3">
-                                    <label class="control-label">Customer</label>
+                                    <label class="control-label"><?php echo app('translator')->get('translation.Customer'); ?></label>
                                     <select id="customer_id" name="customer_id" class="form-control select2">
-                                        <option value="">Select Customer</option>
+                                        <option value="">Select <?php echo app('translator')->get('translation.Customer'); ?></option>
                                         <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($customer->id); ?>" <?php if(isset($enquiry)): ?> <?php echo e($customer->id==$enquiry->customer->id ? 'selected':''); ?> <?php endif; ?>><?php echo e($customer->name); ?></option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                 </div>
-                                <p><a href="<?php echo e(route('admin.customers.create')); ?>"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;New Customer</a></p>
+                                <p><a href="<?php echo e(route('admin.customers.create')); ?>"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;New <?php echo app('translator')->get('translation.Customer'); ?></a></p>
                             </div>
 
                         </div>
@@ -136,9 +152,9 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex flex-wrap gap-2">
-                        <button type="submit" class="btn btn-primary waves-effect waves-light"><?php echo e(isset($enquiry) ? 'Update Enquiry' : 'Save'); ?></button>
-                            <?php if((isset($enquiry) && (!$enquiry->estimate))): ?>
-                                <a href="<?php echo e(route('admin.enquiries.convert_to_estimate',encrypt($enquiry->id))); ?>" class="btn btn-primary waves-effect waves-light" >Create Estimate</a>
+                        <button type="submit" class="btn btn-primary waves-effect waves-light"><?php echo e(isset($enquiry) ? $enquiry->is_approved?'Update':'Update & Approve' : 'Save'); ?></button>
+                            <?php if((isset($enquiry) && (!$enquiry->estimate)&&$enquiry->is_approved)): ?>
+                                <a href="<?php echo e(route('admin.enquiries.convert_to_estimate',encrypt($enquiry->id)).'?status=1'); ?>" class="btn btn-primary waves-effect waves-light" >Save as Estimate</a>
                             <?php endif; ?>
                         <button type="reset" class="btn btn-secondary waves-effect waves-light">Cancel</button>
                     </div>

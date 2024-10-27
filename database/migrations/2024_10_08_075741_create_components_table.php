@@ -21,12 +21,12 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
-        Component::create(['name' => 'Paper', 'cost' => 8, 'user_id' => Utility::ADMIN_ID,'created_at' => now()]);
-        Component::create(['name' => 'Handle', 'cost' => 1, 'user_id' => Utility::ADMIN_ID,'created_at' => now()]);
-        Component::create(['name' => 'Print', 'cost' => 2, 'user_id' => Utility::ADMIN_ID,'created_at' => now()]);
-        Component::create(['name' => 'Lamination', 'cost' => 1, 'user_id' => Utility::ADMIN_ID,'created_at' => now()]);
-        Component::create(['name' => 'Job', 'cost' => 2, 'user_id' => Utility::ADMIN_ID,'created_at' => now()]);
-        Component::create(['name' => 'Transport', 'cost' => .35, 'user_id' => Utility::ADMIN_ID,'created_at' => now()]);
+        Component::create(['name' => 'Paper', 'cost' => 8, 'user_id' => Utility::SUPER_ADMIN_ID,'created_at' => now()]);
+        Component::create(['name' => 'Handle', 'cost' => 1, 'user_id' => Utility::SUPER_ADMIN_ID,'created_at' => now()]);
+        Component::create(['name' => 'Print', 'cost' => 2, 'user_id' => Utility::SUPER_ADMIN_ID,'created_at' => now()]);
+        Component::create(['name' => 'Lamination', 'cost' => 1, 'user_id' => Utility::SUPER_ADMIN_ID,'created_at' => now()]);
+        Component::create(['name' => 'Job', 'cost' => 2, 'user_id' => Utility::SUPER_ADMIN_ID,'created_at' => now()]);
+        Component::create(['name' => 'Transport', 'cost' => .35, 'user_id' => Utility::SUPER_ADMIN_ID,'created_at' => now()]);
     }
 
     /**

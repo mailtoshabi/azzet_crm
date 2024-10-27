@@ -5,16 +5,20 @@
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
 <?php $__env->startComponent('admin.dir_components.breadcrumb'); ?>
-<?php $__env->slot('li_1'); ?> <?php echo app('translator')->get('translation.Catalogue_Manage'); ?> <?php $__env->endSlot(); ?>
+<?php $__env->slot('li_1'); ?> <?php echo app('translator')->get('translation.Proforma_Manage'); ?> <?php $__env->endSlot(); ?>
 <?php $__env->slot('li_2'); ?> <?php echo app('translator')->get('translation.Enquiry_Manage'); ?> <?php $__env->endSlot(); ?>
 <?php $__env->slot('title'); ?> <?php echo app('translator')->get('translation.Add_As_Estimate'); ?> <?php $__env->endSlot(); ?>
 <?php echo $__env->renderComponent(); ?>
+<?php if(isset($enquiry) && $enquiry->is_approved && !$enquiry->estimate ): ?>
+<div class="alert alert-warning alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-warning"></i><strong>Warning</strong> - This Enquiry is yet to convert as Estimate !!
+</div>
+<?php endif; ?>
 <div class="row">
-    <form method="POST" action="<?php echo e(route('admin.estimates.store')); ?>" enctype="multipart/form-data">
+    <form method="POST" action="<?php echo e(route('admin.enquiries.store_as_estimate')); ?>" enctype="multipart/form-data">
         <?php echo csrf_field(); ?>
         <?php if(isset($enquiry)): ?>
             <input type="hidden" name="enquiry_id" value="<?php echo e(encrypt($enquiry->id)); ?>" />
-            <input type="hidden" name="_method" value="PUT" />
         <?php endif; ?>
 
         <div class="col-12">
@@ -27,15 +31,15 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="mb-3">
-                                    <label class="control-label">Customer</label>
+                                    <label class="control-label"><?php echo app('translator')->get('translation.Customer'); ?></label>
                                     <select id="customer_id" name="customer_id" class="form-control select2">
-                                        <option value="">Select Customer</option>
+                                        <option value="">Select <?php echo app('translator')->get('translation.Customer'); ?></option>
                                         <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($customer->id); ?>" <?php if(isset($enquiry)): ?> <?php echo e($customer->id==$enquiry->customer->id ? 'selected':''); ?> <?php endif; ?> ><?php echo e($customer->name); ?></option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                 </div>
-                                <p><a href="<?php echo e(route('admin.customers.create')); ?>"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;New Customer</a></p>
+                                <p><a href="<?php echo e(route('admin.customers.create')); ?>"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;New <?php echo app('translator')->get('translation.Customer'); ?></a></p>
                             </div>
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Utilities\Utility;
+use App\Models\Branch;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
@@ -15,34 +16,38 @@ use Illuminate\Support\Facades\Storage;
 class UserController extends Controller
 {
     public function index() {
-        $users = User::orderBy('id')->paginate(Utility::PAGINATE_COUNT);
+        $users = User::orderBy('id','desc')->paginate(Utility::PAGINATE_COUNT);
         return view('admin.users.index',compact('users'));
     }
 
     public function create()
     {
-        $roles = Role::all();
-        return view('admin.users.add',compact('roles'));
+        $roles = Role::orderBy('id','asc')->get();
+        $branches = Branch::where('status',Utility::ITEM_ACTIVE)->orderBy('id','desc')->get();
+        return view('admin.users.add',compact('roles','branches'));
     }
 
     public function store()
     {
         $validated = request()->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
+            'name' => 'required',
+            // 'last_name' => 'required',
             'email' => 'required|email|unique:users,email',
+            'phone' => 'required|string|max:10|min:10|unique:customers,phone',
             'password' => 'required|min:6',
             'role_id' => 'required',
+            'branch_id' => 'required',
         ]);
-        $input = request()->except(['_token','email_verified_at','password']);
-        $input['password']=Hash::make(request('password'));
+        $input = request()->except(['_token','email_verified_at','password','avatar','user_id']);
         if(request()->hasFile('avatar')) {
             $extension = request('avatar')->extension();
-            $fileName = 'user_pic_' . date('YmdHis') . '.' . $extension;
+            // $fileName = 'user_pic_' . date('YmdHis') . '.' . $extension;
+            $fileName = Utility::cleanString(request()->name) . date('YmdHis') . '.' . $extension;
             request('avatar')->storeAs('users', $fileName);
             $input['avatar'] =$fileName;
         }
-        //$input['user_id'] =Auth::id();
+        $input['user_id'] =Auth::id();
+        $input['password'] =Hash::make(request('password'));
         $user = User::create($input);
         $role_id = decrypt(request('role_id'));
         $user->roles()->attach($role_id);
@@ -51,9 +56,10 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        $roles = Role::all();
+        $roles = Role::orderBy('id','asc')->get();
         $user = User::findOrFail(decrypt($id));
-        return view('admin.users.add',compact('user','roles'));
+        $branches = Branch::where('status',Utility::ITEM_ACTIVE)->orderBy('id','desc')->get();
+        return view('admin.users.add',compact('user','roles','branches'));
     }
 
     public function update()
@@ -61,11 +67,13 @@ class UserController extends Controller
         $id = decrypt(request('user_id'));
         $user = User::find($id);
         $validated = request()->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
+            'name' => 'required',
+            // 'last_name' => 'required',
             'email' => 'required|unique:users,email,'. $id,
+            'phone' => 'required|string|max:10|min:10|unique:users,phone,'. $id,
             'password' => 'nullable|min:6',
             'role_id' => 'required',
+            'branch_id' => 'required',
         ]);
 
         $input = request()->except(['_token','_method','email_verified_at','password']);
@@ -84,7 +92,7 @@ class UserController extends Controller
             request('avatar')->storeAs('users', $fileName);
             $input['avatar'] =$fileName;
         }
-        $input['user_id'] =Auth::id();
+        // $input['user_id'] =Auth::id();
         $user->update($input);
         $role_id = decrypt(request('role_id'));
         $user->roles()->sync($role_id);
@@ -93,7 +101,7 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        if(decrypt($id)!=Utility::ADMIN_ID || decrypt($id)!=Auth::id()) {
+        if(decrypt($id)!=Utility::SUPER_ADMIN_ID || decrypt($id)!=Auth::id()) {
             $user = User::find(decrypt($id));
         if(!empty($user->avatar)) {
             Storage::delete(User::DIR_PUBLIC . $user->avatar);

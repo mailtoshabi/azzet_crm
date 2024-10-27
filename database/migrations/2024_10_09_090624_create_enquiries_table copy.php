@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
             $table->foreignId('executive_id')->nullable()->constrained()->onDelete('cascade');
+            $table->boolean('is_approved')->comment('1-Approved 0-Unapporved')->default(0);
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('branch_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
