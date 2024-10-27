@@ -63,7 +63,7 @@ class BranchController extends Controller
             request('image')->storeAs('branches', $fileName);
             $input['image'] =$fileName;
         }
-        $input['user_id'] =Auth::id();
+        // $input['user_id'] =Auth::id();
         $input['is_approved'] = 1;
         $branch = Branch::create($input);
 

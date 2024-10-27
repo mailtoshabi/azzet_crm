@@ -43,7 +43,7 @@ return new class extends Migration
             $table->string('account_number')->nullable(); // Account number
             $table->string('bank_branch')->nullable(); // Branch name
             $table->string('ifsc')->nullable(); // IFSC (Indian Financial System Code)
-
+            $table->boolean('is_approved')->comment('1-Approved 0-Unapporved')->default(0);
             $table->boolean('status')->comment('1-Active 0-Inactive')->default(1);
             $table->timestamps();
         });
