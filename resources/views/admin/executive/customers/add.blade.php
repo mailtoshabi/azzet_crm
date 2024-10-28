@@ -271,10 +271,6 @@
 <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>
 <script>
     $(document).ready(function() {
-        /*X-CSRF-TOKEN*/
-        $.ajaxSetup({
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-        });
         getdistrict({{ Utility::STATE_ID_KERALA }});
     });
     function getdistrict(val) {

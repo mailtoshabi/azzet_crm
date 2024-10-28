@@ -66,6 +66,7 @@
                              </th>
                              <th scope="col">ID</th>
                              <th scope="col"><?php echo app('translator')->get('translation.Customer'); ?></th>
+                             <th scope="col">Created By</th>
                              <th scope="col">Items</th>
                              <th scope="col">Sub Total</th>
                              
@@ -75,7 +76,6 @@
                          </thead>
                          <tbody>
                             <?php $__currentLoopData = $estimates; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $estimate): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-
                                 <tr>
                                     <th scope="row">
                                         <div class="form-check font-size-16">
@@ -89,7 +89,9 @@
                                     <td>
                                         <a href="#" class="text-body"><?php echo e($estimate->customer->name. ' ' . $estimate->customer->city); ?></a>
                                     </td>
-
+                                    <td>
+                                        <a href="#" class="text-body"><?php echo e($estimate->user->name); ?><br><?php echo e($estimate->user->email); ?></a>
+                                    </td>
                                     <td>
                                         <?php $data = ''; $count = 1;  ?>
                                         <?php $__currentLoopData = $estimate->products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -145,10 +147,6 @@
 <script src="<?php echo e(URL::asset('assets/js/pages/datatable-pages.init.js')); ?>"></script>
 <script>
     $(document).ready(function() {
-        /*X-CSRF-TOKEN*/
-        $.ajaxSetup({
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-        });
 
         $(document).on('click','[data-plugin="convert-profoma"]',function(e) {
 		e.preventDefault();

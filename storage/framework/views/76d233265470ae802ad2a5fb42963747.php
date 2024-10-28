@@ -30,7 +30,7 @@
             
 
             <div class="navbar-brand-box">
-                <a href="index" class="logo logo-light branch_logo">
+                <a id="defaultbranch" href="index" class="logo logo-light branch_logo">
                     <span class="logo-lg">
                         <?php if(!empty(default_branch()->image)): ?>
                             <img src="<?php echo e(URL::asset('storage/branches/' . default_branch()->image)); ?>" height="50" alt="" >

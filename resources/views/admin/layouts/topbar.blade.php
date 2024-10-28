@@ -35,7 +35,7 @@
             </form> --}}
 
             <div class="navbar-brand-box">
-                <a href="index" class="logo logo-light branch_logo">
+                <a @if(Auth::id()==Utility::SUPER_ADMIN_ID) id="defaultbranch" @endif href="#" class="logo logo-light branch_logo">
                     <span class="logo-lg">
                         @if(!empty(default_branch()->image))
                             <img src="{{ URL::asset('storage/branches/' . default_branch()->image) }}" height="50" alt="" >

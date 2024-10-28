@@ -3,7 +3,6 @@
 @section('css')
 <link href="{{ URL::asset('assets/libs/select2/select2.min.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('assets/libs/dropzone/dropzone.min.css') }}" rel="stylesheet">
-<link href="{{ URL::asset('assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet">
 @endsection
 @section('content')
 @component('admin.dir_components.breadcrumb')
@@ -269,14 +268,8 @@
 
 @section('script')
 <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>
-<script src="{{ URL::asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
 <script>
-    $(document).ready(function() {
-        /*X-CSRF-TOKEN*/
-        $.ajaxSetup({
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-        });
-    });
+
     $(document).ready(function(){
         $('#add_executive').on('click', function() {
 

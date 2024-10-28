@@ -48,5 +48,63 @@
     <!-- JAVASCRIPT -->
     @include('admin.layouts.vendor-scripts')
 </body>
+<script>
+    $(document).ready(function(){
+        $('#defaultbranch').on('click', function(e) {
+        e.preventDefault();
+        // SweetAlert2 popup with input fields
+        Swal.fire({
+            title: 'Change Branch',
+            html:
+                '<select id="main_branch_id" name="main_branch_id" class="form-control select2">' +
+                                '<option value="">Select Branch</option>' +
+                                '@foreach ($mainbranches as $mainbranch)' +
+                                '<option value="{{ encrypt($mainbranch->id) }}">{{ $mainbranch->name }}</option>' +
+                                '@endforeach' +
+                            '</select><br>',
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: 'Submit',
+            preConfirm: () => {
+                const main_branch_id = document.getElementById('main_branch_id').value;
 
+                // Check if the inputs are valid
+                if (!main_branch_id) {
+                    Swal.showValidationMessage('Please Select a Branch');
+                    return false;
+                }
+                return { main_branch_id: main_branch_id };
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Get input values from the SweetAlert2 popup
+                const main_branch_id = result.value.main_branch_id;
+
+                // Send the data using AJAX
+                $.ajax({
+                    url: '{{ route("admin.branches.makeDefaultGlobal") }}',
+                    type: 'POST',
+                    data: { main_branch_id: main_branch_id },
+                    success: function(response) {
+                        Swal.fire(
+                            'Success!',
+                            'Branch has been changed successfully.',
+                            'success'
+                        ).then((result) => {
+                            refreshPage();
+                        });
+                    },
+                    error: function() {
+                        Swal.fire(
+                            'Error!',
+                            'There was a problem with the submission.',
+                            'error'
+                        );
+                    }
+                });
+            }
+        });
+        });
+    });
+</script>
 </html>

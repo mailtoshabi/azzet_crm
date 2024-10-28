@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Http\Utilities\Utility;
 use App\Models\Affiliate;
 use App\Models\AllSlug;
+use App\Models\Branch;
 use App\Models\Category;
 use App\Models\ClinicType;
 use App\Models\Executive;
@@ -43,6 +44,11 @@ class ComposerServiceProvider extends ServiceProvider
         view()->composer(['admin.layouts.executive.sidebar'], function ($view) {
             $user = Executive::find(Auth::guard('executive')->id());
             $view->with(compact('user'));
+        });
+
+        view()->composer(['admin.layouts.master'], function ($view) {
+            $mainbranches = Branch::where('status',Utility::ITEM_ACTIVE)->get();
+            $view->with(compact('mainbranches'));
         });
 
     }

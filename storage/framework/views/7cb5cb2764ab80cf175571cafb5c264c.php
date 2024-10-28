@@ -16,18 +16,7 @@
 
 </div>
 <?php endif; ?>
-<div class="row">
-    <div class="col-lg-12">
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-          <a class="nav-link <?php if($is_approved==0): ?> active <?php endif; ?>" <?php if($is_approved==0): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.branches.index','status='.encrypt(0))); ?>">Pending</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link <?php if($is_approved==1): ?> active <?php endif; ?>" <?php if($is_approved==1): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.branches.index','status='.encrypt(1))); ?>">Approved</a>
-        </li>
-      </ul>
-    </div>
-</div>
+
 <div class="row">
     <div class="col-lg-12">
         <div class="card mb-0">

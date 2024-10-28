@@ -130,10 +130,6 @@
 
 <script>
     $(document).ready(function() {
-        /*X-CSRF-TOKEN*/
-        $.ajaxSetup({
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-        });
         @if(isset($executive))
             getdistrict({{ Utility::STATE_ID_KERALA }},{{ $executive->district_id }});
         @else

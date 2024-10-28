@@ -11,6 +11,7 @@ class Utility{
     //Constants
 
     const SUPER_ADMIN_ID = 1;
+    const ROLE_ADMIN = 1;
 
     const FROM_MAIL = 'shabeer@gmail.com';
 

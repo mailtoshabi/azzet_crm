@@ -85,6 +85,7 @@
                              </th>
                              <th scope="col">ID</th>
                              <th scope="col">@lang('translation.Customer')</th>
+                             <th scope="col">Created By</th>
                              <th scope="col">Items</th>
                              <th scope="col">Sub Total</th>
                              {{-- @if((request()->has('status')==false)|| (request()->has('status') && decrypt(request()->get('status'))==0)) --}}
@@ -94,7 +95,6 @@
                          </thead>
                          <tbody>
                             @foreach ($estimates as $estimate)
-
                                 <tr>
                                     <th scope="row">
                                         <div class="form-check font-size-16">
@@ -108,7 +108,9 @@
                                     <td>
                                         <a href="#" class="text-body">{{ $estimate->customer->name. ' ' . $estimate->customer->city }}</a>
                                     </td>
-
+                                    <td>
+                                        <a href="#" class="text-body">{{ $estimate->user->name }}<br>{{ $estimate->user->email }}</a>
+                                    </td>
                                     <td>
                                         <?php $data = ''; $count = 1;  ?>
                                         @foreach ($estimate->products as $product )
@@ -164,10 +166,6 @@
 <script src="{{ URL::asset('assets/js/pages/datatable-pages.init.js') }}"></script>
 <script>
     $(document).ready(function() {
-        /*X-CSRF-TOKEN*/
-        $.ajaxSetup({
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-        });
 
         $(document).on('click','[data-plugin="convert-profoma"]',function(e) {
 		e.preventDefault();

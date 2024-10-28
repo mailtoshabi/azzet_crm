@@ -176,10 +176,6 @@ unset($__errorArgs, $__bag); ?>
 
 <script>
     $(document).ready(function() {
-        /*X-CSRF-TOKEN*/
-        $.ajaxSetup({
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-        });
         <?php if(isset($executive)): ?>
             getdistrict(<?php echo e(Utility::STATE_ID_KERALA); ?>,<?php echo e($executive->district_id); ?>);
         <?php else: ?>

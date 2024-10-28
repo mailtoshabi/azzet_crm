@@ -88,7 +88,7 @@
                                  </div>
                              </th>
                              <th scope="col">@lang('translation.Customer')</th>
-                             <th scope="col">Enquiry By</th>
+                             <th scope="col">Created By</th>
                              <th scope="col">Items</th>
                              <th scope="col">Status</th>
                              <th style="width: 80px; min-width: 80px;">Action</th>
@@ -144,11 +144,11 @@
                                                     <input type="hidden" name="_method" value="DELETE" />
                                                 </form>
 
-                                                @if($enquiry->executive)
+                                                {{-- @if($enquiry->executive) --}}
                                                 @if(!$enquiry->estimate)
                                                 <li><a class="dropdown-item" href="{{ route('admin.enquiries.changeStatus',encrypt($enquiry->id))}}">{!! $enquiry->is_approved?'<i class="fas fa-thumbs-down font-size-16 text-danger me-1"></i> Reject':'<i class="fas fa-thumbs-up font-size-16 text-primary me-1"></i> Approve' !!}</a></li>
                                                 @endif
-                                                @endif
+                                                {{-- @endif --}}
                                                 @if(!$enquiry->estimate&&$enquiry->is_approved)
                                                     <li><a class="dropdown-item" href="{{ route('admin.enquiries.convert_to_estimate',encrypt($enquiry->id)) }}"><i class="mdi mdi-cursor-pointer font-size-16 text-success me-1"></i> Create Estimate</a></li>
                                                 @endif

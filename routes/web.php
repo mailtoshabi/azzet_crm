@@ -172,7 +172,6 @@ Route::group(['as'=>'admin.', 'middleware'=>'auth', 'prefix'=>'admin'], function
         Route::post('/add-frieght',[SaleController::class,'addFreight'])->name('addFreight');
         Route::post('/add-discount',[SaleController::class,'addDiscount'])->name('addDiscount');
         Route::get('/change-status/{id}/{status}',[SaleController::class,'changeStatus'])->name('changeStatus');
-        // Route::post('/add-executive',[SaleController::class,'addExecutive'])->name('addExecutive');
     });
 
     Route::group(['prefix'=>'branches', 'as'=>'branches.', 'middleware' => ['role:Administrator']], function() {
@@ -185,6 +184,7 @@ Route::group(['as'=>'admin.', 'middleware'=>'auth', 'prefix'=>'admin'], function
         Route::delete('/destroy/{id}',[BranchController::class,'destroy'])->name('destroy');
         Route::get('/change-status/{id}',[BranchController::class,'changeStatus'])->name('changeStatus');
         Route::get('/make-default/{id}',[BranchController::class,'makeDefault'])->name('makeDefault');
+        Route::post('/make-global-default',[BranchController::class,'makeDefaultGlobal'])->name('makeDefaultGlobal');
         Route::post('/districts', [BranchController::class,'distric_list'])->name('list.districts');
     });
 

@@ -21,7 +21,7 @@
     <div class="col-lg-12">
     <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link <?php if($has_proforma==0): ?> active <?php endif; ?>" <?php if($has_proforma==0): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.estimates.index','status='.encrypt(0))); ?>">Active</a>
+          <a class="nav-link <?php if($has_proforma==0): ?> active <?php endif; ?>" <?php if($has_proforma==0): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.estimates.index','status='.encrypt(0))); ?>">New <span class="badge rounded-pill bg-soft-danger text-danger float-end"><?php echo e($count_new); ?></span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link <?php if($has_proforma==1): ?> active <?php endif; ?>" <?php if($has_proforma==1): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.estimates.index','status='.encrypt(1))); ?>">History</a>
@@ -145,10 +145,6 @@
 <script src="<?php echo e(URL::asset('assets/js/pages/datatable-pages.init.js')); ?>"></script>
 <script>
     $(document).ready(function() {
-        /*X-CSRF-TOKEN*/
-        $.ajaxSetup({
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-        });
 
         $(document).on('click','[data-plugin="convert-profoma"]',function(e) {
 		e.preventDefault();

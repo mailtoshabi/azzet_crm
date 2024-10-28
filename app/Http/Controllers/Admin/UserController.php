@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Storage;
 class UserController extends Controller
 {
     public function index() {
-        $users = User::orderBy('id','desc')->paginate(Utility::PAGINATE_COUNT);
+        $users = User::orderBy('id','desc')->where('branch_id',default_branch()->id)->paginate(Utility::PAGINATE_COUNT);
         return view('admin.users.index',compact('users'));
     }
 
@@ -36,7 +36,6 @@ class UserController extends Controller
             'phone' => 'required|string|max:10|min:10|unique:customers,phone',
             'password' => 'required|min:6',
             'role_id' => 'required',
-            'branch_id' => 'required',
         ]);
         $input = request()->except(['_token','email_verified_at','password','avatar','user_id']);
         if(request()->hasFile('avatar')) {
@@ -48,6 +47,7 @@ class UserController extends Controller
         }
         $input['user_id'] =Auth::id();
         $input['password'] =Hash::make(request('password'));
+        $input['branch_id'] = default_branch()->id;
         $user = User::create($input);
         $role_id = decrypt(request('role_id'));
         $user->roles()->attach($role_id);

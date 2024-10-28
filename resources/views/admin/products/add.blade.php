@@ -238,12 +238,7 @@
 </script>
 
 <script>
-    $(document).ready(function() {
-        /*X-CSRF-TOKEN*/
-        $.ajaxSetup({
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-        });
-    });
+
     function getcost(val, position) {
         var formData = {'component_id' : val, 'position':position};
         $.ajax({

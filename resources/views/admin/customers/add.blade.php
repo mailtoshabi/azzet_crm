@@ -369,10 +369,7 @@
 <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>
 <script>
     $(document).ready(function() {
-        /*X-CSRF-TOKEN*/
-        $.ajaxSetup({
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-        });
+
         @if(isset($customer))
             getdistrict({{ Utility::STATE_ID_KERALA }},{{ $customer->district_id }});
         @else

@@ -242,7 +242,6 @@
 
 <?php $__env->startSection('css'); ?>
 <link href="<?php echo e(URL::asset('assets/css/invoice.css')); ?>" rel="stylesheet" type="text/css" />
-<link href="<?php echo e(URL::asset('assets/libs/sweetalert2/sweetalert2.min.css')); ?>" rel="stylesheet">
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('script'); ?>
@@ -252,15 +251,8 @@
 <script src="<?php echo e(URL::asset('/assets/js/app.min.js')); ?>"></script>
 <script src="<?php echo e(URL::asset('assets/js/pages/datatable-pages.init.js')); ?>"></script>
 
-<script src="<?php echo e(URL::asset('assets/libs/sweetalert2/sweetalert2.min.js')); ?>"></script>
-
 <script>
-    $(document).ready(function() {
-        /*X-CSRF-TOKEN*/
-        $.ajaxSetup({
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-        });
-    });
+
     $(document).ready(function() {
         $('#add_freight').on('click', function() {
 

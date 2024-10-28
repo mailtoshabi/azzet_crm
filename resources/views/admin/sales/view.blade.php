@@ -286,7 +286,6 @@
 
 @section('css')
 <link href="{{ URL::asset('assets/css/invoice.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ URL::asset('assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet">
 @endsection
 
 @section('script')
@@ -295,19 +294,10 @@
 <script src="{{ URL::asset('assets/libs/datatables.net-responsive/datatables.net-responsive.min.js') }}"></script>
 <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>
 <script src="{{ URL::asset('assets/js/pages/datatable-pages.init.js') }}"></script>
-
-<script src="{{ URL::asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
-{{-- <script src="{{ URL::asset('assets/js/pages/sweetalert.init.js') }}"></script> --}}
 <script>
-    $(document).ready(function() {
-        /*X-CSRF-TOKEN*/
-        $.ajaxSetup({
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-        });
-    });
+
     $(document).ready(function() {
         $('#add_freight').on('click', function() {
-
             // SweetAlert2 popup with input fields
             Swal.fire({
                 title: 'Add Your Delivery Charge',
@@ -425,67 +415,6 @@
                 }
             });
 	    });
-
-
-        // $('#add_executive').on('click', function() {
-
-        //     // SweetAlert2 popup with input fields
-        //     Swal.fire({
-        //         title: 'Assign to an Executive',
-        //         html:
-        //             '<select id="executive_id" name="executive_id" class="form-control select2">' +
-        //                             '<option value="">Select Executive</option>' +
-        //                             '@foreach ($executives as $executive)' +
-        //                             '<option value="{{ $executive->id }}" @isset($sale->executive) {{ $executive->id==$sale->executive->id ? "selected":"" }} @endisset>{{ $executive->name }}</option>' +
-        //                             '@endforeach' +
-        //                         '</select><br>' +
-        //             '<input type="hidden" id="sale_id" class="form-control" value="{{ encrypt($sale->id) }}">',
-        //         focusConfirm: false,
-        //         showCancelButton: true,
-        //         confirmButtonText: 'Submit',
-        //         preConfirm: () => {
-        //             const executive_id = document.getElementById('executive_id').value;
-        //             const sale_id = document.getElementById('sale_id').value;
-
-        //             // Check if the inputs are valid
-        //             if (!executive_id) {
-        //                 Swal.showValidationMessage('Please Select an Executive');
-        //                 return false;
-        //             }
-        //             return { executive_id: executive_id, sale_id: sale_id };
-        //         }
-        //     }).then((result) => {
-        //         if (result.isConfirmed) {
-        //             // Get input values from the SweetAlert2 popup
-        //             const executive_id = result.value.executive_id;
-        //             const sale_id = result.value.sale_id;
-
-        //             // Send the data using AJAX
-        //             $.ajax({
-        //                 url: '{{ route("admin.sales.addExecutive") }}',
-        //                 type: 'POST',
-        //                 data: { executive_id: executive_id, sale_id: sale_id },
-        //                 success: function(response) {
-        //                     Swal.fire(
-        //                         'Success!',
-        //                         'Your data has been submitted.',
-        //                         'success'
-        //                     ).then((result) => {
-        //                         refreshPage();
-        //                         // console.log(response);
-        //                     });
-        //                 },
-        //                 error: function() {
-        //                     Swal.fire(
-        //                         'Error!',
-        //                         'There was a problem with the submission.',
-        //                         'error'
-        //                     );
-        //                 }
-        //             });
-        //         }
-        //     });
-        //     });
 
     });
 

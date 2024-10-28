@@ -7,6 +7,7 @@
 <script src="{{ URL::asset('/assets/libs/feather-icons/feather-icons.min.js') }}"></script>
 <!-- pace js -->
 <script src="{{ URL::asset('assets/libs/pace-js/pace-js.min.js') }}"></script>
+<script src="{{ URL::asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
 <script src="{{ URL::asset('assets/js/global.js') }}"></script>
 @yield('script')
 @yield('script-bottom')

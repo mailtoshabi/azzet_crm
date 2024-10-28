@@ -258,13 +258,7 @@
 <script src="<?php echo e(URL::asset('assets/js/pages/ecommerce-select2.init.js')); ?>"></script>
 <script src="<?php echo e(URL::asset('/assets/js/app.min.js')); ?>"></script>
 <script>
-    $(document).ready(function() {
-        /*X-CSRF-TOKEN*/
-        $.ajaxSetup({
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-        });
-        // getcost(<?php echo e(Utility::STATE_ID_KERALA); ?>);
-    });
+
     function getProductDetail(val, position) {
         var formData = {'product_id' : val, 'position':position};
         $.ajax({

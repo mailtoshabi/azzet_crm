@@ -184,6 +184,12 @@ class BranchController extends Controller
         return redirect()->route('admin.branches.index')->with(['success'=>'Status changed Successfully']);
     }
 
+    public function makeDefaultGlobal() {
+
+        $default_branch = session(['default_branch' => request('main_branch_id')]);
+        return 1;
+    }
+
     public function makeDefault($id) {
         $default_branch = session(['default_branch' => $id]);
         return redirect()->route('admin.branches.index')->with(['success'=>'Changed to Default Successfully']);

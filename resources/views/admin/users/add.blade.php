@@ -25,7 +25,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="mb-3">
                                 <label for="name">Name</label>
                                 <input id="name" name="name" type="text" class="form-control"  placeholder="Name" value="{{ isset($user)?$user->name:old('name')}}">
@@ -33,14 +33,14 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="mb-3">
                                 <label for="phone">Mobile</label>
                                 <input id="phone" name="phone" type="text" class="form-control" placeholder="Mobile" value="{{ isset($user)?$user->phone:old('phone')}}">
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
+                        {{-- <div class="col-sm-4">
                             <div class="mb-3">
                                 <label class="control-label">Branch</label>
                                 <select id="branch_id" name="branch_id" class="form-control select2">
@@ -51,7 +51,7 @@
                                 </select>
                                 @error('branch_id') <p class="text-danger">{{ $message }}</p> @enderror
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -85,7 +85,9 @@
                                 <select id="role_id" name="role_id" class="form-control select2">
                                     <option value="">Select</option>
                                     @foreach ($roles as $role )
+                                        @if($role->id != Utility::ROLE_ADMIN)
                                         <option value="{{ encrypt($role->id) }}" {{ isset($user)&&($user->roles->contains($role->id))?'selected':''}}>{{ $role->display_name }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                                 @error('role_id') <p class="text-danger">{{ $message }}</p> @enderror

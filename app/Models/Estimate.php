@@ -55,4 +55,9 @@ class Estimate extends Model
         return $this->belongsTO(Branch::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTO(User::class);
+    }
+
 }

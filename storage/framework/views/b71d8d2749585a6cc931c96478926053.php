@@ -2,7 +2,6 @@
 <?php $__env->startSection('css'); ?>
 <link href="<?php echo e(URL::asset('assets/libs/select2/select2.min.css')); ?>" rel="stylesheet">
 <link href="<?php echo e(URL::asset('assets/libs/dropzone/dropzone.min.css')); ?>" rel="stylesheet">
-<link href="<?php echo e(URL::asset('assets/libs/sweetalert2/sweetalert2.min.css')); ?>" rel="stylesheet">
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
 <?php $__env->startComponent('admin.dir_components.breadcrumb'); ?>
@@ -136,14 +135,8 @@
 
 <?php $__env->startSection('script'); ?>
 <script src="<?php echo e(URL::asset('/assets/js/app.min.js')); ?>"></script>
-<script src="<?php echo e(URL::asset('assets/libs/sweetalert2/sweetalert2.min.js')); ?>"></script>
 <script>
-    $(document).ready(function() {
-        /*X-CSRF-TOKEN*/
-        $.ajaxSetup({
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-        });
-    });
+
     $(document).ready(function(){
         $('#add_executive').on('click', function() {
 

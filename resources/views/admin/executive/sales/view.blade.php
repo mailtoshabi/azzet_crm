@@ -271,7 +271,6 @@
 
 @section('css')
 <link href="{{ URL::asset('assets/css/invoice.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ URL::asset('assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet">
 @endsection
 
 @section('script')
@@ -281,15 +280,8 @@
 <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>
 <script src="{{ URL::asset('assets/js/pages/datatable-pages.init.js') }}"></script>
 
-<script src="{{ URL::asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
-{{-- <script src="{{ URL::asset('assets/js/pages/sweetalert.init.js') }}"></script> --}}
 <script>
-    $(document).ready(function() {
-        /*X-CSRF-TOKEN*/
-        $.ajaxSetup({
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-        });
-    });
+
     $(document).ready(function() {
         $('#add_freight').on('click', function() {
 

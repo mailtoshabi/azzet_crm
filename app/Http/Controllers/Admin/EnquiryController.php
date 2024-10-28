@@ -42,7 +42,7 @@ class EnquiryController extends Controller
 
         $branch_id = (Auth::id()==Utility::SUPER_ADMIN_ID)? default_branch()->id : Auth::user()->branch_id;
         $input['user_id'] =Auth::id();
-        $input['is_approved'] =1;
+        $input['is_approved'] =0;
         $input['branch_id'] = $branch_id;
         $enquiry = Enquiry::create($input);
 

@@ -94,9 +94,10 @@
                                                 <i class="bx bx-dots-horizontal-rounded"></i>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
+                                            <?php if(Auth::id()!=$user->id || $user->id!=Utility::SUPER_ADMIN_ID): ?>
                                             <li><a href="<?php echo e(route('admin.users.edit',encrypt($user->id))); ?>" class="dropdown-item"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>
                                             
-                                            <?php if(Auth::id()!=$user->id || $user->id!=Utility::SUPER_ADMIN_ID): ?>
+
                                                 <li><a href="#" class="dropdown-item" data-plugin="delete-data" data-target-form="#form_delete_<?php echo e($loop->iteration); ?>"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>
                                             <form id="form_delete_<?php echo e($loop->iteration); ?>" method="POST" action="<?php echo e(route('admin.users.destroy',encrypt($user->id))); ?>">
                                                 <?php echo csrf_field(); ?>
