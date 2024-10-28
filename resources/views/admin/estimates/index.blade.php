@@ -21,7 +21,7 @@
     <div class="col-lg-12">
     <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link @if($has_proforma==0) active @endif" @if($has_proforma==0)aria-current="page"@endif href="{{ route('admin.estimates.index','status='.encrypt(0)) }}">Active</a>
+          <a class="nav-link @if($has_proforma==0) active @endif" @if($has_proforma==0)aria-current="page"@endif href="{{ route('admin.estimates.index','status='.encrypt(0)) }}">New <span class="badge rounded-pill bg-soft-danger text-danger float-end">{{ $count_new }}</span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link @if($has_proforma==1) active @endif" @if($has_proforma==1)aria-current="page"@endif href="{{ route('admin.estimates.index','status='.encrypt(1)) }}">History</a>

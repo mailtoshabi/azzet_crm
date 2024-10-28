@@ -55,11 +55,14 @@
                             @endunless
 
                             @unless (empty($customer->executive))
-                                <p class="text-muted mb-0"><b>Executive Name : {{ $customer->executive->name }}</b> <a id="add_executive" href="#">Change</a></p>
-                            @endunless
-                            @empty($customer->executive)
-                            <p class="text-muted mb-0"><a id="add_executive" href="#">Assign to an Executive</a></p>
-                            @endempty
+                            <p class="text-muted mb-0"><b>Executive Name : {{ $customer->executive->name }}</b><br>
+                                {{-- <a id="add_executive" href="#">Change</a></p> --}}
+                                <button type="button" id="add_executive" class="btn btn-primary waves-effect waves-light">Change Executive</button><br><br>
+                        @endunless
+                        @empty($customer->executive)
+                            {{-- <p class="text-muted mb-0"><a href="#">Assign to an Executive</a></p> --}}
+                            <button type="button" id="add_executive" class="btn btn-primary waves-effect waves-light">Assign to an Executive</button><br><br>
+                        @endempty
                             {{-- <div class="row mb-3">
                                 <div class="col-md-6">
                                     <div>

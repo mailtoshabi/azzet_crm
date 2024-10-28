@@ -25,15 +25,11 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-6">
+                            
                             <div class="mb-3">
-                                <label class="control-label">Branch</label>
-                                <select id="branch_id" name="branch_id" class="form-control select2">
-                                    <option value="">Select Branch</option>
-                                    <?php $__currentLoopData = $branches; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $branch): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($branch->id); ?>" <?php if(isset($executive)): ?> <?php echo e($branch->id==$executive->branch->id ? 'selected':''); ?> <?php endif; ?>><?php echo e($branch->name); ?></option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                </select>
-                                <?php $__errorArgs = ['branch_id'];
+                                <label for="name">Name</label>
+                                <input id="name" name="name" type="text" class="form-control"  placeholder="Name" value="<?php echo e(isset($executive)?$executive->name:old('name')); ?>">
+                                <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -42,11 +38,21 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
                             <div class="mb-3">
-                                <label for="name">Name</label>
-                                <input id="name" name="name" type="text" class="form-control"  placeholder="Name" value="<?php echo e(isset($executive)?$executive->name:old('name')); ?>">
+                                <label for="phone">Mobile</label>
+                                <input id="phone" name="phone" type="text" class="form-control" placeholder="Mobile" value="<?php echo e(isset($executive)?$executive->phone:old('phone')); ?>">
+                                <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <p class="text-danger"><?php echo e($message); ?></p> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                            </div>
+                            <div class="mb-3">
+                                <label for="city">Place</label>
+                                <input id="city" name="city" type="text" class="form-control" placeholder="Place" value="<?php echo e(isset($executive)?$executive->city:old('city')); ?>">
                                 <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -60,14 +66,48 @@ unset($__errorArgs, $__bag); ?>
 
                         <div class="col-sm-6">
                             <div class="mb-3">
-                                <label for="phone">Mobile</label>
-                                <input id="phone" name="phone" type="text" class="form-control" placeholder="Mobile" value="<?php echo e(isset($executive)?$executive->phone:old('phone')); ?>">
+                                <label for="postal_code">Postal Code</label>
+                                <input id="postal_code" name="postal_code" type="text" class="form-control"  placeholder="Postal Code" value="<?php echo e(isset($executive)?$executive->postal_code:old('postal_code')); ?>">
+                                <?php $__errorArgs = ['postal_code'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <p class="text-danger"><?php echo e($message); ?></p> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="mb-3">
-                                <label for="city">Place</label>
-                                <input id="city" name="city" type="text" class="form-control" placeholder="Place" value="<?php echo e(isset($executive)?$executive->city:old('city')); ?>">
+
+                            <div class="mb-3 required">
+                                <label class="control-label">State</label>
+                                <select id="state_id" name="state_id" class="form-control select2" onChange="getdistrict(this.value,0);">
+                                    <option value="">Select State</option>
+                                    <?php $__currentLoopData = $states; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $state): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($state->id); ?>" <?php echo e($state->id==Utility::STATE_ID_KERALA ? 'selected':''); ?>><?php echo e($state->name); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </select>
+                                <?php $__errorArgs = ['state_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <p class="text-danger"><?php echo e($message); ?></p> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                            </div>
+                            <div class="mb-3 required">
+                                <label class="control-label">District</label>
+                                <select name="district_id" id="district-list" class="form-control select2">
+                                    <option value="">Select District</option>
+                                </select>
+                                <?php $__errorArgs = ['district_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <p class="text-danger"><?php echo e($message); ?></p> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                     </div>
@@ -133,6 +173,32 @@ unset($__errorArgs, $__bag); ?>
 <script src="<?php echo e(URL::asset('assets/libs/dropzone/dropzone.min.js')); ?>"></script>
 <script src="<?php echo e(URL::asset('assets/js/pages/ecommerce-select2.init.js')); ?>"></script>
 <script src="<?php echo e(URL::asset('/assets/js/app.min.js')); ?>"></script>
+
+<script>
+    $(document).ready(function() {
+        /*X-CSRF-TOKEN*/
+        $.ajaxSetup({
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+        });
+        <?php if(isset($executive)): ?>
+            getdistrict(<?php echo e(Utility::STATE_ID_KERALA); ?>,<?php echo e($executive->district_id); ?>);
+        <?php else: ?>
+            getdistrict(<?php echo e(Utility::STATE_ID_KERALA); ?>,0);
+        <?php endif; ?>
+    });
+    function getdistrict(val,d_id) {
+        var formData = {'s_id' : val, 'd_id':d_id};
+        $.ajax({
+            type: "POST",
+            url: "<?php echo e(route('admin.executives.list.districts')); ?>",
+            data:formData,
+            success: function(data){
+                $("#district-list").html(data);
+                console.log(data);
+            }
+        });
+    }
+</script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('admin.layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\azzet_crm\resources\views\admin\executives\add.blade.php ENDPATH**/ ?>

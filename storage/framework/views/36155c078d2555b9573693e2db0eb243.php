@@ -79,7 +79,7 @@
                                      <label class="form-check-label" for="checkAll"></label>
                                  </div>
                              </th>
-                             <th scope="col">Date</th>
+                             <th scope="col">Invoice No</th>
                              <th scope="col">Customer</th>
                              <th scope="col">Items</th>
                              <th style="width: 80px; min-width: 80px;">View</th>
@@ -95,7 +95,7 @@
                                             <label class="form-check-label" for="contacusercheck1"></label>
                                         </div>
                                     </th>
-                                    <td><?php echo e($sale->created_at->format('d-m-Y H:i:s')); ?></td>
+                                    <td><?php echo e($sale->invoice_no); ?><br><?php echo e($sale->created_at->format('d-m-Y H:i:s')); ?></td>
                                     <td>
                                         <a href="#" class="text-body"><?php echo e($sale->estimate->customer->name); ?></a>
                                     </td>

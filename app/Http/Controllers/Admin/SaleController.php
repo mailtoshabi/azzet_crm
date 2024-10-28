@@ -8,6 +8,7 @@ use App\Models\Component;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Estimate;
+use App\Models\Executive;
 use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,19 +23,20 @@ class SaleController extends Controller
         // $sales = Sale::orderBy('id','desc')->paginate(Utility::PAGINATE_COUNT);
         $status_req = request('status');
         $status = isset($status_req)? decrypt($status_req) : 0;
+
         $sales = Sale::orderBy('sales.id','desc')
         ->leftJoin('estimates','sales.estimate_id','=','estimates.id')
         ->where('estimates.branch_id',default_branch()->id)
         ->where('sales.status',$status)
         ->select('sales.*')->distinct()
         ->paginate(Utility::PAGINATE_COUNT);
-
         return view('admin.sales.index',compact('sales','status'));
     }
 
     public function show($id)
     {
         $sale = Sale::findOrFail(decrypt($id));
+        $executives = Executive::where('branch_id',default_branch()->id)->where('status',Utility::ITEM_ACTIVE)->get();
 
         // $sub_total = Sale::with('products')
         //     ->join('product_sale', 'sales.id', '=', 'product_sale.sale_id')
@@ -43,7 +45,7 @@ class SaleController extends Controller
         //     ->first()
         //     ->total; // this is right code, But done an easy way in Sale Model for sub_total
 
-        return view('admin.sales.view',compact('sale'));
+        return view('admin.sales.view',compact('sale','executives'));
     }
 
     public function view_invoice($id) {
@@ -82,6 +84,14 @@ class SaleController extends Controller
         $status = decrypt($status);
         $sale->update(['status'=>$status]);
         // return redirect()->route('admin.customers.index')->with(['success'=>'Status changed Successfully']);
+        return $sale;
+    }
+
+    public function addExecutive() {
+        $id = request('sale_id');
+        $executive_id = request('executive_id');
+        $sale = Sale::find(decrypt($id));
+        $sale->update(['executive_id'=>$executive_id]);
         return $sale;
     }
 

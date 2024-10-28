@@ -23,10 +23,10 @@ class CustomerController extends Controller
     public function index() {
         $status = request('status');
         $count_pending = Customer::where('is_approved',Utility::ITEM_INACTIVE)->where('branch_id',default_branch()->id)->count();
-        // return $count_pending;
+        $count_new = $count_pending<99? $count_pending:'99+';
         $is_approved = isset($status)? decrypt(request('status')) : ($count_pending==0?1:0);
         $customers = Customer::orderBy('id','desc')->where('branch_id',default_branch()->id)->where('is_approved',$is_approved)->paginate(Utility::PAGINATE_COUNT);
-        return view('admin.customers.index',compact('customers','is_approved'));
+        return view('admin.customers.index',compact('customers','is_approved','count_new'));
     }
 
     /**
@@ -59,7 +59,7 @@ class CustomerController extends Controller
             'district_id' => 'required',
             'state_id' => 'required',
         ]);
-        $input = request()->except(['_token','image','contact_names','phones','emails']);
+        $input = request()->except(['_token','image','contact_names','phones','emails','isImageDelete']);
         if(request()->hasFile('image')) {
             $extension = request('image')->extension();
             $fileName = Utility::cleanString(request()->name) . date('YmdHis') . '.' . $extension;
@@ -133,7 +133,7 @@ class CustomerController extends Controller
             'state_id' => 'required',
             'branch_id' => 'required',
         ]);
-        $input = request()->except(['_token','_method','customer_id','image','contact_names','phones','emails']);
+        $input = request()->except(['_token','_method','customer_id','image','contact_names','phones','emails','isImageDelete']);
         if(request('isImageDelete')==1) {
             Storage::delete(Customer::DIR_PUBLIC . $customer->image);
             $input['image'] =null;

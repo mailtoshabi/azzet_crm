@@ -23,9 +23,12 @@ class SaleController extends Controller
         $status_req = request('status');
         $status = isset($status_req)? decrypt($status_req) : 0;
         $sales = Sale::orderBy('sales.id','desc')
-        ->leftJoin('estimates','sales.estimate_id','=','estimates.id')
-        ->where('estimates.branch_id',default_branch()->id)
-        ->where('sales.executive_id',Auth::guard('executive')->id())
+        ->join('estimates','sales.estimate_id','=','estimates.id')
+        ->join('customers','estimates.customer_id','=','customers.id')
+        ->join('executives','customers.executive_id','=','executives.id')
+
+        // ->where('estimates.branch_id',default_branch()->id)
+        ->where('executives.id',Auth::guard('executive')->id())
         ->where('sales.status',$status)
         ->select('sales.*')->distinct()
         ->paginate(Utility::PAGINATE_COUNT);

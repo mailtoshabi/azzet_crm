@@ -4,6 +4,7 @@
 
 use App\Http\Utilities\Utility;
 use App\Models\Branch;
+use App\Models\Sale;
 use Illuminate\Support\Facades\Route;
 
 if (!function_exists('set_active')) {
@@ -37,3 +38,16 @@ if (!function_exists('default_branch')) {
         return $default_branch;
     }
 }
+
+if (!function_exists('sales_count')) {
+    function sales_count($staus)
+    {
+        $count = Sale::leftJoin('estimates','sales.estimate_id','=','estimates.id')
+        ->where('estimates.branch_id',default_branch()->id)
+        ->where('sales.status',$staus)->distinct()->count();
+        $count_new = $count<99? $count:'99+';
+        $data = $count_new==0?'':'<span class="badge rounded-pill bg-soft-danger text-danger float-end">' . $count_new . '</span>';
+        return $data;
+    }
+}
+

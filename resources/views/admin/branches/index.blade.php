@@ -16,7 +16,7 @@
     <i class="mdi mdi-check-all me-3 align-middle text-success"></i><strong>Success</strong> - {{ session()->get('success') }}
 </div>
 @endif
-<div class="row">
+{{-- <div class="row">
     <div class="col-lg-12">
     <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -27,7 +27,7 @@
         </li>
       </ul>
     </div>
-</div>
+</div> --}}
 <div class="row">
     <div class="col-lg-12">
         <div class="card mb-0">

@@ -22,7 +22,16 @@
                         <p class="text-muted mb-0">{{ $sale->estimate->customer->state->name }} - {{ $sale->estimate->customer->postal_code }}</p>
                         {{-- <p class="text-muted mb-2">{{ $sale->estimate->customer->postal_code }}</p> --}}
                         <p class="text-primary mb-0">Mob:{{ $sale->estimate->customer->phone }}</p>
-                        <p class="text-success mb-2">Email:{{ $sale->estimate->customer->email }}</p>
+                        @unless (empty($sale->estimate->customer->email))<p class="text-success mb-2">Email:{{ $sale->estimate->customer->email }}</p>@endunless
+
+
+                        <p class="text-muted mb-0"><b>Executive Name : {{ $sale->estimate->customer->executive->name }}</b><br><br>
+                        {{-- @unless (empty($sale->executive))
+                        <button type="button" id="add_executive" class="btn btn-primary waves-effect waves-light">Change Executive</button><br><br>
+                        @endunless
+                        @empty($sale->executive)
+                            <button type="button" id="add_executive" class="btn btn-primary waves-effect waves-light">Assign to an Executive</button><br><br>
+                        @endempty --}}
 
                         <div class="btn-group" role="group">
                             <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -416,6 +425,67 @@
                 }
             });
 	    });
+
+
+        // $('#add_executive').on('click', function() {
+
+        //     // SweetAlert2 popup with input fields
+        //     Swal.fire({
+        //         title: 'Assign to an Executive',
+        //         html:
+        //             '<select id="executive_id" name="executive_id" class="form-control select2">' +
+        //                             '<option value="">Select Executive</option>' +
+        //                             '@foreach ($executives as $executive)' +
+        //                             '<option value="{{ $executive->id }}" @isset($sale->executive) {{ $executive->id==$sale->executive->id ? "selected":"" }} @endisset>{{ $executive->name }}</option>' +
+        //                             '@endforeach' +
+        //                         '</select><br>' +
+        //             '<input type="hidden" id="sale_id" class="form-control" value="{{ encrypt($sale->id) }}">',
+        //         focusConfirm: false,
+        //         showCancelButton: true,
+        //         confirmButtonText: 'Submit',
+        //         preConfirm: () => {
+        //             const executive_id = document.getElementById('executive_id').value;
+        //             const sale_id = document.getElementById('sale_id').value;
+
+        //             // Check if the inputs are valid
+        //             if (!executive_id) {
+        //                 Swal.showValidationMessage('Please Select an Executive');
+        //                 return false;
+        //             }
+        //             return { executive_id: executive_id, sale_id: sale_id };
+        //         }
+        //     }).then((result) => {
+        //         if (result.isConfirmed) {
+        //             // Get input values from the SweetAlert2 popup
+        //             const executive_id = result.value.executive_id;
+        //             const sale_id = result.value.sale_id;
+
+        //             // Send the data using AJAX
+        //             $.ajax({
+        //                 url: '{{ route("admin.sales.addExecutive") }}',
+        //                 type: 'POST',
+        //                 data: { executive_id: executive_id, sale_id: sale_id },
+        //                 success: function(response) {
+        //                     Swal.fire(
+        //                         'Success!',
+        //                         'Your data has been submitted.',
+        //                         'success'
+        //                     ).then((result) => {
+        //                         refreshPage();
+        //                         // console.log(response);
+        //                     });
+        //                 },
+        //                 error: function() {
+        //                     Swal.fire(
+        //                         'Error!',
+        //                         'There was a problem with the submission.',
+        //                         'error'
+        //                     );
+        //                 }
+        //             });
+        //         }
+        //     });
+        //     });
 
     });
 

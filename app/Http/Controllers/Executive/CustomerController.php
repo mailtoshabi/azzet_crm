@@ -54,7 +54,7 @@ class CustomerController extends Controller
             'district_id' => 'required',
             'state_id' => 'required'
         ]);
-        $input = request()->except(['_token','image','contact_names','phones','emails']);
+        $input = request()->except(['_token','image','contact_names','phones','emails','isImageDelete']);
         if(request()->hasFile('image')) {
             $extension = request('image')->extension();
             $fileName = Utility::cleanString(request()->name) . date('YmdHis') . '.' . $extension;
@@ -131,7 +131,7 @@ class CustomerController extends Controller
                 'district_id' => 'required',
                 'state_id' => 'required'
             ]);
-            $input = request()->except(['_token','_method','customer_id','image','contact_names','phones','emails']);
+            $input = request()->except(['_token','_method','customer_id','image','contact_names','phones','emails','isImageDelete']);
             if(request('isImageDelete')==1) {
                 Storage::delete(Customer::DIR_PUBLIC . $customer->image);
                 $input['image'] =null;

@@ -24,6 +24,7 @@ class EstimateController extends Controller
         ->whereNull('sales.estimate_id')
         ->where('estimates.branch_id',default_branch()->id)
         ->select('estimates.*')->count();
+        $count_new = $count_pending<99? $count_pending:'99+';
         // return $count_pending;
         $has_proforma = isset($status)? decrypt(request('status')) : ($count_pending==0?1:0);
         // $estimates = Estimate::orderBy('id','desc')->paginate(Utility::PAGINATE_COUNT);
@@ -43,7 +44,7 @@ class EstimateController extends Controller
         ->paginate(Utility::PAGINATE_COUNT);
         }
         // return $estimates;
-        return view('admin.estimates.index',compact('estimates','has_proforma'));
+        return view('admin.estimates.index',compact('estimates','has_proforma','count_new'));
     }
 
     public function create() {
@@ -156,8 +157,7 @@ class EstimateController extends Controller
     public function convertToProforma($id) {
         $estimate = Estimate::find(decrypt($id));
         if(!$estimate->sale) {
-        $executive_id = $estimate->enquiry->executive?$estimate->enquiry->executive->id:null;
-        $input_sale = ['invoice_no'=>'','estimate_id'=>$estimate->id,'delivery_charge'=>0,'executive_id'=>$executive_id];
+        $input_sale = ['invoice_no'=>'','estimate_id'=>$estimate->id,'delivery_charge'=>0];
         $sale = Sale::create($input_sale);
 
         // $sum_price_components = DB::table('component_estimate_product')->where('estimate_product_id',4)->sum('cost');

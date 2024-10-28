@@ -26,7 +26,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="mb-3">
+                            {{-- <div class="mb-3">
                                 <label class="control-label">Branch</label>
                                 <select id="branch_id" name="branch_id" class="form-control select2">
                                     <option value="">Select Branch</option>
@@ -35,26 +35,47 @@
                                     @endforeach
                                 </select>
                                 @error('branch_id') <p class="text-danger">{{ $message }}</p> @enderror
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
+                            </div> --}}
                             <div class="mb-3">
                                 <label for="name">Name</label>
                                 <input id="name" name="name" type="text" class="form-control"  placeholder="Name" value="{{ isset($executive)?$executive->name:old('name')}}">
+                                @error('name') <p class="text-danger">{{ $message }}</p> @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone">Mobile</label>
+                                <input id="phone" name="phone" type="text" class="form-control" placeholder="Mobile" value="{{ isset($executive)?$executive->phone:old('phone')}}">
+                                @error('name') <p class="text-danger">{{ $message }}</p> @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="city">Place</label>
+                                <input id="city" name="city" type="text" class="form-control" placeholder="Place" value="{{ isset($executive)?$executive->city:old('city')}}">
                                 @error('name') <p class="text-danger">{{ $message }}</p> @enderror
                             </div>
                         </div>
 
                         <div class="col-sm-6">
                             <div class="mb-3">
-                                <label for="phone">Mobile</label>
-                                <input id="phone" name="phone" type="text" class="form-control" placeholder="Mobile" value="{{ isset($executive)?$executive->phone:old('phone')}}">
+                                <label for="postal_code">Postal Code</label>
+                                <input id="postal_code" name="postal_code" type="text" class="form-control"  placeholder="Postal Code" value="{{ isset($executive)?$executive->postal_code:old('postal_code')}}">
+                                @error('postal_code') <p class="text-danger">{{ $message }}</p> @enderror
                             </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="mb-3">
-                                <label for="city">Place</label>
-                                <input id="city" name="city" type="text" class="form-control" placeholder="Place" value="{{ isset($executive)?$executive->city:old('city')}}">
+
+                            <div class="mb-3 required">
+                                <label class="control-label">State</label>
+                                <select id="state_id" name="state_id" class="form-control select2" onChange="getdistrict(this.value,0);">
+                                    <option value="">Select State</option>
+                                    @foreach ($states as $state)
+                                    <option value="{{ $state->id }}" {{ $state->id==Utility::STATE_ID_KERALA ? 'selected':'' }}>{{ $state->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('state_id') <p class="text-danger">{{ $message }}</p> @enderror
+                            </div>
+                            <div class="mb-3 required">
+                                <label class="control-label">District</label>
+                                <select name="district_id" id="district-list" class="form-control select2">
+                                    <option value="">Select District</option>
+                                </select>
+                                @error('district_id') <p class="text-danger">{{ $message }}</p> @enderror
                             </div>
                         </div>
                     </div>
@@ -106,4 +127,30 @@
 <script src="{{ URL::asset('assets/libs/dropzone/dropzone.min.js') }}"></script>
 <script src="{{ URL::asset('assets/js/pages/ecommerce-select2.init.js') }}"></script>
 <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>
+
+<script>
+    $(document).ready(function() {
+        /*X-CSRF-TOKEN*/
+        $.ajaxSetup({
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+        });
+        @if(isset($executive))
+            getdistrict({{ Utility::STATE_ID_KERALA }},{{ $executive->district_id }});
+        @else
+            getdistrict({{ Utility::STATE_ID_KERALA }},0);
+        @endif
+    });
+    function getdistrict(val,d_id) {
+        var formData = {'s_id' : val, 'd_id':d_id};
+        $.ajax({
+            type: "POST",
+            url: "{{ route('admin.executives.list.districts') }}",
+            data:formData,
+            success: function(data){
+                $("#district-list").html(data);
+                console.log(data);
+            }
+        });
+    }
+</script>
 @endsection

@@ -25,7 +25,7 @@
     <div class="col-lg-12">
     <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link @if($is_approved==0) active @endif" @if($is_approved==0)aria-current="page"@endif href="{{ route('admin.enquiries.index','status='.encrypt(0)) }}">Pending</a>
+          <a class="nav-link @if($is_approved==0) active @endif" @if($is_approved==0)aria-current="page"@endif href="{{ route('admin.enquiries.index','status='.encrypt(0)) }}">Pending <span class="badge rounded-pill bg-soft-danger text-danger float-end">{{ $count_new }}</span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link @if($is_approved==1) active @endif" @if($is_approved==1)aria-current="page"@endif href="{{ route('admin.enquiries.index','status='.encrypt(1)) }}">Approved</a>

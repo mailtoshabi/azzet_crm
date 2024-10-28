@@ -21,8 +21,9 @@ class ProductController extends Controller
         $status = request('status');
         $count_pending = Product::where('is_approved',0)->count();
         $is_approved = isset($status)? decrypt(request('status')) : ($count_pending==0 ? 1: 0);
+        $count_new = $count_pending<99? $count_pending:'99+';
         $products = Product::orderBy('id','desc')->where('is_approved',$is_approved)->paginate(Utility::PAGINATE_COUNT);
-        return view('admin.products.index',compact('products','is_approved'));
+        return view('admin.products.index',compact('products','is_approved','count_new'));
     }
 
     public function create() {

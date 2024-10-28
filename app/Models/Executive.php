@@ -60,6 +60,16 @@ class Executive extends Authenticatable
         return $this->belongsTO(Branch::class);
     }
 
+    public function customers()
+    {
+        return $this->hasMany(Customer::class);
+    }
+
+    // public function sales()
+    // {
+    //     return $this->hasMany(Sale::class);
+    // }
+
     // public function contactPersons()
     // {
     //     return $this->belongsToMany(ContactPerson::class, 'customer_contact_person');

@@ -10,6 +10,7 @@ use App\Models\Executive;
 use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,7 +22,7 @@ class ExecutiveController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $executives = Executive::orderBy('id','desc')->paginate(Utility::PAGINATE_COUNT);
+        $executives = Executive::orderBy('id','desc')->where('branch_id',default_branch()->id)->paginate(Utility::PAGINATE_COUNT);
         return view('admin.executives.index',compact('executives'));
     }
 
@@ -33,7 +34,8 @@ class ExecutiveController extends Controller
     public function create()
     {
         $branches = Branch::where('status',Utility::ITEM_ACTIVE)->orderBy('id','desc')->get();
-        return view('admin.executives.add',compact('branches'));
+        $states = DB::table('states')->orderBy('name','asc')->select('id','name')->get();
+        return view('admin.executives.add',compact('branches','states'));
     }
 
     /**
@@ -46,10 +48,12 @@ class ExecutiveController extends Controller
     {
         $validated = request()->validate([
             'name' => 'required',
-            'email' => 'nullable|email|unique:customers,email',
+            'email' => 'required|email|unique:customers,email',
             'phone' => 'required|string|max:10|min:10|unique:customers,phone',
             'password' => 'required|min:6',
-            'branch_id' => 'required',
+            'postal_code' => 'required',
+            'district_id' => 'required',
+            'state_id' => 'required',
         ]);
         $input = request()->except(['_token','email_verified_at','password','avatar','user_id']);
         if(request()->hasFile('avatar')) {
@@ -60,6 +64,7 @@ class ExecutiveController extends Controller
             $input['avatar'] =$fileName;
         }
         $input['user_id'] =Auth::id();
+        $input['branch_id'] = default_branch()->id;
         $input['password'] =Hash::make(request('password'));
         $executive = Executive::create($input);
         return redirect()->route('admin.executives.index')->with(['success'=>'New Executive Added Successfully']);
@@ -89,7 +94,8 @@ class ExecutiveController extends Controller
     {
         $executive = Executive::findOrFail(decrypt($id));
         $branches = Branch::where('status',Utility::ITEM_ACTIVE)->orderBy('id','desc')->get();
-        return view('admin.executives.add',compact('executive','branches'));
+        $states = DB::table('states')->orderBy('name','asc')->select('id','name')->get();
+        return view('admin.executives.add',compact('executive','branches','states'));
     }
 
     /**
@@ -106,10 +112,12 @@ class ExecutiveController extends Controller
         //return Executive::DIR_PUBLIC . $executive->image;
         $validated = request()->validate([
             'name' => 'required',
-            'email' => 'nullable|email|unique:executives,email,'. $id,
+            'email' => 'required|email|unique:executives,email,'. $id,
             'phone' => 'required|string|max:10|min:10|unique:executives,phone,'. $id,
             'password' => 'nullable|min:6',
-            'branch_id' => 'required',
+            'postal_code' => 'required',
+            'district_id' => 'required',
+            'state_id' => 'required',
         ]);
         $input = request()->except(['_token','_method','email_verified_at','image','password']);
 
@@ -155,5 +163,15 @@ class ExecutiveController extends Controller
         $status = $currentStatus ? 0 : 1;
         $executive->update(['status'=>$status]);
         return redirect()->route('admin.executives.index')->with(['success'=>'Status changed Successfully']);
+    }
+
+    public function distric_list(Request $request) {
+        $districts = DB::table('districts')->orderBy('name','asc')->select('id','name')->where('state_id',$request->s_id)->get();
+        $data[]= '<option value="">Select District</option>';
+        foreach($districts as $district) {
+            $selected = $district->id == $request->d_id ? 'selected' : '';
+            $data[] = '<option value="' . $district->id . '"' . $selected . ' >'. $district->name . '</option>';
+        }
+        return $data;
     }
 }

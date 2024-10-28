@@ -21,7 +21,11 @@
                         <p class="text-muted mb-0"><?php echo e($sale->estimate->customer->state->name); ?> - <?php echo e($sale->estimate->customer->postal_code); ?></p>
                         
                         <p class="text-primary mb-0">Mob:<?php echo e($sale->estimate->customer->phone); ?></p>
-                        <p class="text-success mb-2">Email:<?php echo e($sale->estimate->customer->email); ?></p>
+                        <?php if (! (empty($sale->estimate->customer->email))): ?><p class="text-success mb-2">Email:<?php echo e($sale->estimate->customer->email); ?></p><?php endif; ?>
+
+
+                        <p class="text-muted mb-0"><b>Executive Name : <?php echo e($sale->estimate->customer->executive->name); ?></b><br><br>
+                        
 
                         <div class="btn-group" role="group">
                             <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -387,6 +391,67 @@
                 }
             });
 	    });
+
+
+        // $('#add_executive').on('click', function() {
+
+        //     // SweetAlert2 popup with input fields
+        //     Swal.fire({
+        //         title: 'Assign to an Executive',
+        //         html:
+        //             '<select id="executive_id" name="executive_id" class="form-control select2">' +
+        //                             '<option value="">Select Executive</option>' +
+        //                             '<?php $__currentLoopData = $executives; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $executive): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>' +
+        //                             '<option value="<?php echo e($executive->id); ?>" <?php if(isset($sale->executive)): ?> <?php echo e($executive->id==$sale->executive->id ? "selected":""); ?> <?php endif; ?>><?php echo e($executive->name); ?></option>' +
+        //                             '<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>' +
+        //                         '</select><br>' +
+        //             '<input type="hidden" id="sale_id" class="form-control" value="<?php echo e(encrypt($sale->id)); ?>">',
+        //         focusConfirm: false,
+        //         showCancelButton: true,
+        //         confirmButtonText: 'Submit',
+        //         preConfirm: () => {
+        //             const executive_id = document.getElementById('executive_id').value;
+        //             const sale_id = document.getElementById('sale_id').value;
+
+        //             // Check if the inputs are valid
+        //             if (!executive_id) {
+        //                 Swal.showValidationMessage('Please Select an Executive');
+        //                 return false;
+        //             }
+        //             return { executive_id: executive_id, sale_id: sale_id };
+        //         }
+        //     }).then((result) => {
+        //         if (result.isConfirmed) {
+        //             // Get input values from the SweetAlert2 popup
+        //             const executive_id = result.value.executive_id;
+        //             const sale_id = result.value.sale_id;
+
+        //             // Send the data using AJAX
+        //             $.ajax({
+        //                 url: '<?php echo e(route("admin.sales.addExecutive")); ?>',
+        //                 type: 'POST',
+        //                 data: { executive_id: executive_id, sale_id: sale_id },
+        //                 success: function(response) {
+        //                     Swal.fire(
+        //                         'Success!',
+        //                         'Your data has been submitted.',
+        //                         'success'
+        //                     ).then((result) => {
+        //                         refreshPage();
+        //                         // console.log(response);
+        //                     });
+        //                 },
+        //                 error: function() {
+        //                     Swal.fire(
+        //                         'Error!',
+        //                         'There was a problem with the submission.',
+        //                         'error'
+        //                     );
+        //                 }
+        //             });
+        //         }
+        //     });
+        //     });
 
     });
 

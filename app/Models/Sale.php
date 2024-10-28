@@ -99,4 +99,9 @@ class Sale extends Model
     //     return $this->belongsTO(Branch::class);
     // }
 
+    // public function executive()
+    // {
+    //     return $this->belongsTo(Executive::class);
+    // }
+
 }

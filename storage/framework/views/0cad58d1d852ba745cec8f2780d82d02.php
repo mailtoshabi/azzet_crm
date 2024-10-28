@@ -28,9 +28,9 @@
                                 Status : <span id="status_id"><?php echo e(Utility::saleStatus()[$sale->status]['name']); ?></span> <i class="mdi mdi-chevron-down"></i>
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
-                                <?php $__currentLoopData = Utility::saleStatus(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $status): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <li><a data-plugin="change-status" href="<?php echo e(route('admin.sales.changeStatus',[encrypt($sale->id),encrypt($index)])); ?>" class="dropdown-item"><?php echo e($status['name']); ?></a></li>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                
+                                    <li><a data-plugin="change-status" href="<?php echo e(route('executive.sales.changeStatus',[encrypt($sale->id),encrypt(Utility::STATUS_DELIVERED)])); ?>" class="dropdown-item"><?php echo e(Utility::saleStatus()[Utility::STATUS_DELIVERED]['name']); ?></a></li>
+                                
 
                                 
                             </ul>
@@ -46,19 +46,13 @@
                         
 
                         <div class="mt-4">
-                            <a data-plugin="confirm-data" data-confirmtext="Do you really want to download the Invoice?" href="<?php echo e(route('admin.sales.download.invoice',encrypt($sale->id))); ?>" class="btn btn-primary waves-effect waves-light w-sm">
+                            <a data-plugin="confirm-data" data-confirmtext="Do you really want to download the Invoice?" href="<?php echo e(route('executive.sales.download.invoice',encrypt($sale->id))); ?>" class="btn btn-primary waves-effect waves-light w-sm">
                                 <i class="fas fa-download d-block font-size-12"></i> Download Invoice
                             </a>
-                            <a data-plugin="confirm-data" data-confirmtext="Do you really want to print the Invoice?" href="<?php echo e(route('admin.sales.view.invoice',encrypt($sale->id))); ?>" class="btn btn-secondary waves-effect waves-light w-sm">
+                            <a data-plugin="confirm-data" data-confirmtext="Do you really want to print the Invoice?" href="<?php echo e(route('executive.sales.view.invoice',encrypt($sale->id))); ?>" class="btn btn-secondary waves-effect waves-light w-sm">
                                 <i class="fas fa-print d-block font-size-12"></i> Print Invoice
                             </a>
-                            <button type="button" id="add_freight" class="btn btn-success waves-effect waves-light w-sm">
-                                <i class="fas fa-bus d-block font-size-12"></i> Add Frieght
-                            </button>
-                            
-                            <button type="button" id="add_discount" class="btn btn-danger waves-effect waves-light w-sm">
-                                <i class="fas fa-hand-holding-usd d-block font-size-12"></i> Add Discount
-                            </button>
+
                         </div>
                     </div>
 

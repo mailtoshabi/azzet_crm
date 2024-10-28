@@ -19,12 +19,12 @@ class BranchController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $status = request('status');
-        $count_pending = Branch::where('status',Utility::ITEM_INACTIVE)->count();
+        // $status = request('status');
+        // $count_pending = Branch::where('status',Utility::ITEM_INACTIVE)->count();
         // return $count_pending;
-        $is_approved = isset($status)? decrypt(request('status')) : ($count_pending==0?1:0);
-        $branches = Branch::orderBy('id','desc')->where('status',$is_approved)->paginate(Utility::PAGINATE_COUNT);
-        return view('admin.branches.index',compact('branches','is_approved'));
+        // $is_approved = isset($status)? decrypt(request('status')) : ($count_pending==0?1:0);
+        $branches = Branch::orderBy('id','desc')->paginate(Utility::PAGINATE_COUNT);
+        return view('admin.branches.index',compact('branches'));
     }
 
     /**
@@ -56,7 +56,7 @@ class BranchController extends Controller
             'district_id' => 'required',
             'state_id' => 'required'
         ]);
-        $input = request()->except(['_token','image','contact_names','phones','emails']);
+        $input = request()->except(['_token','image','isImageDelete']);
         if(request()->hasFile('image')) {
             $extension = request('image')->extension();
             $fileName = Utility::cleanString(request()->name) . date('YmdHis') . '.' . $extension;
@@ -125,7 +125,7 @@ class BranchController extends Controller
             'district_id' => 'required',
             'state_id' => 'required'
         ]);
-        $input = request()->except(['_token','_method','branch_id','image','contact_names','phones','emails']);
+        $input = request()->except(['_token','_method','branch_id','image','isImageDelete']);
         if(request('isImageDelete')==1) {
             Storage::delete(Branch::DIR_PUBLIC . $branch->image);
             $input['image'] =null;

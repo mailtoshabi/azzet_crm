@@ -20,28 +20,28 @@
     <div class="col-lg-12">
     <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link <?php if($status==Utility::STATUS_NEW): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_NEW): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt(Utility::STATUS_NEW))); ?>">New</a>
+          <a class="nav-link <?php if($status==Utility::STATUS_NEW): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_NEW): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('executive.sales.index','status='.encrypt(Utility::STATUS_NEW))); ?>">New</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <?php if($status==Utility::STATUS_CONFIRMED): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_CONFIRMED): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt(Utility::STATUS_CONFIRMED))); ?>">Approved</a>
+          <a class="nav-link <?php if($status==Utility::STATUS_CONFIRMED): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_CONFIRMED): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('executive.sales.index','status='.encrypt(Utility::STATUS_CONFIRMED))); ?>">Approved</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link <?php if($status==Utility::STATUS_PRODUCTION): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_PRODUCTION): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt(Utility::STATUS_PRODUCTION))); ?>">On Production</a>
+            <a class="nav-link <?php if($status==Utility::STATUS_PRODUCTION): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_PRODUCTION): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('executive.sales.index','status='.encrypt(Utility::STATUS_PRODUCTION))); ?>">On Production</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link <?php if($status==Utility::STATUS_OUT): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_OUT): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt(Utility::STATUS_OUT))); ?>">Out for Delivery</a>
+            <a class="nav-link <?php if($status==Utility::STATUS_OUT): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_OUT): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('executive.sales.index','status='.encrypt(Utility::STATUS_OUT))); ?>">Out for Delivery</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link <?php if($status==Utility::STATUS_DELIVERED): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_DELIVERED): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt(Utility::STATUS_DELIVERED))); ?>">Delivered</a>
+            <a class="nav-link <?php if($status==Utility::STATUS_DELIVERED): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_DELIVERED): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('executive.sales.index','status='.encrypt(Utility::STATUS_DELIVERED))); ?>">Delivered</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link <?php if($status==Utility::STATUS_ONHOLD): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_ONHOLD): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt(Utility::STATUS_ONHOLD))); ?>">On Hold</a>
+            <a class="nav-link <?php if($status==Utility::STATUS_ONHOLD): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_ONHOLD): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('executive.sales.index','status='.encrypt(Utility::STATUS_ONHOLD))); ?>">On Hold</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link <?php if($status==Utility::STATUS_CANCELLED): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_CANCELLED): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt(Utility::STATUS_CANCELLED))); ?>">Cancelled</a>
+            <a class="nav-link <?php if($status==Utility::STATUS_CANCELLED): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_CANCELLED): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('executive.sales.index','status='.encrypt(Utility::STATUS_CANCELLED))); ?>">Cancelled</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link <?php if($status==Utility::STATUS_CLOSED): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_CLOSED): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt(Utility::STATUS_CLOSED))); ?>">Closed</a>
+            <a class="nav-link <?php if($status==Utility::STATUS_CLOSED): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_CLOSED): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('executive.sales.index','status='.encrypt(Utility::STATUS_CLOSED))); ?>">Closed</a>
         </li>
 
       </ul>
@@ -110,7 +110,7 @@
                                         <a href="#" class="text-body"><?php echo e($data); ?></a>
                                     </td>
                                     <td>
-                                        <a target="_blank" title="view" href="<?php echo e(route('admin.sales.view',encrypt($sale->id))); ?>"><i class="fa fa-eye font-size-16 text-primary me-1"></i></a>
+                                        <a target="_blank" title="view" href="<?php echo e(route('executive.sales.view',encrypt($sale->id))); ?>"><i class="fa fa-eye font-size-16 text-primary me-1"></i></a>
                                     </td>
                                 </tr>
                              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
