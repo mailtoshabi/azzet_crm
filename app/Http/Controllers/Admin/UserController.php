@@ -58,13 +58,18 @@ class UserController extends Controller
     {
         $roles = Role::orderBy('id','asc')->get();
         $user = User::findOrFail(decrypt($id));
-        $branches = Branch::where('status',Utility::ITEM_ACTIVE)->orderBy('id','desc')->get();
-        return view('admin.users.add',compact('user','roles','branches'));
+        if(decrypt($id)!=Utility::SUPER_ADMIN_ID) {
+            $branches = Branch::where('status',Utility::ITEM_ACTIVE)->orderBy('id','desc')->get();
+            return view('admin.users.add',compact('user','roles','branches'));
+        }else {
+            abort(404);
+        }
     }
 
     public function update()
     {
         $id = decrypt(request('user_id'));
+        if($id!=Utility::SUPER_ADMIN_ID) {
         $user = User::find($id);
         $validated = request()->validate([
             'name' => 'required',
@@ -97,6 +102,9 @@ class UserController extends Controller
         $role_id = decrypt(request('role_id'));
         $user->roles()->sync($role_id);
         return redirect()->route('admin.users.index')->with(['success'=>'User Updated Successfully']);
+        }else {
+            abort(404);
+        }
     }
 
     public function destroy($id)
