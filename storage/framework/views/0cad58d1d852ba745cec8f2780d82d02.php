@@ -29,6 +29,7 @@
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
                                 
+                                    <li><a data-plugin="change-status" href="<?php echo e(route('executive.sales.changeStatus',[encrypt($sale->id),encrypt(Utility::STATUS_OUT)])); ?>" class="dropdown-item"><?php echo e(Utility::saleStatus()[Utility::STATUS_OUT]['name']); ?></a></li>
                                     <li><a data-plugin="change-status" href="<?php echo e(route('executive.sales.changeStatus',[encrypt($sale->id),encrypt(Utility::STATUS_DELIVERED)])); ?>" class="dropdown-item"><?php echo e(Utility::saleStatus()[Utility::STATUS_DELIVERED]['name']); ?></a></li>
                                 
 

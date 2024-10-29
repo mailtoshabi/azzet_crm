@@ -45,6 +45,15 @@ class LoginController extends Controller
         return view('admin.auth.login');
     }
 
+    protected function attemptLogin(Request $request)
+    {
+        // Add `status` as an additional condition to the credentials array
+        return $this->guard()->attempt(
+            array_merge($this->credentials($request), ['status' => 1]),
+            $request->filled('remember')
+        );
+    }
+
     public function logout(Request $request)
     {
         $this->guard()->logout();

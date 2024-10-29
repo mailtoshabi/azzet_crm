@@ -24,8 +24,8 @@
                                 <form class="mt-4 pt-2" action="{{ route('executive.do.login') }}" method="POST">
                                     @csrf
                                     <div class="form-floating form-floating-custom mb-4">
-                                        <input type="text" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', 'shabeer.exe@azzetgroup.com') }}" id="input-username" placeholder="Enter User Name" name="email">
-                                        @error('email')
+                                        <input type="text" class="form-control @error('username') is-invalid @enderror" value="{{ old('username', 'shabeer.exe@azzetgroup.com') }}" id="input-username" placeholder="Enter User Name" name="username">
+                                        @error('username')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>

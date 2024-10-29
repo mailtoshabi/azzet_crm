@@ -23,8 +23,9 @@
                         <p class="text-primary mb-0">Mob:<?php echo e($sale->estimate->customer->phone); ?></p>
                         <?php if (! (empty($sale->estimate->customer->email))): ?><p class="text-success mb-2">Email:<?php echo e($sale->estimate->customer->email); ?></p><?php endif; ?>
 
-
-                        <p class="text-muted mb-0"><b>Executive Name : <?php echo e($sale->estimate->customer->executive->name); ?></b><br><br>
+                        <?php if (! (empty($sale->estimate->customer->executive))): ?>
+                            <p class="text-muted mb-0"><b>Executive Name : <?php echo e($sale->estimate->customer->executive->name); ?></b><br><br>
+                        <?php endif; ?>
                         
 
                         <div class="btn-group" role="group">

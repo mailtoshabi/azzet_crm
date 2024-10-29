@@ -223,8 +223,12 @@ Route::group(['as'=>'admin.', 'middleware'=>'auth', 'prefix'=>'admin'], function
 Route::get('/executive', [ExecutiveHomeController::class,'index'])->middleware('executive.auth')->name('executive');
 Route::group(['as'=>'executive.', 'prefix'=>'executive'], function() {
     Route::group(['namespace'=>'Executive\Auth'], function () {
-        Route::get('/login', [ExecutiveLoginController::class,'login'])->name('login');
-        Route::post('/do-login', [ExecutiveLoginController::class,'doLogin'])->name('do.login');
+        // Route::get('/login', [ExecutiveLoginController::class,'login'])->name('login');
+        // Route::post('/do-login', [ExecutiveLoginController::class,'doLogin'])->name('do.login');
+        // Route::post('/logout', [ExecutiveLoginController::class,'logout'])->name('logout');
+
+        Route::get('/login', [ExecutiveLoginController::class,'showLoginForm'])->name('login');
+        Route::post('/login', [ExecutiveLoginController::class,'login'])->name('do.login');
         Route::post('/logout', [ExecutiveLoginController::class,'logout'])->name('logout');
     });
     Route::get('/dashboard', [ExecutiveHomeController::class,'index'])->middleware('executive.auth')->name('dashboard');

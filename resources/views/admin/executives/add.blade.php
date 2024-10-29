@@ -36,30 +36,24 @@
                                 </select>
                                 @error('branch_id') <p class="text-danger">{{ $message }}</p> @enderror
                             </div> --}}
-                            <div class="mb-3">
+                            <div class="mb-3 required">
                                 <label for="name">Name</label>
                                 <input id="name" name="name" type="text" class="form-control"  placeholder="Name" value="{{ isset($executive)?$executive->name:old('name')}}">
                                 @error('name') <p class="text-danger">{{ $message }}</p> @enderror
                             </div>
-                            <div class="mb-3">
-                                <label for="phone">Mobile</label>
-                                <input id="phone" name="phone" type="text" class="form-control" placeholder="Mobile" value="{{ isset($executive)?$executive->phone:old('phone')}}">
-                                @error('name') <p class="text-danger">{{ $message }}</p> @enderror
-                            </div>
-                            <div class="mb-3">
+                            <div class="mb-3 required">
                                 <label for="city">Place</label>
                                 <input id="city" name="city" type="text" class="form-control" placeholder="Place" value="{{ isset($executive)?$executive->city:old('city')}}">
                                 @error('name') <p class="text-danger">{{ $message }}</p> @enderror
                             </div>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <div class="mb-3">
+                            <div class="mb-3 required">
                                 <label for="postal_code">Postal Code</label>
                                 <input id="postal_code" name="postal_code" type="text" class="form-control"  placeholder="Postal Code" value="{{ isset($executive)?$executive->postal_code:old('postal_code')}}">
                                 @error('postal_code') <p class="text-danger">{{ $message }}</p> @enderror
                             </div>
+                        </div>
 
+                        <div class="col-sm-6">
                             <div class="mb-3 required">
                                 <label class="control-label">State</label>
                                 <select id="state_id" name="state_id" class="form-control select2" onChange="getdistrict(this.value,0);">
@@ -77,6 +71,23 @@
                                 </select>
                                 @error('district_id') <p class="text-danger">{{ $message }}</p> @enderror
                             </div>
+                            <div class="mb-3">
+                                <label for="postal_code">Image</label>
+                                <span id="imageContainer" @if(isset($executive)&&empty($executive->image)) style="display: none" @endif>
+                                    @if(isset($executive)&&!empty($executive->image))
+                                        <img src="{{ URL::asset(App\Models\Branch::DIR_STORAGE . $executive->image) }}" alt="" class="avatar-xxl rounded-circle me-2">
+                                        <button type="button" class="btn-close" aria-label="Close"></button>
+                                    @endif
+                                </span>
+
+                                <span id="fileContainer" @if(isset($executive)&&!empty($executive->image)) style="display: none" @endif>
+                                    <input id="avatar" name="avatar" type="file" class="form-control"  placeholder="File">
+                                    @if(isset($executive)&&!empty($executive->image))
+                                        <button type="button" class="btn-close" aria-label="Close"></button>
+                                    @endif
+                                </span>
+                                <input name="isImageDelete" type="hidden" value="0">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -89,16 +100,24 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <div class="mb-3">
+                        <div class="col-sm-4">
+                            <div class="mb-3 required">
                                 <label for="email">Email</label>
                                 <input id="email" name="email" type="text" class="form-control" placeholder="Email" value="{{ isset($executive)?$executive->email:old('email')}}">
                                 @error('email') <p class="text-danger">{{ $message }}</p> @enderror
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
-                            <div class="mb-3">
+                        <div class="col-sm-4">
+                            <div class="mb-3 required">
+                                <label for="phone">Mobile</label>
+                                <input id="phone" name="phone" type="text" class="form-control" placeholder="Mobile" value="{{ isset($executive)?$executive->phone:old('phone')}}">
+                                @error('phone') <p class="text-danger">{{ $message }}</p> @enderror
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="mb-3 {{ isset($executive)?'':'required'}}">
                                 <label for="horizontal-password-input">Password</label>
                                 <input type="password" name="password" class="form-control" id="horizontal-password-input" placeholder="Enter Your Password">
                                 @error('password') <p class="text-danger">{{ $message }}</p> @enderror
@@ -118,6 +137,7 @@
                 </div>
             </div>
         </div>
+
     </form>
 </div>
 <!-- end row -->
@@ -127,7 +147,21 @@
 <script src="{{ URL::asset('assets/libs/dropzone/dropzone.min.js') }}"></script>
 <script src="{{ URL::asset('assets/js/pages/ecommerce-select2.init.js') }}"></script>
 <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        $('#imageContainer').find('button').click(function() {
+            $('#imageContainer').hide();
+            $('#fileContainer').show();
+            $('input[name="isImageDelete"]').val(1);
+        })
 
+        $('#fileContainer').find('button').click(function() {
+            $('#fileContainer').hide();
+            $('#imageContainer').show();
+            $('input[name="isImageDelete"]').val(0);
+        })
+    });
+</script>
 <script>
     $(document).ready(function() {
         @if(isset($executive))

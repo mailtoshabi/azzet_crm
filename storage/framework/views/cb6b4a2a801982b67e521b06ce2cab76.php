@@ -24,7 +24,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="mb-3">
                                 <label for="name">Name</label>
                                 <input id="name" name="name" type="text" class="form-control"  placeholder="Name" value="<?php echo e(isset($user)?$user->name:old('name')); ?>">
@@ -39,32 +39,14 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="mb-3">
                                 <label for="phone">Mobile</label>
                                 <input id="phone" name="phone" type="text" class="form-control" placeholder="Mobile" value="<?php echo e(isset($user)?$user->phone:old('phone')); ?>">
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
-                            <div class="mb-3">
-                                <label class="control-label">Branch</label>
-                                <select id="branch_id" name="branch_id" class="form-control select2">
-                                    <option value="">Select Branch</option>
-                                    <?php $__currentLoopData = $branches; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $branch): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($branch->id); ?>" <?php if(isset($user)): ?> <?php echo e($branch->id==$user->branch->id ? 'selected':''); ?> <?php endif; ?>><?php echo e($branch->name); ?></option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                </select>
-                                <?php $__errorArgs = ['branch_id'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> <p class="text-danger"><?php echo e($message); ?></p> <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -112,7 +94,9 @@ unset($__errorArgs, $__bag); ?>
                                 <select id="role_id" name="role_id" class="form-control select2">
                                     <option value="">Select</option>
                                     <?php $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <?php if($role->id != Utility::ROLE_ADMIN): ?>
                                         <option value="<?php echo e(encrypt($role->id)); ?>" <?php echo e(isset($user)&&($user->roles->contains($role->id))?'selected':''); ?>><?php echo e($role->display_name); ?></option>
+                                        <?php endif; ?>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                                 <?php $__errorArgs = ['role_id'];

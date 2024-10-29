@@ -81,14 +81,16 @@
                                             <button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="bx bx-dots-horizontal-rounded"></i>
                                             </button>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a href="<?php echo e(route('admin.roles.edit',encrypt($role->id))); ?>" class="dropdown-item"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>
-                                            <li><a href="#" class="dropdown-item" data-plugin="delete-data" data-target-form="#form_delete_<?php echo e($loop->iteration); ?>"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>
-                                            <form id="form_delete_<?php echo e($loop->iteration); ?>" method="POST" action="<?php echo e(route('admin.roles.destroy',encrypt($role->id))); ?>">
-                                                <?php echo csrf_field(); ?>
-                                                <input type="hidden" name="_method" value="DELETE" />
-                                            </form>
-                                        </ul>
+                                            <?php if($role->id != Utility::ROLE_ADMIN): ?>
+                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                <li><a href="<?php echo e(route('admin.roles.edit',encrypt($role->id))); ?>" class="dropdown-item"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>
+                                                <li><a href="#" class="dropdown-item" data-plugin="delete-data" data-target-form="#form_delete_<?php echo e($loop->iteration); ?>"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>
+                                                <form id="form_delete_<?php echo e($loop->iteration); ?>" method="POST" action="<?php echo e(route('admin.roles.destroy',encrypt($role->id))); ?>">
+                                                    <?php echo csrf_field(); ?>
+                                                    <input type="hidden" name="_method" value="DELETE" />
+                                                </form>
+                                                </ul>
+                                            <?php endif; ?>
                                         </div>
                                     </td>
                                 </tr>

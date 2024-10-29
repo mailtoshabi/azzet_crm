@@ -3,7 +3,7 @@
         <div class="d-flex">
             <!-- LOGO -->
             <div class="navbar-brand-box">
-                <a href="index" class="logo logo-dark">
+                <a href="<?php echo e(route('admin.dashboard')); ?>" class="logo logo-dark">
                     <span class="logo-sm">
                         <img src="<?php echo e(URL::asset('assets/images/logo-sm.svg')); ?>" alt="" height="30">
                     </span>
@@ -12,7 +12,7 @@
                     </span>
                 </a>
 
-                <a href="index" class="logo logo-light">
+                <a href="<?php echo e(route('admin.dashboard')); ?>" class="logo logo-light">
                     <span class="logo-sm">
                         <img src="<?php echo e(URL::asset('assets/images/logo-sm.svg')); ?>" alt="" height="30">
                     </span>
@@ -30,7 +30,7 @@
             
 
             <div class="navbar-brand-box">
-                <a id="defaultbranch" href="index" class="logo logo-light branch_logo">
+                <a <?php if(Auth::id()==Utility::SUPER_ADMIN_ID): ?> id="defaultbranch" <?php endif; ?> href="#" class="logo logo-light branch_logo">
                     <span class="logo-lg">
                         <?php if(!empty(default_branch()->image)): ?>
                             <img src="<?php echo e(URL::asset('storage/branches/' . default_branch()->image)); ?>" height="50" alt="" >

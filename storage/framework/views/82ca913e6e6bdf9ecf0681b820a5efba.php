@@ -20,18 +20,18 @@
                                     <h5 class="mb-0">Welcome Back !</h5>
                                     <p class="text-muted mt-2">Sign in to continue to WBMAHALCRM.</p>
                                 </div>
-                                <form class="mt-4 pt-2" action="<?php echo e(route('login')); ?>" method="POST">
+                                <form class="mt-4 pt-2" action="<?php echo e(route('executive.do.login')); ?>" method="POST">
                                     <?php echo csrf_field(); ?>
                                     <div class="form-floating form-floating-custom mb-4">
-                                        <input type="text" class="form-control <?php $__errorArgs = ['email'];
+                                        <input type="text" class="form-control <?php $__errorArgs = ['username'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" value="<?php echo e(old('email', 'admin@azzetgroup.com')); ?>" id="input-username" placeholder="Enter User Name" name="email">
-                                        <?php $__errorArgs = ['email'];
+unset($__errorArgs, $__bag); ?>" value="<?php echo e(old('username', 'shabeer.exe@azzetgroup.com')); ?>" id="input-username" placeholder="Enter User Name" name="username">
+                                        <?php $__errorArgs = ['username'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -214,4 +214,4 @@ unset($__errorArgs, $__bag); ?>
 <?php $__env->stopSection(); ?>
 
 
-<?php echo $__env->make('admin.layouts.master-without-nav', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\azzet_crm\resources\views/admin/auth/login.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('admin.layouts.executive.master-without-nav', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\azzet_crm\resources\views/admin/executive/auth/login.blade.php ENDPATH**/ ?>

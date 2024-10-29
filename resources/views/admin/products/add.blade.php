@@ -69,6 +69,7 @@
                                             <button type="button" class="btn-close" aria-label="Close"></button>
                                         @endif
                                     </span>
+                                    <input name="isImageDelete" type="hidden" value="0">
                                 </div>
                             </div>
 
@@ -211,7 +212,7 @@
                 </div>
             </div>
         </div>
-        <input name="isImageDelete" type="hidden" value="0">
+
     </form>
 </div>
 <!-- end row -->

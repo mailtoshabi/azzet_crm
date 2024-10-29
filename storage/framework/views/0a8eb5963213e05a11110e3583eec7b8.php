@@ -12,7 +12,7 @@
                 <li class="<?php echo e(set_active('admin')); ?>">
                     <a href="<?php echo e(route('admin.dashboard')); ?>">
                         <i class="fas fa-home"></i>
-                        <span class="badge rounded-pill bg-soft-success text-success float-end">9+</span>
+                        
                         <span data-key="t-dashboard"><?php echo app('translator')->get('translation.Dashboards'); ?></span>
                     </a>
                 </li>
@@ -130,7 +130,7 @@
                             <li><a href="<?php echo e(route('admin.roles.create')); ?>" data-key="t-read-email"><?php echo app('translator')->get('translation.Add_Menu'); ?></a></li>
                         </ul>
                     </li>
-                <?php endif; ?>
+
 
                 <li class="menu-title" data-key="t-apps"><?php echo app('translator')->get('translation.Account_Settings'); ?></li>
 
@@ -158,7 +158,7 @@
                         <span data-key="t-email"><?php echo app('translator')->get('translation.Tax_Manage'); ?></span>
                     </a>
                 </li>
-
+                <?php endif; ?>
 
             </ul>
 

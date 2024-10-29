@@ -117,7 +117,6 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="mb-3">
-
                                     <span id="imageContainer" @if(isset($branch)&&empty($branch->image)) style="display: none" @endif>
                                         @if(isset($branch)&&!empty($branch->image))
                                             <img src="{{ URL::asset(App\Models\Branch::DIR_STORAGE . $branch->image) }}" alt="" class="avatar-xxl rounded-circle me-2">
@@ -131,6 +130,7 @@
                                             <button type="button" class="btn-close" aria-label="Close"></button>
                                         @endif
                                     </span>
+                                    <input name="isImageDelete" type="hidden" value="0">
                                 </div>
                             </div>
                         </div>
@@ -337,7 +337,6 @@
                 </div>
             </div>
         </div>
-        <input name="isImageDelete" type="hidden" value="0">
     </form>
 </div>
 <!-- end row -->

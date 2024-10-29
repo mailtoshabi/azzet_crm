@@ -93,19 +93,19 @@
                                             <button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="bx bx-dots-horizontal-rounded"></i>
                                             </button>
-                                            <ul class="dropdown-menu dropdown-menu-end">
                                             <?php if(Auth::id()!=$user->id || $user->id!=Utility::SUPER_ADMIN_ID): ?>
-                                            <li><a href="<?php echo e(route('admin.users.edit',encrypt($user->id))); ?>" class="dropdown-item"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>
-                                            
+                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                    <li><a href="<?php echo e(route('admin.users.edit',encrypt($user->id))); ?>" class="dropdown-item"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>
+                                                    
 
-                                                <li><a href="#" class="dropdown-item" data-plugin="delete-data" data-target-form="#form_delete_<?php echo e($loop->iteration); ?>"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>
-                                            <form id="form_delete_<?php echo e($loop->iteration); ?>" method="POST" action="<?php echo e(route('admin.users.destroy',encrypt($user->id))); ?>">
-                                                <?php echo csrf_field(); ?>
-                                                <input type="hidden" name="_method" value="DELETE" />
-                                            </form>
-                                            <li><a class="dropdown-item" href="<?php echo e(route('admin.users.changeStatus',encrypt($user->id))); ?>"><?php echo $user->status?'<i class="fas fa-power-off font-size-16 text-danger me-1"></i> Unpublish':'<i class="fas fa-circle-notch font-size-16 text-primary me-1"></i> Publish'; ?></a></li>
-                                            <?php endif; ?>
-                                        </ul>
+                                                        <li><a href="#" class="dropdown-item" data-plugin="delete-data" data-target-form="#form_delete_<?php echo e($loop->iteration); ?>"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>
+                                                    <form id="form_delete_<?php echo e($loop->iteration); ?>" method="POST" action="<?php echo e(route('admin.users.destroy',encrypt($user->id))); ?>">
+                                                        <?php echo csrf_field(); ?>
+                                                        <input type="hidden" name="_method" value="DELETE" />
+                                                    </form>
+                                                    <li><a class="dropdown-item" href="<?php echo e(route('admin.users.changeStatus',encrypt($user->id))); ?>"><?php echo $user->status?'<i class="fas fa-power-off font-size-16 text-danger me-1"></i> Unpublish':'<i class="fas fa-circle-notch font-size-16 text-primary me-1"></i> Publish'; ?></a></li>
+                                                </ul>
+                                        <?php endif; ?>
                                         </div>
                                     </td>
                                 </tr>

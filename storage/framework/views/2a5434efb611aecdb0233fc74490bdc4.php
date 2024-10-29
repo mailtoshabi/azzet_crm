@@ -11,14 +11,14 @@
         <meta content="WebMahal.com" name="author" />
         <!-- App favicon -->
         <link rel="shortcut icon" href="<?php echo e(URL::asset('assets/images/favicon.ico')); ?>">
-        <?php echo $__env->make('admin.layouts.head-css', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        <?php echo $__env->make('admin.layouts.executive.head-css', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
   </head>
 
     <?php echo $__env->yieldContent('body'); ?>
 
     <?php echo $__env->yieldContent('content'); ?>
 
-    <?php echo $__env->make('admin.layouts.vendor-scripts', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <?php echo $__env->make('admin.layouts.executive.vendor-scripts', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     </body>
 </html>
-<?php /**PATH C:\xampp\htdocs\azzet_crm\resources\views/admin/layouts/master-without-nav.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp\htdocs\azzet_crm\resources\views/admin/layouts/executive/master-without-nav.blade.php ENDPATH**/ ?>

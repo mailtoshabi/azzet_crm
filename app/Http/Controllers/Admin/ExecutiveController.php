@@ -48,8 +48,8 @@ class ExecutiveController extends Controller
     {
         $validated = request()->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:customers,email',
-            'phone' => 'required|string|max:10|min:10|unique:customers,phone',
+            'email' => 'nullable|email|required_without:phone|unique:executives,email',
+            'phone' => 'nullable|regex:/^[0-9]{10}$/|required_without:email|unique:executives,phone',
             'password' => 'required|min:6',
             'postal_code' => 'required',
             'district_id' => 'required',
@@ -112,8 +112,8 @@ class ExecutiveController extends Controller
         //return Executive::DIR_PUBLIC . $executive->image;
         $validated = request()->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:executives,email,'. $id,
-            'phone' => 'required|string|max:10|min:10|unique:executives,phone,'. $id,
+            'email' => 'nullable|email|required_without:phone|unique:executives,email,'. $id,
+            'phone' => 'nullable|regex:/^[0-9]{10}$/|required_without:email|unique:executives,phone,'. $id,
             'password' => 'nullable|min:6',
             'postal_code' => 'required',
             'district_id' => 'required',
