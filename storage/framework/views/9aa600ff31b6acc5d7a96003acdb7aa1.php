@@ -29,7 +29,7 @@
             <!-- App Search-->
             
             <div class="navbar-brand-box">
-                <a href="index" class="logo logo-light branch_logo">
+                <a href="#" class="logo logo-light branch_logo">
                     <span class="logo-lg">
                         <?php if(!empty(Auth::guard('executive')->user()->branch->image)): ?>
                             <img src="<?php echo e(URL::asset('storage/branches/' . Auth::guard('executive')->user()->branch->image)); ?>" height="50" alt="" >

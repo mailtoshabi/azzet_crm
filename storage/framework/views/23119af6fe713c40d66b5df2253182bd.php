@@ -12,7 +12,7 @@
                 <li class="<?php echo e(set_active('executive')); ?>">
                     <a href="<?php echo e(route('executive.dashboard')); ?>">
                         <i class="fas fa-home"></i>
-                        <span class="badge rounded-pill bg-soft-success text-success float-end">9+</span>
+                        
                         <span data-key="t-dashboard"><?php echo app('translator')->get('translation.Dashboards'); ?></span>
                     </a>
                 </li>

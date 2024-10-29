@@ -46,7 +46,7 @@ class SaleController extends Controller
         //     ->where('sale_id',decrypt($id))
         //     ->first()
         //     ->total; // this is right code, But done an easy way in Sale Model for sub_total
-        if($sale->executive_id == Auth::guard('executive')->id()) {
+        if($sale->estimate->customer->executive->id == Auth::guard('executive')->id()) {
             return view('admin.executive.sales.view',compact('sale'));
         }else{
             abort(404);
@@ -56,16 +56,23 @@ class SaleController extends Controller
     public function view_invoice($id) {
         $sale = Sale::findOrFail(decrypt($id));
         // return view('admin.sales.pdf',compact('data'));
-        $pdf = Pdf::loadView('admin.executive.sales.pdf', compact('sale'))->setPaper('a4', 'portrait');
-        return $pdf->stream($sale->invoice_no.'_' . date('YmdHis') . '.pdf');
+        if($sale->estimate->customer->executive->id == Auth::guard('executive')->id()) {
+            $pdf = Pdf::loadView('admin.executive.sales.pdf', compact('sale'))->setPaper('a4', 'portrait');
+            return $pdf->stream($sale->invoice_no.'_' . date('YmdHis') . '.pdf');
+        }else{
+            abort(404);
+        }
     }
 
     public function download_invoice($id) {
         $sale = Sale::findOrFail(decrypt($id));
         // return view('admin.sales.pdf',compact('data'));
+        if($sale->estimate->customer->executive->id == Auth::guard('executive')->id()) {
         $pdf = Pdf::loadView('admin.executive.sales.pdf', compact('sale'))->setPaper('a4', 'portrait');
-
         return $pdf->download($sale->invoice_no.'_' . date('YmdHis') . '.pdf');
+        }else{
+            abort(404);
+        }
     }
 
     // public function addFreight() {
@@ -87,9 +94,11 @@ class SaleController extends Controller
     public function changeStatus($id, $status) {
         $sale = Sale::find(decrypt($id));
         $status = decrypt($status);
-        $sale->update(['status'=>$status]);
-        // return redirect()->route('admin.customers.index')->with(['success'=>'Status changed Successfully']);
-        return $sale;
+        if($status<=Utility::STATUS_DELIVERED) {
+            $sale->update(['status'=>$status]);
+            // return redirect()->route('admin.customers.index')->with(['success'=>'Status changed Successfully']);
+            return $sale;
+        }
     }
 
 }

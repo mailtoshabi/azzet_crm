@@ -12,7 +12,7 @@
                 <li class="{{ set_active('admin') }}">
                     <a href="{{ route('admin.dashboard') }}">
                         <i class="fas fa-home"></i>
-                        <span class="badge rounded-pill bg-soft-success text-success float-end">9+</span>
+                        {{-- <span class="badge rounded-pill bg-soft-success text-success float-end">9+</span> --}}
                         <span data-key="t-dashboard">@lang('translation.Dashboards')</span>
                     </a>
                 </li>
@@ -130,7 +130,7 @@
                             <li><a href="{{ route('admin.roles.create') }}" data-key="t-read-email">@lang('translation.Add_Menu')</a></li>
                         </ul>
                     </li>
-                @endif
+
 
                 <li class="menu-title" data-key="t-apps">@lang('translation.Account_Settings')</li>
 
@@ -158,7 +158,7 @@
                         <span data-key="t-email">@lang('translation.Tax_Manage')</span>
                     </a>
                 </li>
-
+                @endif
 
             </ul>
 

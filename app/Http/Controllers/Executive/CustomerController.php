@@ -21,9 +21,11 @@ class CustomerController extends Controller
     public function index() {
         $auth_id = Auth::guard('executive')->id();
         $status = request('status');
-        $is_approved = isset($status)? decrypt(request('status')) : 0;
+        $count_pending = Customer::where('is_approved',Utility::ITEM_INACTIVE)->where('executive_id',$auth_id)->count();
+        $count_new = $count_pending<99? $count_pending:'99+';
+        $is_approved = isset($status)? decrypt(request('status')) : ($count_pending==0?1:0);
         $customers = Customer::orderBy('id')->where('is_approved',$is_approved)->where('executive_id',$auth_id)->paginate(Utility::PAGINATE_COUNT);
-        return view('admin.executive.customers.index',compact('customers','is_approved'));
+        return view('admin.executive.customers.index',compact('customers','is_approved','count_new'));
     }
 
     /**

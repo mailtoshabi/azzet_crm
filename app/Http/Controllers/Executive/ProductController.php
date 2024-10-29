@@ -17,9 +17,11 @@ class ProductController extends Controller
     public function index() {
         $auth_id = Auth::guard('executive')->id();
         $status = request('status');
-        $is_approved = isset($status)? decrypt(request('status')) : 0;
-        $products = Product::orderBy('id')->where('is_approved',$is_approved)->where('executive_id',$auth_id)->paginate(Utility::PAGINATE_COUNT);
-        return view('admin.executive.products.index',compact('products','is_approved'));
+        $count_pending = Product::where('is_approved',Utility::ITEM_INACTIVE)->count();
+        $is_approved = isset($status)? decrypt(request('status')) : ($count_pending==0 ? 1: 0);
+        $count_new = $count_pending<99? $count_pending:'99+';
+        $products = Product::orderBy('id','desc')->where('is_approved',$is_approved)->where('executive_id',$auth_id)->paginate(Utility::PAGINATE_COUNT);
+        return view('admin.executive.products.index',compact('products','is_approved','count_new'));
     }
 
     public function create() {

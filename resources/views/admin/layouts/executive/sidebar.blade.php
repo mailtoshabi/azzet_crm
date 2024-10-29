@@ -12,7 +12,7 @@
                 <li class="{{ set_active('executive') }}">
                     <a href="{{ route('executive.dashboard') }}">
                         <i class="fas fa-home"></i>
-                        <span class="badge rounded-pill bg-soft-success text-success float-end">9+</span>
+                        {{-- <span class="badge rounded-pill bg-soft-success text-success float-end">9+</span> --}}
                         <span data-key="t-dashboard">@lang('translation.Dashboards')</span>
                     </a>
                 </li>

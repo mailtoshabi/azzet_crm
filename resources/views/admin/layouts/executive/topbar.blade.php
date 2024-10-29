@@ -3,7 +3,7 @@
         <div class="d-flex">
             <!-- LOGO -->
             <div class="navbar-brand-box">
-                <a href="index" class="logo logo-dark">
+                <a href="{{ route('admin.dashboard') }}" class="logo logo-dark">
                     <span class="logo-sm">
                         <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="30">
                     </span>
@@ -12,7 +12,7 @@
                     </span>
                 </a>
 
-                <a href="index" class="logo logo-light">
+                <a href="{{ route('admin.dashboard') }}" class="logo logo-light">
                     <span class="logo-sm">
                         <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="30">
                     </span>
@@ -34,7 +34,7 @@
                 </div>
             </form> --}}
             <div class="navbar-brand-box">
-                <a href="index" class="logo logo-light branch_logo">
+                <a href="#" class="logo logo-light branch_logo">
                     <span class="logo-lg">
                         @if(!empty(Auth::guard('executive')->user()->branch->image))
                             <img src="{{ URL::asset('storage/branches/' . Auth::guard('executive')->user()->branch->image) }}" height="50" alt="" >

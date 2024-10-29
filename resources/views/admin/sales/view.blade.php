@@ -24,8 +24,9 @@
                         <p class="text-primary mb-0">Mob:{{ $sale->estimate->customer->phone }}</p>
                         @unless (empty($sale->estimate->customer->email))<p class="text-success mb-2">Email:{{ $sale->estimate->customer->email }}</p>@endunless
 
-
-                        <p class="text-muted mb-0"><b>Executive Name : {{ $sale->estimate->customer->executive->name }}</b><br><br>
+                        @unless (empty($sale->estimate->customer->executive))
+                            <p class="text-muted mb-0"><b>Executive Name : {{ $sale->estimate->customer->executive->name }}</b><br><br>
+                        @endunless
                         {{-- @unless (empty($sale->executive))
                         <button type="button" id="add_executive" class="btn btn-primary waves-effect waves-light">Change Executive</button><br><br>
                         @endunless

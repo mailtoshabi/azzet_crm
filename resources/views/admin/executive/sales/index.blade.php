@@ -20,22 +20,22 @@
     <div class="col-lg-12">
     <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link @if($status==Utility::STATUS_NEW) active @endif" @if($status==Utility::STATUS_NEW)aria-current="page"@endif href="{{ route('executive.sales.index','status='.encrypt(Utility::STATUS_NEW)) }}">New</a>
+          <a class="nav-link @if($status==Utility::STATUS_NEW) active @endif" @if($status==Utility::STATUS_NEW)aria-current="page"@endif href="{{ route('executive.sales.index','status='.encrypt(Utility::STATUS_NEW)) }}">New {!! sales_exe_count(Utility::STATUS_NEW) !!}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link @if($status==Utility::STATUS_CONFIRMED) active @endif" @if($status==Utility::STATUS_CONFIRMED)aria-current="page"@endif href="{{ route('executive.sales.index','status='.encrypt(Utility::STATUS_CONFIRMED)) }}">Approved</a>
+          <a class="nav-link @if($status==Utility::STATUS_CONFIRMED) active @endif" @if($status==Utility::STATUS_CONFIRMED)aria-current="page"@endif href="{{ route('executive.sales.index','status='.encrypt(Utility::STATUS_CONFIRMED)) }}">Approved {!! sales_exe_count(Utility::STATUS_CONFIRMED) !!}</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link @if($status==Utility::STATUS_PRODUCTION) active @endif" @if($status==Utility::STATUS_PRODUCTION)aria-current="page"@endif href="{{ route('executive.sales.index','status='.encrypt(Utility::STATUS_PRODUCTION)) }}">On Production</a>
+            <a class="nav-link @if($status==Utility::STATUS_PRODUCTION) active @endif" @if($status==Utility::STATUS_PRODUCTION)aria-current="page"@endif href="{{ route('executive.sales.index','status='.encrypt(Utility::STATUS_PRODUCTION)) }}">On Production {!! sales_exe_count(Utility::STATUS_PRODUCTION) !!}</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link @if($status==Utility::STATUS_OUT) active @endif" @if($status==Utility::STATUS_OUT)aria-current="page"@endif href="{{ route('executive.sales.index','status='.encrypt(Utility::STATUS_OUT)) }}">Out for Delivery</a>
+            <a class="nav-link @if($status==Utility::STATUS_OUT) active @endif" @if($status==Utility::STATUS_OUT)aria-current="page"@endif href="{{ route('executive.sales.index','status='.encrypt(Utility::STATUS_OUT)) }}">Out for Delivery {!! sales_exe_count(Utility::STATUS_OUT) !!}</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link @if($status==Utility::STATUS_DELIVERED) active @endif" @if($status==Utility::STATUS_DELIVERED)aria-current="page"@endif href="{{ route('executive.sales.index','status='.encrypt(Utility::STATUS_DELIVERED)) }}">Delivered</a>
+            <a class="nav-link @if($status==Utility::STATUS_DELIVERED) active @endif" @if($status==Utility::STATUS_DELIVERED)aria-current="page"@endif href="{{ route('executive.sales.index','status='.encrypt(Utility::STATUS_DELIVERED)) }}">Delivered {!! sales_exe_count(Utility::STATUS_DELIVERED) !!}</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link @if($status==Utility::STATUS_ONHOLD) active @endif" @if($status==Utility::STATUS_ONHOLD)aria-current="page"@endif href="{{ route('executive.sales.index','status='.encrypt(Utility::STATUS_ONHOLD)) }}">On Hold</a>
+            <a class="nav-link @if($status==Utility::STATUS_ONHOLD) active @endif" @if($status==Utility::STATUS_ONHOLD)aria-current="page"@endif href="{{ route('executive.sales.index','status='.encrypt(Utility::STATUS_ONHOLD)) }}">On Hold {!! sales_exe_count(Utility::STATUS_ONHOLD) !!}</a>
         </li>
         <li class="nav-item">
             <a class="nav-link @if($status==Utility::STATUS_CANCELLED) active @endif" @if($status==Utility::STATUS_CANCELLED)aria-current="page"@endif href="{{ route('executive.sales.index','status='.encrypt(Utility::STATUS_CANCELLED)) }}">Cancelled</a>

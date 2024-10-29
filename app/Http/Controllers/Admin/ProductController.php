@@ -19,7 +19,7 @@ class ProductController extends Controller
 {
     public function index() {
         $status = request('status');
-        $count_pending = Product::where('is_approved',0)->count();
+        $count_pending = Product::where('is_approved',Utility::ITEM_INACTIVE)->count();
         $is_approved = isset($status)? decrypt(request('status')) : ($count_pending==0 ? 1: 0);
         $count_new = $count_pending<99? $count_pending:'99+';
         $products = Product::orderBy('id','desc')->where('is_approved',$is_approved)->paginate(Utility::PAGINATE_COUNT);
