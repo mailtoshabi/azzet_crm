@@ -43,6 +43,9 @@
         <li class="nav-item">
             <a class="nav-link @if($status==Utility::STATUS_CLOSED) active @endif" @if($status==Utility::STATUS_CLOSED)aria-current="page"@endif href="{{ route('executive.sales.index','status='.encrypt(Utility::STATUS_CLOSED)) }}">Closed</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link text-danger @if($status==Utility::STATUS_NOTPAID) active @endif" @if($status==Utility::STATUS_NOTPAID)aria-current="page"@endif href="{{ route('executive.sales.index','status='.encrypt(Utility::STATUS_NOTPAID)) }}"><b><i class="fas fa-exclamation-triangle"></i> Pending Payment</b> {!! sales_exe_count(Utility::STATUS_NOTPAID) !!}</a>
+        </li>
 
       </ul>
     </div>
@@ -137,7 +140,7 @@
                          </tbody>
                      </table>
                      <!-- end table -->
-                     <div class="pagination justify-content-center">{{ $sales->links() }}</div>
+                     <div class="pagination justify-content-center">{{ $sales->appends(['status' => encrypt($status)])->links() }}</div>
                  </div>
                  <!-- end table responsive -->
             </div>

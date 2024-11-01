@@ -26,6 +26,15 @@ class Utility{
     const PAYMENT_ONLINE = 1;
     const PAYMENT_COD = 2;
 
+    const PAYMENT_CASH = 1;
+    const PAYMENT_BANK = 2;
+    const PAYMENT_UPI = 3;
+
+    const PAYMENT_PENDING = 0;
+    const PAYMENT_COMPLETED = 1;
+    const PAYMENT_FAILED = 2;
+    const PAYMENT_REFUNDED = 3;
+
     const ITEM_ACTIVE = 1;
     const ITEM_INACTIVE = 0;
 
@@ -37,6 +46,7 @@ class Utility{
     const STATUS_CLOSED = 5;
     const STATUS_ONHOLD = 6;
     const STATUS_CANCELLED = 7;
+    const STATUS_NOTPAID = 15;
 
     public static function otp()
     {
@@ -58,6 +68,29 @@ class Utility{
     public static function saleStatus()
     {
         return static::$saleStatus;
+    }
+
+    protected  static $paymentStatus = [
+        self::PAYMENT_COMPLETED => ['name'=>'Completed'],
+        self::PAYMENT_PENDING => ['name'=>'Pending'],
+
+        self::PAYMENT_FAILED => ['name'=>'Failed'],
+        self::PAYMENT_REFUNDED => ['name'=>'Refunded'],
+    ];
+    public static function paymentStatus()
+    {
+        return static::$paymentStatus;
+    }
+
+    protected  static $paymentMethods = [
+        self::PAYMENT_CASH => ['name'=>'Cash'],
+        self::PAYMENT_BANK => ['name'=>'Bank Transfer'],
+        self::PAYMENT_UPI => ['name'=>'UPI'],
+
+    ];
+    public static function paymentMethods()
+    {
+        return static::$paymentMethods;
     }
 
     // public static function settings($term) {

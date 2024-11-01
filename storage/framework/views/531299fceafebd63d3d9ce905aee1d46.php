@@ -158,7 +158,6 @@ unset($__errorArgs, $__bag); ?>
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="mb-3">
-
                                     <span id="imageContainer" <?php if(isset($branch)&&empty($branch->image)): ?> style="display: none" <?php endif; ?>>
                                         <?php if(isset($branch)&&!empty($branch->image)): ?>
                                             <img src="<?php echo e(URL::asset(App\Models\Branch::DIR_STORAGE . $branch->image)); ?>" alt="" class="avatar-xxl rounded-circle me-2">
@@ -172,6 +171,7 @@ unset($__errorArgs, $__bag); ?>
                                             <button type="button" class="btn-close" aria-label="Close"></button>
                                         <?php endif; ?>
                                     </span>
+                                    <input name="isImageDelete" type="hidden" value="0">
                                 </div>
                             </div>
                         </div>
@@ -315,7 +315,6 @@ unset($__errorArgs, $__bag); ?>
                 </div>
             </div>
         </div>
-        <input name="isImageDelete" type="hidden" value="0">
     </form>
 </div>
 <!-- end row -->

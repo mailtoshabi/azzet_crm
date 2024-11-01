@@ -26,7 +26,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             
-                            <div class="mb-3">
+                            <div class="mb-3 required">
                                 <label for="name">Name</label>
                                 <input id="name" name="name" type="text" class="form-control"  placeholder="Name" value="<?php echo e(isset($executive)?$executive->name:old('name')); ?>">
                                 <?php $__errorArgs = ['name'];
@@ -38,19 +38,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
-                            <div class="mb-3">
-                                <label for="phone">Mobile</label>
-                                <input id="phone" name="phone" type="text" class="form-control" placeholder="Mobile" value="<?php echo e(isset($executive)?$executive->phone:old('phone')); ?>">
-                                <?php $__errorArgs = ['name'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> <p class="text-danger"><?php echo e($message); ?></p> <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                            </div>
-                            <div class="mb-3">
+                            <div class="mb-3 required">
                                 <label for="city">Place</label>
                                 <input id="city" name="city" type="text" class="form-control" placeholder="Place" value="<?php echo e(isset($executive)?$executive->city:old('city')); ?>">
                                 <?php $__errorArgs = ['name'];
@@ -62,10 +50,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <div class="mb-3">
+                            <div class="mb-3 required">
                                 <label for="postal_code">Postal Code</label>
                                 <input id="postal_code" name="postal_code" type="text" class="form-control"  placeholder="Postal Code" value="<?php echo e(isset($executive)?$executive->postal_code:old('postal_code')); ?>">
                                 <?php $__errorArgs = ['postal_code'];
@@ -77,7 +62,9 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
+                        </div>
 
+                        <div class="col-sm-6">
                             <div class="mb-3 required">
                                 <label class="control-label">State</label>
                                 <select id="state_id" name="state_id" class="form-control select2" onChange="getdistrict(this.value,0);">
@@ -109,6 +96,23 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
+                            <div class="mb-3">
+                                <label for="postal_code">Image</label>
+                                <span id="imageContainer" <?php if(isset($executive)&&empty($executive->image)): ?> style="display: none" <?php endif; ?>>
+                                    <?php if(isset($executive)&&!empty($executive->image)): ?>
+                                        <img src="<?php echo e(URL::asset(App\Models\Branch::DIR_STORAGE . $executive->image)); ?>" alt="" class="avatar-xxl rounded-circle me-2">
+                                        <button type="button" class="btn-close" aria-label="Close"></button>
+                                    <?php endif; ?>
+                                </span>
+
+                                <span id="fileContainer" <?php if(isset($executive)&&!empty($executive->image)): ?> style="display: none" <?php endif; ?>>
+                                    <input id="avatar" name="avatar" type="file" class="form-control"  placeholder="File">
+                                    <?php if(isset($executive)&&!empty($executive->image)): ?>
+                                        <button type="button" class="btn-close" aria-label="Close"></button>
+                                    <?php endif; ?>
+                                </span>
+                                <input name="isImageDelete" type="hidden" value="0">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -121,8 +125,8 @@ unset($__errorArgs, $__bag); ?>
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <div class="mb-3">
+                        <div class="col-sm-4">
+                            <div class="mb-3 required">
                                 <label for="email">Email</label>
                                 <input id="email" name="email" type="text" class="form-control" placeholder="Email" value="<?php echo e(isset($executive)?$executive->email:old('email')); ?>">
                                 <?php $__errorArgs = ['email'];
@@ -136,8 +140,23 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
-                            <div class="mb-3">
+                        <div class="col-sm-4">
+                            <div class="mb-3 required">
+                                <label for="phone">Mobile</label>
+                                <input id="phone" name="phone" type="text" class="form-control" placeholder="Mobile" value="<?php echo e(isset($executive)?$executive->phone:old('phone')); ?>">
+                                <?php $__errorArgs = ['phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <p class="text-danger"><?php echo e($message); ?></p> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="mb-3 <?php echo e(isset($executive)?'':'required'); ?>">
                                 <label for="horizontal-password-input">Password</label>
                                 <input type="password" name="password" class="form-control" id="horizontal-password-input" placeholder="Enter Your Password">
                                 <?php $__errorArgs = ['password'];
@@ -164,6 +183,7 @@ unset($__errorArgs, $__bag); ?>
                 </div>
             </div>
         </div>
+
     </form>
 </div>
 <!-- end row -->
@@ -173,7 +193,21 @@ unset($__errorArgs, $__bag); ?>
 <script src="<?php echo e(URL::asset('assets/libs/dropzone/dropzone.min.js')); ?>"></script>
 <script src="<?php echo e(URL::asset('assets/js/pages/ecommerce-select2.init.js')); ?>"></script>
 <script src="<?php echo e(URL::asset('/assets/js/app.min.js')); ?>"></script>
+<script>
+    $(document).ready(function() {
+        $('#imageContainer').find('button').click(function() {
+            $('#imageContainer').hide();
+            $('#fileContainer').show();
+            $('input[name="isImageDelete"]').val(1);
+        })
 
+        $('#fileContainer').find('button').click(function() {
+            $('#fileContainer').hide();
+            $('#imageContainer').show();
+            $('input[name="isImageDelete"]').val(0);
+        })
+    });
+</script>
 <script>
     $(document).ready(function() {
         <?php if(isset($executive)): ?>

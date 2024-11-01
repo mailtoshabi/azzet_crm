@@ -43,7 +43,9 @@
         <li class="nav-item">
             <a class="nav-link <?php if($status==Utility::STATUS_CLOSED): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_CLOSED): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt(Utility::STATUS_CLOSED))); ?>">Closed</a>
         </li>
-
+        <li class="nav-item">
+            <a class="nav-link text-danger <?php if($status==Utility::STATUS_NOTPAID): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_NOTPAID): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt(Utility::STATUS_NOTPAID))); ?>"><b><i class="fas fa-exclamation-triangle"></i> Pending Payment</b> <?php echo sales_count(Utility::STATUS_NOTPAID); ?></a>
+        </li>
       </ul>
     </div>
 </div>
@@ -82,6 +84,9 @@
                              <th scope="col">Invoice No</th>
                              <th scope="col">Customer</th>
                              <th scope="col">Items</th>
+                             <th scope="col">Sub Total</th>
+                             <th scope="col">Total Paid</th>
+                             <th scope="col">Status</th>
                              <th style="width: 80px; min-width: 80px;">View</th>
                          </tr>
                          </thead>
@@ -109,6 +114,9 @@
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         <a href="#" class="text-body"><?php echo e($data); ?></a>
                                     </td>
+                                    <td><?php echo e(Utility::formatPrice($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off-$sale->discount)); ?></td>
+                                    <td><?php echo e(Utility::formatPrice($sale->total_paid)); ?></td>
+                                    <td><?php echo e($sale->payment_status); ?></td>
                                     <td>
                                         <a target="_blank" title="view" href="<?php echo e(route('admin.sales.view',encrypt($sale->id))); ?>"><i class="fa fa-eye font-size-16 text-primary me-1"></i></a>
                                     </td>
@@ -118,7 +126,9 @@
                          </tbody>
                      </table>
                      <!-- end table -->
-                     <div class="pagination justify-content-center"><?php echo e($sales->links()); ?></div>
+                     
+                        <div class="pagination justify-content-center"><?php echo e($sales->appends(['status' => encrypt($status)])->links()); ?></div>
+                     
                  </div>
                  <!-- end table responsive -->
             </div>

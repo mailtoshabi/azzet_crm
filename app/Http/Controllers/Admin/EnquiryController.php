@@ -112,26 +112,22 @@ class EnquiryController extends Controller
 
     public function changeStatus($id) {
         $enquiry = Enquiry::find(decrypt($id));
-        if($enquiry->executive) {
         if(!$enquiry->estimate) {
-        $currentStatus = $enquiry->is_approved;
-        $status = $currentStatus ? 0 : 1;
-        // $status_unapproved = encrypt(0);
-        foreach($enquiry->products as $product) {
-            if(!$product->is_approved) {
-                return redirect()->route('admin.enquiries.index','status='.encrypt(0))->with(['error'=>'Unapproved products Found!!']);
+            $currentStatus = $enquiry->is_approved;
+            $status = $currentStatus ? 0 : 1;
+            // $status_unapproved = encrypt(0);
+            foreach($enquiry->products as $product) {
+                if(!$product->is_approved) {
+                    return redirect()->route('admin.enquiries.index','status='.encrypt(0))->with(['error'=>'Unapproved products Found!!']);
+                }
             }
-        }
 
-        $enquiry->update(['is_approved'=>$status]);
-        // $status_enc = ;
-        return redirect()->route('admin.enquiries.index','status='.encrypt($status))->with(['success'=>'Status changed Successfully']);
+            $enquiry->update(['is_approved'=>$status]);
+            // $status_enc = ;
+            return redirect()->route('admin.enquiries.index','status='.encrypt($status))->with(['success'=>'Status changed Successfully']);
         }else {
             abort(404);
         }
-    }else {
-        abort(404);
-    }
     }
 
     public function convertToEstimate(Request $request, $id) {

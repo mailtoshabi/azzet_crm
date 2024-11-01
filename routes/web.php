@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ComponentController;
 use App\Http\Controllers\Admin\UomController;
 use App\Http\Controllers\Admin\HsnController;
+use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\TaxSlabController;
 use App\Http\Controllers\Admin\EnquiryController;
 use App\Http\Controllers\Executive\EnquiryController as ExecutiveEnquiryController;
@@ -171,7 +172,17 @@ Route::group(['as'=>'admin.', 'middleware'=>'auth', 'prefix'=>'admin'], function
         Route::get('/view-invoice/{id}',[SaleController::class,'view_invoice'])->name('view.invoice');
         Route::post('/add-frieght',[SaleController::class,'addFreight'])->name('addFreight');
         Route::post('/add-discount',[SaleController::class,'addDiscount'])->name('addDiscount');
+        Route::post('/add-round-off',[SaleController::class,'addRoundOff'])->name('addRoundOff');
         Route::get('/change-status/{id}/{status}',[SaleController::class,'changeStatus'])->name('changeStatus');
+    });
+
+    Route::group(['prefix'=>'payments', 'as'=>'payments.', 'middleware' => ['role:Administrator|Manager|HR']], function() {
+        // Route::get('/',[PaymentController::class,'index'])->name('index');
+        // Route::get('/create',[PaymentController::class,'create'])->name('create');
+        Route::post('/store',[PaymentController::class,'store'])->name('store');
+        // Route::get('/edit/{id}',[PaymentController::class,'edit'])->name('edit');
+        Route::put('/update',[PaymentController::class,'update'])->name('update');
+        Route::delete('/destroy/{id}',[PaymentController::class,'destroy'])->name('destroy');
     });
 
     Route::group(['prefix'=>'branches', 'as'=>'branches.', 'middleware' => ['role:Administrator']], function() {
@@ -276,8 +287,6 @@ Route::group(['as'=>'executive.', 'prefix'=>'executive'], function() {
             Route::get('/show/{id}',[ExecutiveSaleController::class,'show'])->name('view');
             Route::get('/download-invoice/{id}',[ExecutiveSaleController::class,'download_invoice'])->name('download.invoice');
             Route::get('/view-invoice/{id}',[ExecutiveSaleController::class,'view_invoice'])->name('view.invoice');
-            Route::post('/add-frieght',[ExecutiveSaleController::class,'addFreight'])->name('addFreight');
-            Route::post('/add-discount',[ExecutiveSaleController::class,'addDiscount'])->name('addDiscount');
             Route::get('/change-status/{id}/{status}',[ExecutiveSaleController::class,'changeStatus'])->name('changeStatus');
         });
     });

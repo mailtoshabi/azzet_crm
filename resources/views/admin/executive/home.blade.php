@@ -107,7 +107,7 @@
     </div><!-- end col -->
 </div><!-- end row-->
 
-<div class="row">
+{{-- <div class="row">
     <div class="col-xl-8">
         <!-- card -->
         <div class="card">
@@ -950,7 +950,7 @@
         <!-- end card -->
     </div>
     <!-- end col -->
-</div><!-- end row -->
+</div><!-- end row --> --}}
 @endsection
 @section('script')
 <!-- apexcharts -->

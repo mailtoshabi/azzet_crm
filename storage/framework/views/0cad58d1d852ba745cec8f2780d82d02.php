@@ -113,6 +113,26 @@
                                                 <td class="has-border notop nobottom right-align"><b><?php echo e(Utility::formatPrice($sale->delivery_charge)); ?></b></td>
                                             </tr>
                                             <?php endif; ?>
+                                            <?php if($sale->estimate->customer->state->id==Utility::STATE_ID_KERALA): ?>
+                                            <tr class="center" >
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td colspan="3" class="has-border notop noright nobottom right-align"><b>CGST</b></td>
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td class="has-border notop nobottom right-align"><b><?php echo e(Utility::formatPrice($sale->total_igst/2)); ?></b></td>
+                                            </tr>
+                                            <tr class="center" >
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td colspan="3" class="has-border notop noright nobottom right-align"><b>SGST</b></td>
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td class="has-border notop nobottom right-align"><b><?php echo e(Utility::formatPrice($sale->total_igst/2)); ?></b></td>
+                                            </tr>
+                                            <?php else: ?>
                                             <tr class="center" >
                                                 <td class="has-border notop noright nobottom"></td>
                                                 <td colspan="3" class="has-border notop noright nobottom right-align"><b>IGST</b></td>
@@ -122,31 +142,43 @@
                                                 <td class="has-border notop noright nobottom"></td>
                                                 <td class="has-border notop nobottom right-align"><b><?php echo e(Utility::formatPrice($sale->total_igst)); ?></b></td>
                                             </tr>
+                                            <?php endif; ?>
+                                            <?php if (! (($sale->discount==0))): ?>
+                                                <tr class="center" >
+                                                    <td class="has-border notop nobottom noright"></td>
+                                                    <td colspan="3" class="has-border notop nobottom noright right-align"><b>Discount</b></td>
+                                                    <td class="has-border notop nobottom noright"></td>
+                                                    <td class="has-border notop nobottom noright"></td>
+                                                    <td class="has-border notop nobottom noright"></td>
+                                                    <td class="has-border notop nobottom noright"></td>
+                                                    <td class="has-border notop nobottom right-align"><b><?php echo e(Utility::formatPrice($sale->discount)); ?></b></td>
+                                                </tr>
+                                            <?php endif; ?>
                                             <?php if (! (($sale->round_off==0))): ?>
                                                 <tr class="center" >
-                                                    <td class="has-border notop noright"></td>
-                                                    <td colspan="3" class="has-border notop noright right-align"><b>Round Off</b></td>
-                                                    <td class="has-border notop noright"></td>
-                                                    <td class="has-border notop noright"></td>
-                                                    <td class="has-border notop noright"></td>
-                                                    <td class="has-border notop noright"></td>
-                                                    <td class="has-border notop right-align"><b><?php echo e(Utility::formatPrice($sale->round_off)); ?></b></td>
+                                                    <td class="has-border notop nobottom noright"></td>
+                                                    <td colspan="3" class="has-border notop nobottom noright right-align"><b>Round Off</b></td>
+                                                    <td class="has-border notop nobottom noright"></td>
+                                                    <td class="has-border notop nobottom noright"></td>
+                                                    <td class="has-border notop nobottom noright"></td>
+                                                    <td class="has-border notop nobottom noright"></td>
+                                                    <td class="has-border notop nobottom right-align"><b><?php echo e(Utility::formatPrice($sale->round_off)); ?></b></td>
                                                 </tr>
                                             <?php endif; ?>
 
                                             <tr class="center height-20" >
-                                                <td class="has-border notop noright"></td>
-                                                <td colspan="3" class="has-border notop noright right-align vertical-m">Total</td>
-                                                <td class="has-border notop noright"></td>
-                                                <td class="has-border notop noright vertical-m"><?php echo e($sale->sub_quantity); ?> <?php echo e($product->uom->name); ?></td>
-                                                <td class="has-border notop noright"></td>
-                                                <td class="has-border notop noright"></td>
-                                                <td class="has-border notop vertical-m right-align"><b><?php echo e(Utility::formatPrice($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off)); ?></b></td>
+                                                <td class="has-border noright"></td>
+                                                <td colspan="3" class="has-border noright right-align vertical-m">Total</td>
+                                                <td class="has-border noright"></td>
+                                                <td class="has-border noright vertical-m"><?php echo e($sale->sub_quantity); ?> <?php echo e($product->uom->name); ?></td>
+                                                <td class="has-border noright"></td>
+                                                <td class="has-border noright"></td>
+                                                <td class="has-border vertical-m right-align"><b><?php echo e(Utility::formatPrice($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off-$sale->discount)); ?></b></td>
                                             </tr>
 
                                             <tr class="center height-20" >
                                                 <td colspan="8" class="has-border notop noright left-align"><small>Amount Chargeable (in words)</small><br>
-                                                    <b><?php echo e(Utility::CURRENCY_DISPLAY . ' ' . Utility::currencyToWords(($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off))); ?></b>
+                                                    <b><?php echo e(Utility::CURRENCY_DISPLAY . ' ' . Utility::currencyToWords(($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off-$sale->discount))); ?></b>
                                                 </td>
                                                 <td class="has-border notop noleft right-align">E. & O.E</td>
                                             </tr>
@@ -288,59 +320,6 @@
                         url: '<?php echo e(route("admin.sales.addFreight")); ?>',
                         type: 'POST',
                         data: { delivery_charge: delivery_charge, sale_id: sale_id },
-                        success: function(response) {
-                            Swal.fire(
-                                'Success!',
-                                'Your data has been submitted.',
-                                'success'
-                            ).then((result) => {
-                                refreshPage();
-                            });
-                        },
-                        error: function() {
-                            Swal.fire(
-                                'Error!',
-                                'There was a problem with the submission.',
-                                'error'
-                            );
-                        }
-                    });
-                }
-            });
-        });
-
-        $('#add_discount').on('click', function() {
-            // SweetAlert2 popup with input fields
-            Swal.fire({
-                title: 'Add Your Discount',
-                html:
-                    '<input type="text" id="round_off" class="form-control" value="<?php echo e(Utility::formatPrice($sale->round_off)); ?>" placeholder="Name"><br>' +
-                    '<input type="hidden" id="sale_id" class="form-control" value="<?php echo e(encrypt($sale->id)); ?>">',
-                focusConfirm: false,
-                showCancelButton: true,
-                confirmButtonText: 'Submit',
-                preConfirm: () => {
-                    const round_off = document.getElementById('round_off').value;
-                    const sale_id = document.getElementById('sale_id').value;
-
-                    // Check if the inputs are valid
-                    if (!round_off) {
-                        Swal.showValidationMessage('Please Enter Discount Amount');
-                        return false;
-                    }
-                    return { round_off: round_off, sale_id: sale_id };
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Get input values from the SweetAlert2 popup
-                    const round_off = result.value.round_off;
-                    const sale_id = result.value.sale_id;
-
-                    // Send the data using AJAX
-                    $.ajax({
-                        url: '<?php echo e(route("admin.sales.addDiscount")); ?>',
-                        type: 'POST',
-                        data: { round_off: round_off, sale_id: sale_id },
                         success: function(response) {
                             Swal.fire(
                                 'Success!',

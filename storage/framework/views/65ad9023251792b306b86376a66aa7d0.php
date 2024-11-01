@@ -286,6 +286,26 @@
                             <td class="has-border notop nobottom right-align"><b><?php echo e(Utility::formatPrice($sale->delivery_charge)); ?></b></td>
                         </tr>
                         <?php endif; ?>
+                        <?php if($sale->estimate->customer->state->id==Utility::STATE_ID_KERALA): ?>
+                        <tr class="center" >
+                            <td class="has-border notop noright nobottom"></td>
+                            <td colspan="3" class="has-border notop noright nobottom right-align"><b>CGST</b></td>
+                            <td class="has-border notop noright nobottom"></td>
+                            <td class="has-border notop noright nobottom"></td>
+                            <td class="has-border notop noright nobottom"></td>
+                            <td class="has-border notop noright nobottom"></td>
+                            <td class="has-border notop nobottom right-align"><b><?php echo e(Utility::formatPrice($sale->total_igst/2)); ?></b></td>
+                        </tr>
+                        <tr class="center" >
+                            <td class="has-border notop noright nobottom"></td>
+                            <td colspan="3" class="has-border notop noright nobottom right-align"><b>SGST</b></td>
+                            <td class="has-border notop noright nobottom"></td>
+                            <td class="has-border notop noright nobottom"></td>
+                            <td class="has-border notop noright nobottom"></td>
+                            <td class="has-border notop noright nobottom"></td>
+                            <td class="has-border notop nobottom right-align"><b><?php echo e(Utility::formatPrice($sale->total_igst/2)); ?></b></td>
+                        </tr>
+                        <?php else: ?>
                         <tr class="center" >
                             <td class="has-border notop noright nobottom"></td>
                             <td colspan="3" class="has-border notop noright nobottom right-align"><b>IGST</b></td>
@@ -295,31 +315,43 @@
                             <td class="has-border notop noright nobottom"></td>
                             <td class="has-border notop nobottom right-align"><b><?php echo e(Utility::formatPrice($sale->total_igst)); ?></b></td>
                         </tr>
+                        <?php endif; ?>
+                        <?php if (! (($sale->discount==0))): ?>
+                            <tr class="center" >
+                                <td class="has-border notop nobottom noright"></td>
+                                <td colspan="3" class="has-border notop nobottom noright right-align"><b>Discount</b></td>
+                                <td class="has-border notop nobottom noright"></td>
+                                <td class="has-border notop nobottom noright"></td>
+                                <td class="has-border notop nobottom noright"></td>
+                                <td class="has-border notop nobottom noright"></td>
+                                <td class="has-border notop nobottom right-align"><b><?php echo e(Utility::formatPrice($sale->discount)); ?></b></td>
+                            </tr>
+                        <?php endif; ?>
                         <?php if (! (($sale->round_off==0))): ?>
                             <tr class="center" >
-                                <td class="has-border notop noright"></td>
-                                <td colspan="3" class="has-border notop noright right-align"><b>Round Off</b></td>
-                                <td class="has-border notop noright"></td>
-                                <td class="has-border notop noright"></td>
-                                <td class="has-border notop noright"></td>
-                                <td class="has-border notop noright"></td>
-                                <td class="has-border notop right-align"><b><?php echo e(Utility::formatPrice($sale->round_off)); ?></b></td>
+                                <td class="has-border notop nobottom noright"></td>
+                                <td colspan="3" class="has-border notop nobottom noright right-align"><b>Round Off</b></td>
+                                <td class="has-border notop nobottom noright"></td>
+                                <td class="has-border notop nobottom noright"></td>
+                                <td class="has-border notop nobottom noright"></td>
+                                <td class="has-border notop nobottom noright"></td>
+                                <td class="has-border notop nobottom right-align"><b><?php echo e(Utility::formatPrice($sale->round_off)); ?></b></td>
                             </tr>
                         <?php endif; ?>
 
                         <tr class="center height-20" >
-                            <td class="has-border notop noright"></td>
-                            <td colspan="3" class="has-border notop noright right-align vertical-m">Total</td>
-                            <td class="has-border notop noright"></td>
-                            <td class="has-border notop noright vertical-m"><?php echo e($sale->sub_quantity); ?> <?php echo e($product->uom->name); ?></td>
-                            <td class="has-border notop noright"></td>
-                            <td class="has-border notop noright"></td>
-                            <td class="has-border notop vertical-m right-align"><b><?php echo e(Utility::formatPrice($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off)); ?></b></td>
+                            <td class="has-border noright"></td>
+                            <td colspan="3" class="has-border noright right-align vertical-m">Total</td>
+                            <td class="has-border noright"></td>
+                            <td class="has-border noright vertical-m"><?php echo e($sale->sub_quantity); ?> <?php echo e($product->uom->name); ?></td>
+                            <td class="has-border noright"></td>
+                            <td class="has-border noright"></td>
+                            <td class="has-border vertical-m right-align"><b><?php echo e(Utility::formatPrice($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off-$sale->discount)); ?></b></td>
                         </tr>
 
                         <tr class="center height-20" >
                             <td colspan="8" class="has-border notop noright left-align"><small>Amount Chargeable (in words)</small><br>
-                                <b><?php echo e(Utility::CURRENCY_DISPLAY . ' ' . Utility::currencyToWords(($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off))); ?></b>
+                                <b><?php echo e(Utility::CURRENCY_DISPLAY . ' ' . Utility::currencyToWords(($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off-$sale->discount))); ?></b>
                             </td>
                             <td class="has-border notop noleft right-align">E. & O.E</td>
                         </tr>

@@ -168,7 +168,7 @@ class EstimateController extends Controller
             $quantity = $estimate_product->pivot->quantity;
             $sum_price_components = DB::table('component_estimate_product')->where('estimate_product_id',$estimate_product->pivot->id)->sum('cost');
             $price = $profit + $sum_price_components;
-            $input_product_sale = ['sale_id'=>$sale->id,'product_id'=>$estimate_product->id,'price'=>$price,'quantity'=>$quantity,'gst_id'=>0];
+            $input_product_sale = ['sale_id'=>$sale->id,'product_id'=>$estimate_product->id,'price'=>$price,'quantity'=>$quantity];
             DB::table('product_sale')->insert($input_product_sale);
         }
 

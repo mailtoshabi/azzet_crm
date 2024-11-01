@@ -100,17 +100,6 @@
 
                     <li>
                         <a href="javascript: void(0);" class="has-arrow">
-                            <i class="fas fa-warehouse"></i>
-                            <span data-key="t-email">@lang('translation.Branch_Manage')</span>
-                        </a>
-                        <ul class="sub-menu" aria-expanded="false">
-                            <li class="{{ set_active('admin.branches.edit') }}"><a href="{{ route('admin.branches.index') }}" data-key="t-read-email">@lang('translation.List_Menu')</a></li>
-                            <li><a href="{{ route('admin.branches.create') }}" data-key="t-inbox">@lang('translation.Add_Menu')</a></li>
-                        </ul>
-                    </li>
-
-                    <li>
-                        <a href="javascript: void(0);" class="has-arrow">
                             <i class="fas fa-user-friends"></i>
                             <span data-key="t-contacts">@lang('translation.User_Management')</span>
                         </a>
@@ -120,19 +109,30 @@
                         </ul>
                     </li>
 
-                    <li>
-                        <a href="javascript: void(0);" class="has-arrow">
-                            <i class="fas fa-users"></i>
-                            <span data-key="t-contacts">@lang('translation.Role_Management')</span>
-                        </a>
-                        <ul class="sub-menu" aria-expanded="false">
-                            <li class="{{ set_active('admin.roles.edit') }}"><a href="{{ route('admin.roles.index') }}" data-key="t-read-email">@lang('translation.List_Menu')</a></li>
-                            <li><a href="{{ route('admin.roles.create') }}" data-key="t-read-email">@lang('translation.Add_Menu')</a></li>
-                        </ul>
-                    </li>
-
 
                 <li class="menu-title" data-key="t-apps">@lang('translation.Account_Settings')</li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i class="fas fa-warehouse"></i>
+                        <span data-key="t-email">@lang('translation.Branch_Manage')</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li class="{{ set_active('admin.branches.edit') }}"><a href="{{ route('admin.branches.index') }}" data-key="t-read-email">@lang('translation.List_Menu')</a></li>
+                        <li><a href="{{ route('admin.branches.create') }}" data-key="t-inbox">@lang('translation.Add_Menu')</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i class="fas fa-users"></i>
+                        <span data-key="t-contacts">@lang('translation.Role_Management')</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li class="{{ set_active('admin.roles.edit') }}"><a href="{{ route('admin.roles.index') }}" data-key="t-read-email">@lang('translation.List_Menu')</a></li>
+                        <li><a href="{{ route('admin.roles.create') }}" data-key="t-read-email">@lang('translation.Add_Menu')</a></li>
+                    </ul>
+                </li>
 
                 <li class="{{ set_active(['admin.components.create','admin.components.edit']) }}">
                     <a href="{{ route('admin.components.index') }}">

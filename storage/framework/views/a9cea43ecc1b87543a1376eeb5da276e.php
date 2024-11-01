@@ -48,7 +48,17 @@
                         <?php if (! (empty($sale->estimate->customer->gstin))): ?><p class="mb-2"><b><?php echo 'GSTIN/UIN: '. $sale->estimate->customer->gstin; ?></b></p><?php endif; ?>
                         State Name :  <?php echo e($sale->estimate->customer->state->name); ?>, Code : <?php echo e($sale->estimate->customer->state->gst_code); ?> <br>
                         <?php if (! (empty($sale->estimate->customer->cin))): ?><p class="mb-2"><?php echo 'CIN: '. $sale->estimate->customer->cin; ?></p><?php endif; ?>
-                        
+                        <div class="btn-group mt-2" role="group">
+                            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                Payment Status : <?php echo e($sale->payment_status); ?>
+
+                                <i class="mdi mdi-chevron-down"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
+                                <li><a class="dropdown-item" href="#allPaymentDetails">Details </a></li>
+                                
+                            </ul>
+                        </div>
 
                         <div class="mt-4">
                             <a data-plugin="confirm-data" data-confirmtext="Do you really want to download the Invoice?" href="<?php echo e(route('admin.sales.download.invoice',encrypt($sale->id))); ?>" class="btn btn-primary waves-effect waves-light w-sm">
@@ -60,9 +70,11 @@
                             <button type="button" id="add_freight" class="btn btn-success waves-effect waves-light w-sm">
                                 <i class="fas fa-bus d-block font-size-12"></i> Add Frieght
                             </button>
-                            
                             <button type="button" id="add_discount" class="btn btn-danger waves-effect waves-light w-sm">
                                 <i class="fas fa-hand-holding-usd d-block font-size-12"></i> Add Discount
+                            </button>
+                            <button type="button" id="add_round_off" class="btn btn-info waves-effect waves-light w-sm">
+                                <i class="fas fa-hand-holding-usd d-block font-size-12"></i> Round Off
                             </button>
                         </div>
                     </div>
@@ -123,6 +135,26 @@
                                                 <td class="has-border notop nobottom right-align"><b><?php echo e(Utility::formatPrice($sale->delivery_charge)); ?></b></td>
                                             </tr>
                                             <?php endif; ?>
+                                            <?php if($sale->estimate->customer->state->id==Utility::STATE_ID_KERALA): ?>
+                                            <tr class="center" >
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td colspan="3" class="has-border notop noright nobottom right-align"><b>CGST</b></td>
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td class="has-border notop nobottom right-align"><b><?php echo e(Utility::formatPrice($sale->total_igst/2)); ?></b></td>
+                                            </tr>
+                                            <tr class="center" >
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td colspan="3" class="has-border notop noright nobottom right-align"><b>SGST</b></td>
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td class="has-border notop nobottom right-align"><b><?php echo e(Utility::formatPrice($sale->total_igst/2)); ?></b></td>
+                                            </tr>
+                                            <?php else: ?>
                                             <tr class="center" >
                                                 <td class="has-border notop noright nobottom"></td>
                                                 <td colspan="3" class="has-border notop noright nobottom right-align"><b>IGST</b></td>
@@ -132,31 +164,43 @@
                                                 <td class="has-border notop noright nobottom"></td>
                                                 <td class="has-border notop nobottom right-align"><b><?php echo e(Utility::formatPrice($sale->total_igst)); ?></b></td>
                                             </tr>
+                                            <?php endif; ?>
+                                            <?php if (! (($sale->discount==0))): ?>
+                                                <tr class="center" >
+                                                    <td class="has-border notop nobottom noright"></td>
+                                                    <td colspan="3" class="has-border notop nobottom noright right-align"><b>Discount</b></td>
+                                                    <td class="has-border notop nobottom noright"></td>
+                                                    <td class="has-border notop nobottom noright"></td>
+                                                    <td class="has-border notop nobottom noright"></td>
+                                                    <td class="has-border notop nobottom noright"></td>
+                                                    <td class="has-border notop nobottom right-align"><b><?php echo e(Utility::formatPrice($sale->discount)); ?></b></td>
+                                                </tr>
+                                            <?php endif; ?>
                                             <?php if (! (($sale->round_off==0))): ?>
                                                 <tr class="center" >
-                                                    <td class="has-border notop noright"></td>
-                                                    <td colspan="3" class="has-border notop noright right-align"><b>Round Off</b></td>
-                                                    <td class="has-border notop noright"></td>
-                                                    <td class="has-border notop noright"></td>
-                                                    <td class="has-border notop noright"></td>
-                                                    <td class="has-border notop noright"></td>
-                                                    <td class="has-border notop right-align"><b><?php echo e(Utility::formatPrice($sale->round_off)); ?></b></td>
+                                                    <td class="has-border notop nobottom noright"></td>
+                                                    <td colspan="3" class="has-border notop nobottom noright right-align"><b>Round Off</b></td>
+                                                    <td class="has-border notop nobottom noright"></td>
+                                                    <td class="has-border notop nobottom noright"></td>
+                                                    <td class="has-border notop nobottom noright"></td>
+                                                    <td class="has-border notop nobottom noright"></td>
+                                                    <td class="has-border notop nobottom right-align"><b><?php echo e(Utility::formatPrice($sale->round_off)); ?></b></td>
                                                 </tr>
                                             <?php endif; ?>
 
                                             <tr class="center height-20" >
-                                                <td class="has-border notop noright"></td>
-                                                <td colspan="3" class="has-border notop noright right-align vertical-m">Total</td>
-                                                <td class="has-border notop noright"></td>
-                                                <td class="has-border notop noright vertical-m"><?php echo e($sale->sub_quantity); ?> <?php echo e($product->uom->name); ?></td>
-                                                <td class="has-border notop noright"></td>
-                                                <td class="has-border notop noright"></td>
-                                                <td class="has-border notop vertical-m right-align"><b><?php echo e(Utility::formatPrice($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off)); ?></b></td>
+                                                <td class="has-border noright"></td>
+                                                <td colspan="3" class="has-border noright right-align vertical-m">Total</td>
+                                                <td class="has-border noright"></td>
+                                                <td class="has-border noright vertical-m"><?php echo e($sale->sub_quantity); ?> <?php echo e($product->uom->name); ?></td>
+                                                <td class="has-border noright"></td>
+                                                <td class="has-border noright"></td>
+                                                <td class="has-border vertical-m right-align"><b><?php echo e(Utility::formatPrice($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off-$sale->discount)); ?></b></td>
                                             </tr>
 
                                             <tr class="center height-20" >
                                                 <td colspan="8" class="has-border notop noright left-align"><small>Amount Chargeable (in words)</small><br>
-                                                    <b><?php echo e(Utility::CURRENCY_DISPLAY . ' ' . Utility::currencyToWords(($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off))); ?></b>
+                                                    <b><?php echo e(Utility::CURRENCY_DISPLAY . ' ' . Utility::currencyToWords(($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off-$sale->discount))); ?></b>
                                                 </td>
                                                 <td class="has-border notop noleft right-align">E. & O.E</td>
                                             </tr>
@@ -242,6 +286,192 @@
                 </div>
             </div>
 
+            <div id="allPaymentDetails" class="card-header">
+                <h4 class="card-title">Payment Details</h4>
+                <p class="card-title-desc">Total payment of the customer</p>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="mb-3">
+                            <label for="transaction_id">Invoice Amount</label>
+                            <input type="text" readonly class="form-control" value="<?php echo e(Utility::formatPrice($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off-$sale->discount)); ?>">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="mb-3">
+                            <label for="transaction_id">Total Paid</label>
+                            <input type="text" readonly class="form-control" value="<?php echo e(Utility::formatPrice($sale->total_paid)); ?>">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="mb-3">
+                            <label for="transaction_id">Balance to Pay</label>
+                            <input type="text" readonly class="form-control" value="<?php echo e(Utility::formatPrice(($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off-$sale->discount) - ($sale->total_paid))); ?>">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-header">
+                <h4 class="card-title">Add New Payment</h4>
+                <p class="card-title-desc">Add new Payment from the customer</p>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="<?php echo e(isset($payment_edit)? route('admin.payments.update') : route('admin.payments.store')); ?>">
+                    <?php echo csrf_field(); ?>
+                    <input type="hidden" name="sale_id" value="<?php echo e(encrypt($sale->id)); ?>" />
+                    <?php if(!empty($payment_edit)): ?>
+                        <input type="hidden" name="payment_id" value="<?php echo e(encrypt($payment_edit->id)); ?>" />
+                        <input type="hidden" name="_method" value="PUT" />
+                    <?php endif; ?>
+                    <div class="row">
+
+                        <div class="col-sm-3">
+                            <div class="mb-3">
+                                <label for="amount">Amount Paid</label>
+                                <div class="input-group">
+                                    <div class="input-group-text">INR</div>
+                                    <input type="text" class="form-control" name="amount" id="amount" placeholder="Amount Paid" value="<?php if(!empty($payment_edit)): ?> <?php echo e($payment_edit->amount); ?> <?php endif; ?>">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        <div class="col-sm-3">
+                            <div class="mb-3">
+                                <label class="control-label">Payment Mode</label>
+                                <select id="payment_method" name="payment_method" class="form-control select2">
+                                    
+                                    <?php $__currentLoopData = Utility::paymentMethods(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $payment_method): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($index); ?>" <?php if(!empty($payment_edit)&& ($index==$payment_edit->payment_method)): ?> selected <?php endif; ?> ><?php echo e($payment_method['name']); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </select>
+                                <?php $__errorArgs = ['tax_slab_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <p class="text-danger"><?php echo e($message); ?></p> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="mb-3">
+                                <label for="transaction_id">Transaction ID</label>
+                                <input id="transaction_id" name="transaction_id" type="text" class="form-control"  placeholder="Transaction ID" value="<?php if(!empty($payment_edit)): ?> <?php echo e($payment_edit->transaction_id); ?><?php endif; ?>">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="mb-3">
+                                <label for="example-date-input">Payment Date</label>
+                                <input id="paid_at" name="paid_at" class="form-control" type="date" value="<?php if(empty($payment_edit)): ?><?php echo e(Carbon\Carbon::parse(now())->format('Y-m-d')); ?><?php else: ?><?php echo e(Carbon\Carbon::parse($payment_edit->paid_at)->format('Y-m-d')); ?><?php endif; ?>">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label for="description">Description</label>
+                                <textarea id="description" name="description" type="text" class="form-control"  placeholder="Description"><?php if(!empty($payment_edit)): ?> <?php echo e($payment_edit->description); ?><?php endif; ?></textarea>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="mb-3">
+                                <label class="control-label">Payment Status</label>
+                                <select id="status_p" name="status" class="form-control select2">
+                                    
+                                    <?php $__currentLoopData = Utility::paymentStatus(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index_p => $paymentStatus): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($index_p); ?>" <?php if(!empty($payment_edit)&& ($index_p==$payment_edit->status)): ?> selected <?php endif; ?> ><?php echo e($paymentStatus['name']); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </select>
+                                <?php $__errorArgs = ['tax_slab_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <p class="text-danger"><?php echo e($message); ?></p> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="mb-3">
+                                <br><button type="submit" class="btn btn-primary waves-effect waves-light"><?php echo e(isset($payment_edit) ? 'Update' : 'Save'); ?></button>
+                                <a href="<?php echo e(route('admin.sales.view',encrypt($sale->id))); ?>" class="btn btn-secondary waves-effect waves-light">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-header">
+                <h4 class="card-title">Payment Details</h4>
+                <p class="card-title-desc">All Payment Details of the customer</p>
+            </div>
+            <div class="card-body">
+                <?php if($sale->payments()->exists()): ?>
+                <div class="row">
+                    <div class="tab-content p-3 text-muted">
+                        <div class="tab-pane customerdetailsTab active" role="tabpanel">
+                            <div class="table-responsive mb-4">
+                                <table class="table align-middle dt-responsive table-check nowrap" style="border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Amount</th>
+                                        <th scope="col">Mode</th>
+                                        <th scope="col">Transaction ID</th>
+                                        <th scope="col">status</th>
+                                        <th scope="col">Description</th>
+                                        <th style="width: 80px; min-width: 80px;">Edit</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php $__currentLoopData = $sale->payments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $payment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <tr>
+                                                <td>
+                                                    <?php echo e($payment->paid_at->format('d M, Y')); ?>
+
+                                                </td>
+                                                <td>
+                                                <a href="#" class="text-body"><?php echo e(Utility::CURRENCY_DISPLAY . ' ' . Utility::formatPrice($payment->amount)); ?></a>
+                                                </td>
+
+                                            <td><?php echo e(Utility::paymentMethods()[$payment->payment_method]['name']); ?></td>
+                                            <td><?php echo e($payment->transaction_id); ?></td>
+                                            <td><?php echo e(Utility::paymentStatus()[$payment->status]['name']); ?></td>
+                                            <td>
+                                                <?php echo e($payment->description); ?>
+
+                                                </td>
+                                                <td>
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <i class="bx bx-dots-horizontal-rounded"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end">
+                                                            <li><a class="dropdown-item" href="<?php echo e(route('admin.sales.view',encrypt($sale->id). '?payment_edit_id=' . encrypt($payment->id).'#allPaymentDetails')); ?>"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>
+                                                            <li><a href="#" class="dropdown-item" data-plugin="delete-data" data-target-form="#form_delete_<?php echo e($loop->iteration); ?>"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>
+                                                            <form id="form_delete_<?php echo e($loop->iteration); ?>" method="POST" action="<?php echo e(route('admin.payments.destroy',encrypt($payment->id))); ?>">
+                                                                <?php echo csrf_field(); ?>
+                                                                <input type="hidden" name="_method" value="DELETE" />
+                                                                <input type="hidden" name="sale_id" id="sale_del_id" value="<?php echo e(encrypt($sale->id)); ?>" />
+                                                            </form>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                        </tr>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </tbody>
+                                </table>
+                                <!-- end table -->
+                                
+                            </div>
+                            <!-- end table responsive -->
+
+                        </div>
+                    </div>
+                </div>
+                <?php endif; ?>
+            </div>
 
         </div>
 
@@ -322,6 +552,59 @@
             Swal.fire({
                 title: 'Add Your Discount',
                 html:
+                    '<input type="text" id="discount" class="form-control" value="<?php echo e(Utility::formatPrice($sale->discount)); ?>" placeholder="Name"><br>' +
+                    '<input type="hidden" id="sale_id" class="form-control" value="<?php echo e(encrypt($sale->id)); ?>">',
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'Submit',
+                preConfirm: () => {
+                    const discount = document.getElementById('discount').value;
+                    const sale_id = document.getElementById('sale_id').value;
+
+                    // Check if the inputs are valid
+                    if (!discount) {
+                        Swal.showValidationMessage('Please Enter Discount Amount');
+                        return false;
+                    }
+                    return { discount: discount, sale_id: sale_id };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Get input values from the SweetAlert2 popup
+                    const discount = result.value.discount;
+                    const sale_id = result.value.sale_id;
+
+                    // Send the data using AJAX
+                    $.ajax({
+                        url: '<?php echo e(route("admin.sales.addDiscount")); ?>',
+                        type: 'POST',
+                        data: { discount: discount, sale_id: sale_id },
+                        success: function(response) {
+                            Swal.fire(
+                                'Success!',
+                                'Your data has been submitted.',
+                                'success'
+                            ).then((result) => {
+                                refreshPage();
+                            });
+                        },
+                        error: function() {
+                            Swal.fire(
+                                'Error!',
+                                'There was a problem with the submission.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        });
+
+        $('#add_round_off').on('click', function() {
+            // SweetAlert2 popup with input fields
+            Swal.fire({
+                title: 'Round Off',
+                html:
                     '<input type="text" id="round_off" class="form-control" value="<?php echo e(Utility::formatPrice($sale->round_off)); ?>" placeholder="Name"><br>' +
                     '<input type="hidden" id="sale_id" class="form-control" value="<?php echo e(encrypt($sale->id)); ?>">',
                 focusConfirm: false,
@@ -346,7 +629,7 @@
 
                     // Send the data using AJAX
                     $.ajax({
-                        url: '<?php echo e(route("admin.sales.addDiscount")); ?>',
+                        url: '<?php echo e(route("admin.sales.addRoundOff")); ?>',
                         type: 'POST',
                         data: { round_off: round_off, sale_id: sale_id },
                         success: function(response) {

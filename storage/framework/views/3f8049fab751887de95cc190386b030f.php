@@ -53,7 +53,6 @@ unset($__errorArgs, $__bag); ?>
                 </div>
             </div>
         </div>
-        <input name="isImageDelete" type="hidden" value="0">
     </form>
 </div>
 <!-- end row -->

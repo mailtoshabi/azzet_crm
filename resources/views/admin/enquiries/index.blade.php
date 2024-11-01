@@ -25,10 +25,10 @@
     <div class="col-lg-12">
     <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link @if($is_approved==0) active @endif" @if($is_approved==0)aria-current="page"@endif href="{{ route('admin.enquiries.index','status='.encrypt(0)) }}">Pending <span class="badge rounded-pill bg-soft-danger text-danger float-end">{{ $count_new }}</span></a>
+          <a class="nav-link @if($is_approved==Utility::ITEM_INACTIVE) active @endif" @if($is_approved==Utility::ITEM_INACTIVE)aria-current="page"@endif href="{{ route('admin.enquiries.index','status='.encrypt(Utility::ITEM_INACTIVE)) }}">Pending <span class="badge rounded-pill bg-soft-danger text-danger float-end">{{ $count_new }}</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link @if($is_approved==1) active @endif" @if($is_approved==1)aria-current="page"@endif href="{{ route('admin.enquiries.index','status='.encrypt(1)) }}">Approved</a>
+          <a class="nav-link @if($is_approved==Utility::ITEM_ACTIVE) active @endif" @if($is_approved==Utility::ITEM_ACTIVE)aria-current="page"@endif href="{{ route('admin.enquiries.index','status='.encrypt(Utility::ITEM_ACTIVE)) }}">Approved</a>
         </li>
       </ul>
     </div>
@@ -161,7 +161,7 @@
                          </tbody>
                      </table>
                      <!-- end table -->
-                     <div class="pagination justify-content-center">{{ $enquiries->links() }}</div>
+                     <div class="pagination justify-content-center">{{ $enquiries->appends(['status' => encrypt($is_approved)])->links() }}</div>
                  </div>
                  <!-- end table responsive -->
             </div>

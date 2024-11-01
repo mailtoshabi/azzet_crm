@@ -23,10 +23,10 @@ class Sale extends Model
     }
 
     public function products() {
-        return $this->belongsToMany(Product::class,'product_sale')->withPivot('id','price','quantity','gst_id')->withTimestamps();
+        return $this->belongsToMany(Product::class,'product_sale')->withPivot('id','price','quantity')->withTimestamps();
     }
 
-    public function getPaymentMethodTextAttribute() {
+    public function getpaymentMethodsTextAttribute() {
         if($this->pay_method==Utility::PAYMENT_ONLINE) return '<i class="fab fa-cc-visa me-1"></i> Online Payment';
         else if($this->pay_method==Utility::PAYMENT_COD) return '<i class="fas fa-money-bill-alt me-1"></i> Cash On Delivery';
         else return '-';
@@ -46,28 +46,35 @@ class Sale extends Model
     }
 
     public function getsubTotalAttribute() {
-        $total = 0;
-        foreach($this->products as $product) {
+        // $total = 0;
+        // foreach($this->products as $product) {
 
-            $quantity = $product->pivot->quantity;
-            $price = $product->pivot->price;
+        //     $quantity = $product->pivot->quantity;
+        //     $price = $product->pivot->price;
 
-            // $price = $profit + $sum_price_components;
-            $total += $quantity*$price;
-        }
-        return $total;
+        //     // $price = $profit + $sum_price_components;
+        //     $total += $quantity*$price;
+        // }
+        // return $total;
+
+        return $this->products->sum(function ($product) {
+            return $product->pivot->price * $product->pivot->quantity;
+        });
     }
 
     public function getsubQuantityAttribute() {
-        $total = 0;
-        foreach($this->products as $product) {
+        // $total = 0;
+        // foreach($this->products as $product) {
 
-            $quantity = $product->pivot->quantity;
+        //     $quantity = $product->pivot->quantity;
 
-            // $price = $profit + $sum_price_components;
-            $total += $quantity;
-        }
-        return $total;
+        //     // $price = $profit + $sum_price_components;
+        //     $total += $quantity;
+        // }
+        // return $total;
+        return $this->products->sum(function ($product) {
+            return $product->pivot->quantity;
+        });
     }
 
     public function getTotalIgstAttribute() {
@@ -94,6 +101,27 @@ class Sale extends Model
         return $gst/2;
     }
 
+
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function getTotalPaidAttribute()
+    {
+        return $this->payments()->where('status', Utility::PAYMENT_COMPLETED)->sum('amount');
+    }
+
+    public function getPaymentStatusAttribute() {
+        if($this->total_paid==0) {
+            return 'Not Paid';
+        }
+        if($this->total_paid>=($this->sub_total+$this->total_igst+$this->delivery_charge-$this->round_off-$this->discount)) {
+            $status = 'Paid';
+        }else { $status = 'Not Completed'; }
+        return $status;
+    }
     // public function branch()
     // {
     //     return $this->belongsTO(Branch::class);
