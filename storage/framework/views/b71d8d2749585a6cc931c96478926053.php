@@ -45,14 +45,14 @@
                             <p class="text-muted mb-4"><?php echo e($customer->postal_code); ?></p>
                             <?php endif; ?>
 
-                            <?php if (! (empty($customer->executive))): ?>
-                            <p class="text-muted mb-0"><b>Executive Name : <?php echo e($customer->executive->name); ?></b><br>
+                            <?php if (! (empty($customer->employee))): ?>
+                            <p class="text-muted mb-0"><b>Employee Name : <?php echo e($customer->employee->name); ?></b><br>
                                 
-                                <button type="button" id="add_executive" class="btn btn-primary waves-effect waves-light">Change Executive</button><br><br>
+                                <button type="button" id="add_employee" class="btn btn-primary waves-effect waves-light">Change Employee</button><br><br>
                         <?php endif; ?>
-                        <?php if(empty($customer->executive)): ?>
+                        <?php if(empty($customer->employee)): ?>
                             
-                            <button type="button" id="add_executive" class="btn btn-primary waves-effect waves-light">Assign to an Executive</button><br><br>
+                            <button type="button" id="add_employee" class="btn btn-primary waves-effect waves-light">Assign to an Employee</button><br><br>
                         <?php endif; ?>
                             
 
@@ -138,16 +138,16 @@
 <script>
 
     $(document).ready(function(){
-        $('#add_executive').on('click', function() {
+        $('#add_employee').on('click', function() {
 
         // SweetAlert2 popup with input fields
         Swal.fire({
-            title: 'Assign to an Executive',
+            title: 'Assign to an Employee',
             html:
-                '<select id="executive_id" name="executive_id" class="form-control select2">' +
-                                '<option value="">Select Executive</option>' +
-                                '<?php $__currentLoopData = $executives; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $executive): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>' +
-                                '<option value="<?php echo e($executive->id); ?>" <?php if(isset($customer->executive)): ?> <?php echo e($executive->id==$customer->executive->id ? "selected":""); ?> <?php endif; ?>><?php echo e($executive->name); ?></option>' +
+                '<select id="employee_id" name="employee_id" class="form-control select2">' +
+                                '<option value="">Select Employee</option>' +
+                                '<?php $__currentLoopData = $employees; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $employee): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>' +
+                                '<option value="<?php echo e($employee->id); ?>" <?php if(isset($customer->employee)): ?> <?php echo e($employee->id==$customer->employee->id ? "selected":""); ?> <?php endif; ?>><?php echo e($employee->name); ?></option>' +
                                 '<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>' +
                             '</select><br>' +
                 '<input type="hidden" id="customer_id" class="form-control" value="<?php echo e(encrypt($customer->id)); ?>">',
@@ -155,27 +155,27 @@
             showCancelButton: true,
             confirmButtonText: 'Submit',
             preConfirm: () => {
-                const executive_id = document.getElementById('executive_id').value;
+                const employee_id = document.getElementById('employee_id').value;
                 const customer_id = document.getElementById('customer_id').value;
 
                 // Check if the inputs are valid
-                if (!executive_id) {
-                    Swal.showValidationMessage('Please Select an Executive');
+                if (!employee_id) {
+                    Swal.showValidationMessage('Please Select an Employee');
                     return false;
                 }
-                return { executive_id: executive_id, customer_id: customer_id };
+                return { employee_id: employee_id, customer_id: customer_id };
             }
         }).then((result) => {
             if (result.isConfirmed) {
                 // Get input values from the SweetAlert2 popup
-                const executive_id = result.value.executive_id;
+                const employee_id = result.value.employee_id;
                 const customer_id = result.value.customer_id;
 
                 // Send the data using AJAX
                 $.ajax({
-                    url: '<?php echo e(route("admin.customers.addExecutive")); ?>',
+                    url: '<?php echo e(route("admin.customers.addEmployee")); ?>',
                     type: 'POST',
-                    data: { executive_id: executive_id, customer_id: customer_id },
+                    data: { employee_id: employee_id, customer_id: customer_id },
                     success: function(response) {
                         Swal.fire(
                             'Success!',

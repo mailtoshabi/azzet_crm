@@ -86,8 +86,8 @@ if (!function_exists('sales_exe_count')) {
             $count = Sale::orderBy('sales.id','desc')
             ->join('estimates','sales.estimate_id','=','estimates.id')
             ->join('customers','estimates.customer_id','=','customers.id')
-            ->join('executives','customers.executive_id','=','executives.id')
-            ->where('executives.id',Auth::guard('executive')->id())
+            ->join('employees','customers.employee_id','=','employees.id')
+            ->where('employees.id',Auth::guard('employee')->id())
             ->where('sales.status',$status)->distinct()->count();
         }else{
             $count = Sale::with('payments')
@@ -107,8 +107,8 @@ if (!function_exists('sales_exe_count')) {
             ->havingRaw('total_paid < sub_total')
             ->join('estimates','sales.estimate_id','=','estimates.id')
             ->join('customers','estimates.customer_id','=','customers.id')
-            ->join('executives','customers.executive_id','=','executives.id')
-            ->where('executives.id',Auth::guard('executive')->id())
+            ->join('employees','customers.employee_id','=','employees.id')
+            ->where('employees.id',Auth::guard('employee')->id())
             ->distinct()->count();
         }
 

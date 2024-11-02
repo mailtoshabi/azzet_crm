@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController as AdminLoginController;
 use App\Http\Controllers\Admin\HomeController as AdminHomeController;
-use App\Http\Controllers\Executive\HomeController as ExecutiveHomeController;
-use App\Http\Controllers\Executive\Auth\LoginController as ExecutiveLoginController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ComponentController;
 use App\Http\Controllers\Admin\UomController;
@@ -16,19 +14,24 @@ use App\Http\Controllers\Admin\HsnController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\TaxSlabController;
 use App\Http\Controllers\Admin\EnquiryController;
-use App\Http\Controllers\Executive\EnquiryController as ExecutiveEnquiryController;
 use App\Http\Controllers\Admin\EstimateController;
 use App\Http\Controllers\Admin\SaleController;
-use App\Http\Controllers\Executive\SaleController as ExecutiveSaleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Executive\ProductController as ExecutiveProductController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\BranchController;
-use App\Http\Controllers\Executive\CustomerController as ExecutiveCustomerController;
 use App\Http\Controllers\Admin\ActivityController;
-use App\Http\Controllers\Admin\ExecutiveController;
+use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\Admin\EmployeeReportController;
 use App\Http\Controllers\Admin\RoleController;
+
+use App\Http\Controllers\Employee\HomeController as EmployeeHomeController;
+use App\Http\Controllers\Employee\Auth\LoginController as EmployeeLoginController;
+use App\Http\Controllers\Employee\EnquiryController as EmployeeEnquiryController;
+use App\Http\Controllers\Employee\SaleController as EmployeeSaleController;
+use App\Http\Controllers\Employee\ProductController as EmployeeProductController;
+use App\Http\Controllers\Employee\CustomerController as EmployeeCustomerController;
+use App\Http\Controllers\Employee\EmployeeReportController as EmEmployeeReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -138,7 +141,7 @@ Route::group(['as'=>'admin.', 'middleware'=>'auth', 'prefix'=>'admin'], function
         Route::get('/change-status/{id}',[CustomerController::class,'changeStatus'])->name('changeStatus');
         Route::get('/approve/{id}',[CustomerController::class,'approve'])->name('approve');
         Route::post('/districts', [CustomerController::class,'distric_list'])->name('list.districts');
-        Route::post('/add-executive',[CustomerController::class,'addExecutive'])->name('addExecutive');
+        Route::post('/add-employee',[CustomerController::class,'addEmployee'])->name('addEmployee');
     });
 
     Route::group(['prefix'=>'enquiries', 'as'=>'enquiries.', 'middleware' => ['role:Administrator|Manager|HR']], function() {
@@ -199,16 +202,20 @@ Route::group(['as'=>'admin.', 'middleware'=>'auth', 'prefix'=>'admin'], function
         Route::post('/districts', [BranchController::class,'distric_list'])->name('list.districts');
     });
 
-    Route::group(['prefix'=>'executives', 'as'=>'executives.', 'middleware' => ['role:Administrator']], function() {
-        Route::get('/',[ExecutiveController::class,'index'])->name('index');
-        Route::get('/create',[ExecutiveController::class,'create'])->name('create');
-        Route::post('/store',[ExecutiveController::class,'store'])->name('store');
-        Route::get('/show/{id}',[ExecutiveController::class,'show'])->name('view');
-        Route::get('/edit/{id}',[ExecutiveController::class,'edit'])->name('edit');
-        Route::put('/update',[ExecutiveController::class,'update'])->name('update');
-        Route::delete('/destroy/{id}',[ExecutiveController::class,'destroy'])->name('destroy');
-        Route::get('/change-status/{id}',[ExecutiveController::class,'changeStatus'])->name('changeStatus');
-        Route::post('/districts', [ExecutiveController::class,'distric_list'])->name('list.districts');
+    Route::group(['prefix'=>'employees', 'as'=>'employees.', 'middleware' => ['role:Administrator']], function() {
+        Route::get('/',[EmployeeController::class,'index'])->name('index');
+        Route::get('/create',[EmployeeController::class,'create'])->name('create');
+        Route::post('/store',[EmployeeController::class,'store'])->name('store');
+        Route::get('/show/{id}',[EmployeeController::class,'show'])->name('view');
+        Route::get('/edit/{id}',[EmployeeController::class,'edit'])->name('edit');
+        Route::put('/update',[EmployeeController::class,'update'])->name('update');
+        Route::delete('/destroy/{id}',[EmployeeController::class,'destroy'])->name('destroy');
+        Route::get('/change-status/{id}',[EmployeeController::class,'changeStatus'])->name('changeStatus');
+        Route::post('/districts', [EmployeeController::class,'distric_list'])->name('list.districts');
+    });
+
+    Route::group(['prefix'=>'employee_reports', 'as'=>'employee_reports.', 'middleware' => ['role:Administrator']], function() {
+        Route::get('/',[EmployeeReportController::class,'index'])->name('index');
     });
 
     Route::group(['prefix'=>'users', 'as'=>'users.', 'middleware' => ['role:Administrator']], function() {
@@ -229,69 +236,79 @@ Route::group(['as'=>'admin.', 'middleware'=>'auth', 'prefix'=>'admin'], function
 });
 // Admin Dashboard Routes --End--
 
-// Executive Dashboard Routes --Start--
+// Employee Dashboard Routes --Start--
 
-Route::get('/executive', [ExecutiveHomeController::class,'index'])->middleware('executive.auth')->name('executive');
-Route::group(['as'=>'executive.', 'prefix'=>'executive'], function() {
-    Route::group(['namespace'=>'Executive\Auth'], function () {
-        // Route::get('/login', [ExecutiveLoginController::class,'login'])->name('login');
-        // Route::post('/do-login', [ExecutiveLoginController::class,'doLogin'])->name('do.login');
-        // Route::post('/logout', [ExecutiveLoginController::class,'logout'])->name('logout');
+Route::get('/employee', [EmployeeHomeController::class,'index'])->middleware('employee.auth')->name('employee');
+Route::group(['as'=>'employee.', 'prefix'=>'employee'], function() {
+    Route::group(['namespace'=>'Employee\Auth'], function () {
+        // Route::get('/login', [EmployeeLoginController::class,'login'])->name('login');
+        // Route::post('/do-login', [EmployeeLoginController::class,'doLogin'])->name('do.login');
+        // Route::post('/logout', [EmployeeLoginController::class,'logout'])->name('logout');
 
-        Route::get('/login', [ExecutiveLoginController::class,'showLoginForm'])->name('login');
-        Route::post('/login', [ExecutiveLoginController::class,'login'])->name('do.login');
-        Route::post('/logout', [ExecutiveLoginController::class,'logout'])->name('logout');
+        Route::get('/login', [EmployeeLoginController::class,'showLoginForm'])->name('login');
+        Route::post('/login', [EmployeeLoginController::class,'login'])->name('do.login');
+        Route::post('/logout', [EmployeeLoginController::class,'logout'])->name('logout');
     });
-    Route::get('/dashboard', [ExecutiveHomeController::class,'index'])->middleware('executive.auth')->name('dashboard');
+    Route::get('/dashboard', [EmployeeHomeController::class,'index'])->middleware('employee.auth')->name('dashboard');
 
-    Route::group(['middleware'=>'executive.auth'], function () {
+    Route::group(['middleware'=>'employee.auth'], function () {
         Route::group(['prefix'=>'enquiries', 'as'=>'enquiries.'], function() {
-            Route::get('/',[ExecutiveEnquiryController::class,'index'])->name('index');
-            Route::get('/create',[ExecutiveEnquiryController::class,'create'])->name('create');
-            Route::post('/store',[ExecutiveEnquiryController::class,'store'])->name('store');
-            Route::get('/edit/{id}',[ExecutiveEnquiryController::class,'edit'])->name('edit');
-            Route::put('/update',[ExecutiveEnquiryController::class,'update'])->name('update');
-            Route::delete('/destroy/{id}',[ExecutiveEnquiryController::class,'destroy'])->name('destroy');
-            Route::get('/change-status/{id}',[ExecutiveEnquiryController::class,'changeStatus'])->name('changeStatus');
+            Route::get('/',[EmployeeEnquiryController::class,'index'])->name('index');
+            Route::get('/create',[EmployeeEnquiryController::class,'create'])->name('create');
+            Route::post('/store',[EmployeeEnquiryController::class,'store'])->name('store');
+            Route::get('/edit/{id}',[EmployeeEnquiryController::class,'edit'])->name('edit');
+            Route::put('/update',[EmployeeEnquiryController::class,'update'])->name('update');
+            Route::delete('/destroy/{id}',[EmployeeEnquiryController::class,'destroy'])->name('destroy');
+            Route::get('/change-status/{id}',[EmployeeEnquiryController::class,'changeStatus'])->name('changeStatus');
             // Route::get('/convert-to-estimate/{id}',[EnquiryController::class,'convertToEstimate'])->name('convert_to_estimate');
-            Route::post('/get-product-detail',[ExecutiveEnquiryController::class,'getProductDetail'])->name('get_product_detail');
+            Route::post('/get-product-detail',[EmployeeEnquiryController::class,'getProductDetail'])->name('get_product_detail');
             // Route::post('/store_as_estimate',[EnquiryController::class,'store_as_estimate'])->name('store_as_estimate');
         });
 
         Route::group(['prefix'=>'products', 'as'=>'products.'], function() {
-            Route::get('/',[ExecutiveProductController::class,'index'])->name('index');
-            Route::get('/create',[ExecutiveProductController::class,'create'])->name('create');
-            Route::post('/store',[ExecutiveProductController::class,'store'])->name('store');
-            Route::get('/edit/{id}',[ExecutiveProductController::class,'edit'])->name('edit');
-            Route::put('/update',[ExecutiveProductController::class,'update'])->name('update');
-            Route::delete('/destroy/{id}',[ExecutiveProductController::class,'destroy'])->name('destroy');
-            Route::get('/approve/{id}',[ExecutiveProductController::class,'approve'])->name('approve');
+            Route::get('/',[EmployeeProductController::class,'index'])->name('index');
+            Route::get('/create',[EmployeeProductController::class,'create'])->name('create');
+            Route::post('/store',[EmployeeProductController::class,'store'])->name('store');
+            Route::get('/edit/{id}',[EmployeeProductController::class,'edit'])->name('edit');
+            Route::put('/update',[EmployeeProductController::class,'update'])->name('update');
+            Route::delete('/destroy/{id}',[EmployeeProductController::class,'destroy'])->name('destroy');
+            Route::get('/approve/{id}',[EmployeeProductController::class,'approve'])->name('approve');
 
         });
 
         Route::group(['prefix'=>'parties', 'as'=>'customers.'], function() {
-            Route::get('/',[ExecutiveCustomerController::class,'index'])->name('index');
-            Route::get('/create',[ExecutiveCustomerController::class,'create'])->name('create');
-            Route::post('/store',[ExecutiveCustomerController::class,'store'])->name('store');
-            Route::get('/edit/{id}',[ExecutiveCustomerController::class,'edit'])->name('edit');
-            Route::get('/show/{id}',[ExecutiveCustomerController::class,'show'])->name('view');
-            Route::put('/update',[ExecutiveCustomerController::class,'update'])->name('update');
-            Route::delete('/destroy/{id}',[ExecutiveCustomerController::class,'destroy'])->name('destroy');
-            // Route::get('/change-status/{id}',[ExecutiveCustomerController::class,'changeStatus'])->name('changeStatus');
-            // Route::get('/approve/{id}',[ExecutiveCustomerController::class,'approve'])->name('approve');
-            Route::post('/districts', [ExecutiveCustomerController::class,'distric_list'])->name('list.districts');
+            Route::get('/',[EmployeeCustomerController::class,'index'])->name('index');
+            Route::get('/create',[EmployeeCustomerController::class,'create'])->name('create');
+            Route::post('/store',[EmployeeCustomerController::class,'store'])->name('store');
+            Route::get('/edit/{id}',[EmployeeCustomerController::class,'edit'])->name('edit');
+            Route::get('/show/{id}',[EmployeeCustomerController::class,'show'])->name('view');
+            Route::put('/update',[EmployeeCustomerController::class,'update'])->name('update');
+            Route::delete('/destroy/{id}',[EmployeeCustomerController::class,'destroy'])->name('destroy');
+            // Route::get('/change-status/{id}',[EmployeeCustomerController::class,'changeStatus'])->name('changeStatus');
+            // Route::get('/approve/{id}',[EmployeeCustomerController::class,'approve'])->name('approve');
+            Route::post('/districts', [EmployeeCustomerController::class,'distric_list'])->name('list.districts');
         });
 
         Route::group(['prefix'=>'proforma', 'as'=>'sales.'], function() {
-            Route::get('/',[ExecutiveSaleController::class,'index'])->name('index');
-            Route::get('/show/{id}',[ExecutiveSaleController::class,'show'])->name('view');
-            Route::get('/download-invoice/{id}',[ExecutiveSaleController::class,'download_invoice'])->name('download.invoice');
-            Route::get('/view-invoice/{id}',[ExecutiveSaleController::class,'view_invoice'])->name('view.invoice');
-            Route::get('/change-status/{id}/{status}',[ExecutiveSaleController::class,'changeStatus'])->name('changeStatus');
+            Route::get('/',[EmployeeSaleController::class,'index'])->name('index');
+            Route::get('/show/{id}',[EmployeeSaleController::class,'show'])->name('view');
+            Route::get('/download-invoice/{id}',[EmployeeSaleController::class,'download_invoice'])->name('download.invoice');
+            Route::get('/view-invoice/{id}',[EmployeeSaleController::class,'view_invoice'])->name('view.invoice');
+            Route::get('/change-status/{id}/{status}',[EmployeeSaleController::class,'changeStatus'])->name('changeStatus');
+        });
+
+        Route::group(['prefix'=>'employee_reports', 'as'=>'employee_reports.'], function() {
+            Route::get('/',[EmEmployeeReportController::class,'index'])->name('index');
+            Route::get('/create',[EmEmployeeReportController::class,'create'])->name('create');
+            Route::post('/store',[EmEmployeeReportController::class,'store'])->name('store');
+            // Route::get('/show/{id}',[EmEmployeeReportController::class,'show'])->name('view');
+            Route::get('/edit/{id}',[EmEmployeeReportController::class,'edit'])->name('edit');
+            Route::put('/update',[EmEmployeeReportController::class,'update'])->name('update');
+            Route::delete('/destroy/{id}',[EmEmployeeReportController::class,'destroy'])->name('destroy');
         });
     });
 });
-// Executive Dashboard Routes --End--
+// Employee Dashboard Routes --End--
 
 
 //Language Translation

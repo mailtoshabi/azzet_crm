@@ -166,9 +166,9 @@
                                 </a>
                             </div>
                             <div class="col">
-                                <a class="dropdown-icon-item" href="{{ route('admin.executives.create') }}">
+                                <a class="dropdown-icon-item" href="{{ route('admin.employees.create') }}">
                                     <i class="fas fa-user-tie"></i>
-                                    <span>Executives</span>
+                                    <span>Employees</span>
                                 </a>
                             </div>
                         </div>

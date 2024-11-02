@@ -19,8 +19,8 @@
     <!-- Begin page -->
     <div id="layout-wrapper">
         <?php echo $__env->make('admin.layouts.topbar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-        <?php if(request()->is('executive/*')): ?>
-        <?php echo $__env->make('admin.layouts.executive.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        <?php if(request()->is('employee/*')): ?>
+        <?php echo $__env->make('admin.layouts.employee.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
         <?php else: ?>
         <?php echo $__env->make('admin.layouts.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
         <?php endif; ?>

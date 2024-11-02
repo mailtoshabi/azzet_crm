@@ -145,7 +145,7 @@ class ProductController extends Controller
 
     public function approve($id) {
         $product = Product::find(decrypt($id));
-        if($product->executive) {
+        if($product->employee) {
         $currentStatus = $product->is_approved;
         $status = $currentStatus ? 0 : 1;
         $product->update(['is_approved'=>$status, 'status'=>$status]);

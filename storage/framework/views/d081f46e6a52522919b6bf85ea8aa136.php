@@ -88,7 +88,7 @@
                                            <td>
                                             <a href="#" class="text-body">
                                                 On <?php echo e($customer->created_at->format('d M Y')); ?><br>
-                                                By <?php echo e(!empty($customer->executive)? $customer->executive->name . ' (Executive)' : $customer->user->name . ' (Admin)'); ?>
+                                                By <?php echo e(!empty($customer->employee)? $customer->employee->name . ' (Employee)' : $customer->user->name . ' (Admin)'); ?>
 
                                             </a>
                                         </td>
@@ -108,7 +108,7 @@
                                                             <input type="hidden" name="_method" value="DELETE" />
                                                         </form>
                                                         <?php endif; ?>
-                                                        <?php if($customer->executive): ?>
+                                                        <?php if($customer->employee): ?>
                                                             <li><a class="dropdown-item" href="<?php echo e(route('admin.customers.approve',encrypt($customer->id))); ?>"><?php echo $customer->is_approved?'<i class="fas fa-thumbs-down font-size-16 text-danger me-1"></i> Reject':'<i class="fas fa-thumbs-up font-size-16 text-primary me-1"></i> Approve'; ?></a></li>
                                                         <?php endif; ?>
                                                         <?php if($customer->is_approved): ?>

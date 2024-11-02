@@ -54,9 +54,6 @@ class HsnController extends Controller
 
     public function destroy($id) {
         $hsn = Hsn::find(decrypt($id));
-        if(!empty($hsn->image)) {
-            $input['image'] =null;
-        }
         $hsn->delete();
         return redirect()->route('admin.hsns.index')->with(['success'=>'Hsn Deleted Successfully']);
     }

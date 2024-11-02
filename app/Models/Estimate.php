@@ -13,9 +13,9 @@ class Estimate extends Model
     use HasFactory;
     protected $fillable = ['customer_id','user_id','enquiry_id','branch_id'];
 
-    public function executive()
+    public function employee()
     {
-        return $this->belongsTo(Executive::class);
+        return $this->belongsTo(Employee::class);
     }
 
     public function products()

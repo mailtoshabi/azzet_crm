@@ -109,7 +109,7 @@
                                     </td>
 
                                     <td>
-                                        <a href="#" class="text-body">{{ !empty($enquiry->executive)? 'Executive: ' . $enquiry->executive->name : 'Admin: ' . $enquiry->user->name }}</a>
+                                        <a href="#" class="text-body">{{ !empty($enquiry->employee)? 'Employee: ' . $enquiry->employee->name : 'Admin: ' . $enquiry->user->name }}</a>
                                     </td>
 
                                     <td>
@@ -144,7 +144,7 @@
                                                     <input type="hidden" name="_method" value="DELETE" />
                                                 </form>
 
-                                                {{-- @if($enquiry->executive) --}}
+                                                {{-- @if($enquiry->employee) --}}
                                                 @if(!$enquiry->estimate)
                                                 <li><a class="dropdown-item" href="{{ route('admin.enquiries.changeStatus',encrypt($enquiry->id))}}">{!! $enquiry->is_approved?'<i class="fas fa-thumbs-down font-size-16 text-danger me-1"></i> Reject':'<i class="fas fa-thumbs-up font-size-16 text-primary me-1"></i> Approve' !!}</a></li>
                                                 @endif

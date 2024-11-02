@@ -49,9 +49,6 @@ class UomController extends Controller
 
     public function destroy($id) {
         $uom = Uom::find(decrypt($id));
-        if(!empty($uom->image)) {
-            $input['image'] =null;
-        }
         $uom->delete();
         return redirect()->route('admin.uoms.index')->with(['success'=>'Uom Deleted Successfully']);
     }

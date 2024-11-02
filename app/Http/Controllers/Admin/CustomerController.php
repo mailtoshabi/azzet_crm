@@ -7,7 +7,7 @@ use App\Http\Utilities\Utility;
 use App\Models\Branch;
 use App\Models\ContactPerson;
 use App\Models\Customer;
-use App\Models\Executive;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -93,8 +93,8 @@ class CustomerController extends Controller
     public function show($id)
     {
         $customer = Customer::findOrFail(decrypt($id));
-        $executives = Executive::where('branch_id',default_branch()->id)->where('status',Utility::ITEM_ACTIVE)->get();
-        return view('admin.customers.view',compact('customer','executives'));
+        $employees = Employee::where('branch_id',default_branch()->id)->where('status',Utility::ITEM_ACTIVE)->get();
+        return view('admin.customers.view',compact('customer','employees'));
     }
 
     /**
@@ -200,7 +200,7 @@ class CustomerController extends Controller
 
     public function approve($id) {
         $customer = Customer::find(decrypt($id));
-        if($customer->executive) {
+        if($customer->employee) {
         $currentStatus = $customer->is_approved;
         $status = $currentStatus ? 0 : 1;
         $customer->update(['is_approved'=>$status, 'status'=>$status]);
@@ -221,11 +221,11 @@ class CustomerController extends Controller
         return $data;
     }
 
-    public function addExecutive() {
+    public function addEmployee() {
         $id = request('customer_id');
-        $executive_id = request('executive_id');
+        $employee_id = request('employee_id');
         $customer = Customer::find(decrypt($id));
-        $customer->update(['executive_id'=>$executive_id]);
+        $customer->update(['employee_id'=>$employee_id]);
         return $customer;
     }
 }

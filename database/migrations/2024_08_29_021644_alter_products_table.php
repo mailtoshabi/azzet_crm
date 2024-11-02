@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->foreignId('executive_id')->nullable()->after('category_id')->constrained()->onDelete('cascade');
-            $table->text('description')->nullable()->after('executive_id');
+            $table->foreignId('employee_id')->nullable()->after('category_id')->constrained()->onDelete('cascade');
+            $table->text('description')->nullable()->after('employee_id');
         });
     }
 
@@ -25,7 +25,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn('executive_id');
+            $table->dropColumn('employee_id');
             $table->dropColumn('description');
         });
     }

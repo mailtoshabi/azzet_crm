@@ -127,9 +127,9 @@ class Sale extends Model
     //     return $this->belongsTO(Branch::class);
     // }
 
-    // public function executive()
+    // public function employee()
     // {
-    //     return $this->belongsTo(Executive::class);
+    //     return $this->belongsTo(Employee::class);
     // }
 
 }

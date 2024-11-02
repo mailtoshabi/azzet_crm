@@ -90,11 +90,12 @@
                     <li>
                         <a href="javascript: void(0);" class="has-arrow">
                             <i class="fas fa-user-tie"></i>
-                            <span data-key="t-email">@lang('translation.Executive_Manage')</span>
+                            <span data-key="t-email">@lang('translation.Employee_Manage')</span>
                         </a>
                         <ul class="sub-menu" aria-expanded="false">
-                            <li class="{{ set_active('admin.executives.edit') }}"><a href="{{ route('admin.executives.index') }}" data-key="t-read-email">@lang('translation.List_Menu')</a></li>
-                            <li><a href="{{ route('admin.executives.create') }}" data-key="t-inbox">@lang('translation.Add_Menu')</a></li>
+                            <li ><a href="{{ route('admin.employee_reports.index') }}" data-key="t-read-email">@lang('translation.EmployeeReport_Manage')</a></li>
+                            <li class="{{ set_active('admin.employees.edit') }}"><a href="{{ route('admin.employees.index') }}" data-key="t-read-email">@lang('translation.List_Menu')</a></li>
+                            <li><a href="{{ route('admin.employees.create') }}" data-key="t-inbox">@lang('translation.Add_Menu')</a></li>
                         </ul>
                     </li>
 

@@ -97,7 +97,7 @@
                                     </td>
                                     <td><?php echo e($product->category->name); ?> <?php if(!empty($product->hsn->name)): ?> <?php echo e('/'. $product->hsn->name); ?> <?php endif; ?></td>
                                     <td>
-                                        <a href="#" class="text-body"><?php echo e(!empty($product->executive)? 'Executive: ' . $product->executive->name : 'Admin: ' . $product->user->name); ?></a>
+                                        <a href="#" class="text-body"><?php echo e(!empty($product->employee)? 'Employee: ' . $product->employee->name : 'Admin: ' . $product->user->name); ?></a>
                                     </td>
 
                                     <td>
@@ -115,7 +115,7 @@
                                                     <input type="hidden" name="_method" value="DELETE" />
                                                 </form>
                                                 <?php endif; ?>
-                                                <?php if($product->executive): ?>
+                                                <?php if($product->employee): ?>
                                                 <li><a class="dropdown-item" href="<?php echo e(route('admin.products.approve',encrypt($product->id))); ?>"><?php echo $product->is_approved?'<i class="fas fa-thumbs-down font-size-16 text-danger me-1"></i> Reject':'<i class="fas fa-thumbs-up font-size-16 text-primary me-1"></i> Approve'; ?></a></li>
                                                 <?php endif; ?>
                                                 <?php if($product->is_approved): ?>

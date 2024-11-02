@@ -53,14 +53,14 @@
                             <p class="text-muted mb-4">{{ $customer->postal_code }}</p>
                             @endunless
 
-                            @unless (empty($customer->executive))
-                            <p class="text-muted mb-0"><b>Executive Name : {{ $customer->executive->name }}</b><br>
-                                {{-- <a id="add_executive" href="#">Change</a></p> --}}
-                                <button type="button" id="add_executive" class="btn btn-primary waves-effect waves-light">Change Executive</button><br><br>
+                            @unless (empty($customer->employee))
+                            <p class="text-muted mb-0"><b>Employee Name : {{ $customer->employee->name }}</b><br>
+                                {{-- <a id="add_employee" href="#">Change</a></p> --}}
+                                <button type="button" id="add_employee" class="btn btn-primary waves-effect waves-light">Change Employee</button><br><br>
                         @endunless
-                        @empty($customer->executive)
-                            {{-- <p class="text-muted mb-0"><a href="#">Assign to an Executive</a></p> --}}
-                            <button type="button" id="add_executive" class="btn btn-primary waves-effect waves-light">Assign to an Executive</button><br><br>
+                        @empty($customer->employee)
+                            {{-- <p class="text-muted mb-0"><a href="#">Assign to an Employee</a></p> --}}
+                            <button type="button" id="add_employee" class="btn btn-primary waves-effect waves-light">Assign to an Employee</button><br><br>
                         @endempty
                             {{-- <div class="row mb-3">
                                 <div class="col-md-6">
@@ -271,16 +271,16 @@
 <script>
 
     $(document).ready(function(){
-        $('#add_executive').on('click', function() {
+        $('#add_employee').on('click', function() {
 
         // SweetAlert2 popup with input fields
         Swal.fire({
-            title: 'Assign to an Executive',
+            title: 'Assign to an Employee',
             html:
-                '<select id="executive_id" name="executive_id" class="form-control select2">' +
-                                '<option value="">Select Executive</option>' +
-                                '@foreach ($executives as $executive)' +
-                                '<option value="{{ $executive->id }}" @isset($customer->executive) {{ $executive->id==$customer->executive->id ? "selected":"" }} @endisset>{{ $executive->name }}</option>' +
+                '<select id="employee_id" name="employee_id" class="form-control select2">' +
+                                '<option value="">Select Employee</option>' +
+                                '@foreach ($employees as $employee)' +
+                                '<option value="{{ $employee->id }}" @isset($customer->employee) {{ $employee->id==$customer->employee->id ? "selected":"" }} @endisset>{{ $employee->name }}</option>' +
                                 '@endforeach' +
                             '</select><br>' +
                 '<input type="hidden" id="customer_id" class="form-control" value="{{ encrypt($customer->id) }}">',
@@ -288,27 +288,27 @@
             showCancelButton: true,
             confirmButtonText: 'Submit',
             preConfirm: () => {
-                const executive_id = document.getElementById('executive_id').value;
+                const employee_id = document.getElementById('employee_id').value;
                 const customer_id = document.getElementById('customer_id').value;
 
                 // Check if the inputs are valid
-                if (!executive_id) {
-                    Swal.showValidationMessage('Please Select an Executive');
+                if (!employee_id) {
+                    Swal.showValidationMessage('Please Select an Employee');
                     return false;
                 }
-                return { executive_id: executive_id, customer_id: customer_id };
+                return { employee_id: employee_id, customer_id: customer_id };
             }
         }).then((result) => {
             if (result.isConfirmed) {
                 // Get input values from the SweetAlert2 popup
-                const executive_id = result.value.executive_id;
+                const employee_id = result.value.employee_id;
                 const customer_id = result.value.customer_id;
 
                 // Send the data using AJAX
                 $.ajax({
-                    url: '{{ route("admin.customers.addExecutive") }}',
+                    url: '{{ route("admin.customers.addEmployee") }}',
                     type: 'POST',
-                    data: { executive_id: executive_id, customer_id: customer_id },
+                    data: { employee_id: employee_id, customer_id: customer_id },
                     success: function(response) {
                         Swal.fire(
                             'Success!',

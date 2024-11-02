@@ -52,9 +52,6 @@ class ComponentController extends Controller
 
     public function destroy($id) {
         $component = Component::find(decrypt($id));
-        if(!empty($component->image)) {
-            $input['image'] =null;
-        }
         $component->delete();
         return redirect()->route('admin.components.index')->with(['success'=>'Component Deleted Successfully']);
     }

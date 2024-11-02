@@ -275,10 +275,15 @@ return [
     "Edit_Customer" => "Edit Party",
     "Customer_List" => "Party List",
 
-    "Executive_Manage" => "Executives",
-    "Add_Executive" => "Add Executive",
-    "Edit_Executive" => "Edit Executive",
-    "Executive_List" => "Executive List",
+    "Employee_Manage" => "Employees",
+    "Add_Employee" => "Add Employee",
+    "Edit_Employee" => "Edit Employee",
+    "Employee_List" => "Employee List",
+
+    "EmployeeReport_Manage" => "Reports",
+    "Add_EmployeeReport" => "Add Report",
+    "Edit_EmployeeReport" => "Edit Report",
+    "EmployeeReport_List" => "Report List",
 
     "User_Management" => "Users",
     "Add_User" => "Add User",

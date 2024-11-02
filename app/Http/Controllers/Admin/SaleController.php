@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Utilities\Utility;
-use App\Models\Executive;
+use App\Models\Employee;
 use App\Models\Payment;
 use App\Models\Sale;
 use Illuminate\Http\Request;
@@ -52,7 +52,7 @@ class SaleController extends Controller
     public function show($id)
     {
         $sale = Sale::findOrFail(decrypt($id));
-        $executives = Executive::where('branch_id',default_branch()->id)->where('status',Utility::ITEM_ACTIVE)->get();
+        $employees = Employee::where('branch_id',default_branch()->id)->where('status',Utility::ITEM_ACTIVE)->get();
         $payment_edit_id = request('payment_edit_id');
         if(isset($payment_edit_id)) {
             $payment_edit = Payment::find(decrypt($payment_edit_id));
@@ -60,7 +60,7 @@ class SaleController extends Controller
             $payment_edit = null;
         }
 
-        return view('admin.sales.view',compact('sale','executives','payment_edit'));
+        return view('admin.sales.view',compact('sale','employees','payment_edit'));
     }
 
     public function view_invoice($id) {
@@ -107,11 +107,11 @@ class SaleController extends Controller
         return $sale;
     }
 
-    public function addExecutive() {
+    public function addEmployee() {
         $id = request('sale_id');
-        $executive_id = request('executive_id');
+        $employee_id = request('employee_id');
         $sale = Sale::find(decrypt($id));
-        $sale->update(['executive_id'=>$executive_id]);
+        $sale->update(['employee_id'=>$employee_id]);
         return $sale;
     }
 

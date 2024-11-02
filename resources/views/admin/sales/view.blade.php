@@ -24,14 +24,14 @@
                         <p class="text-primary mb-0">Mob:{{ $sale->estimate->customer->phone }}</p>
                         @unless (empty($sale->estimate->customer->email))<p class="text-success mb-2">Email:{{ $sale->estimate->customer->email }}</p>@endunless
 
-                        @unless (empty($sale->estimate->customer->executive))
-                            <p class="text-muted mb-0"><b>Executive Name : {{ $sale->estimate->customer->executive->name }}</b><br><br>
+                        @unless (empty($sale->estimate->customer->employee))
+                            <p class="text-muted mb-0"><b>Employee Name : {{ $sale->estimate->customer->employee->name }}</b><br><br>
                         @endunless
-                        {{-- @unless (empty($sale->executive))
-                        <button type="button" id="add_executive" class="btn btn-primary waves-effect waves-light">Change Executive</button><br><br>
+                        {{-- @unless (empty($sale->employee))
+                        <button type="button" id="add_employee" class="btn btn-primary waves-effect waves-light">Change Employee</button><br><br>
                         @endunless
-                        @empty($sale->executive)
-                            <button type="button" id="add_executive" class="btn btn-primary waves-effect waves-light">Assign to an Executive</button><br><br>
+                        @empty($sale->employee)
+                            <button type="button" id="add_employee" class="btn btn-primary waves-effect waves-light">Assign to an Employee</button><br><br>
                         @endempty --}}
 
                         <div class="btn-group" role="group">

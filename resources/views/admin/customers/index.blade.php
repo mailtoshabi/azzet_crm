@@ -119,7 +119,7 @@
                                            <td>
                                             <a href="#" class="text-body">
                                                 On {{ $customer->created_at->format('d M Y') }}<br>
-                                                By {{ !empty($customer->executive)? $customer->executive->name . ' (Executive)' : $customer->user->name . ' (Admin)' }}
+                                                By {{ !empty($customer->employee)? $customer->employee->name . ' (Employee)' : $customer->user->name . ' (Admin)' }}
                                             </a>
                                         </td>
                                            {{-- <td>
@@ -142,7 +142,7 @@
                                                             <input type="hidden" name="_method" value="DELETE" />
                                                         </form>
                                                         @endif
-                                                        @if($customer->executive)
+                                                        @if($customer->employee)
                                                             <li><a class="dropdown-item" href="{{ route('admin.customers.approve',encrypt($customer->id))}}">{!! $customer->is_approved?'<i class="fas fa-thumbs-down font-size-16 text-danger me-1"></i> Reject':'<i class="fas fa-thumbs-up font-size-16 text-primary me-1"></i> Approve' !!}</a></li>
                                                         @endif
                                                         @if($customer->is_approved)

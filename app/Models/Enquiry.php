@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Enquiry extends Model
 {
     use HasFactory;
-    protected $fillable = ['customer_id','user_id','executive_id','is_approved','branch_id'];
+    protected $fillable = ['customer_id','user_id','employee_id','is_approved','branch_id'];
     protected $cast = [
         'is_approved' => 'boolean',
     ];
@@ -20,9 +20,9 @@ class Enquiry extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function executive()
+    public function employee()
     {
-        return $this->belongsTo(Executive::class);
+        return $this->belongsTo(Employee::class);
     }
 
     public function products()

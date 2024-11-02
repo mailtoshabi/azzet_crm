@@ -19,8 +19,8 @@
     <!-- Begin page -->
     <div id="layout-wrapper">
         @include('admin.layouts.topbar')
-        @if (request()->is('executive/*'))
-        @include('admin.layouts.executive.sidebar')
+        @if (request()->is('employee/*'))
+        @include('admin.layouts.employee.sidebar')
         @else
         @include('admin.layouts.sidebar')
         @endif

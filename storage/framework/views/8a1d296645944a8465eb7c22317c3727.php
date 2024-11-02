@@ -91,7 +91,7 @@
                                     </td>
 
                                     <td>
-                                        <a href="#" class="text-body"><?php echo e(!empty($enquiry->executive)? 'Executive: ' . $enquiry->executive->name : 'Admin: ' . $enquiry->user->name); ?></a>
+                                        <a href="#" class="text-body"><?php echo e(!empty($enquiry->employee)? 'Employee: ' . $enquiry->employee->name : 'Admin: ' . $enquiry->user->name); ?></a>
                                     </td>
 
                                     <td>

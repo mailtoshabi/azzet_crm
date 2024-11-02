@@ -90,11 +90,12 @@
                     <li>
                         <a href="javascript: void(0);" class="has-arrow">
                             <i class="fas fa-user-tie"></i>
-                            <span data-key="t-email"><?php echo app('translator')->get('translation.Executive_Manage'); ?></span>
+                            <span data-key="t-email"><?php echo app('translator')->get('translation.Employee_Manage'); ?></span>
                         </a>
                         <ul class="sub-menu" aria-expanded="false">
-                            <li class="<?php echo e(set_active('admin.executives.edit')); ?>"><a href="<?php echo e(route('admin.executives.index')); ?>" data-key="t-read-email"><?php echo app('translator')->get('translation.List_Menu'); ?></a></li>
-                            <li><a href="<?php echo e(route('admin.executives.create')); ?>" data-key="t-inbox"><?php echo app('translator')->get('translation.Add_Menu'); ?></a></li>
+                            <li ><a href="<?php echo e(route('admin.employee_reports.index')); ?>" data-key="t-read-email"><?php echo app('translator')->get('translation.EmployeeReport_Manage'); ?></a></li>
+                            <li class="<?php echo e(set_active('admin.employees.edit')); ?>"><a href="<?php echo e(route('admin.employees.index')); ?>" data-key="t-read-email"><?php echo app('translator')->get('translation.List_Menu'); ?></a></li>
+                            <li><a href="<?php echo e(route('admin.employees.create')); ?>" data-key="t-inbox"><?php echo app('translator')->get('translation.Add_Menu'); ?></a></li>
                         </ul>
                     </li>
 

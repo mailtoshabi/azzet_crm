@@ -34,8 +34,8 @@ class Branch extends Authenticatable
         return $this->hasMany(Estimate::class);
     }
 
-    public function executives() {
-        return $this->hasMany(Executive::class);
+    public function employees() {
+        return $this->hasMany(Employee::class);
     }
 
     // public function sales() {

@@ -72,9 +72,9 @@ class Product extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function executive()
+    public function employee()
     {
-        return $this->belongsTo(Executive::class);
+        return $this->belongsTo(Employee::class);
     }
 
     public function uom()

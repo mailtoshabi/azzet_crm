@@ -8,7 +8,7 @@ use App\Models\AllSlug;
 use App\Models\Branch;
 use App\Models\Category;
 use App\Models\ClinicType;
-use App\Models\Executive;
+use App\Models\Employee;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\User;
@@ -41,8 +41,8 @@ class ComposerServiceProvider extends ServiceProvider
             $view->with(compact('user'));
         });
 
-        view()->composer(['admin.layouts.executive.sidebar'], function ($view) {
-            $user = Executive::find(Auth::guard('executive')->id());
+        view()->composer(['admin.layouts.employee.sidebar'], function ($view) {
+            $user = Employee::find(Auth::guard('employee')->id());
             $view->with(compact('user'));
         });
 

@@ -116,7 +116,7 @@
                                     </td>
                                     <td>{{ $product->category->name }} @if(!empty($product->hsn->name)) {{ '/'. $product->hsn->name }} @endif</td>
                                     <td>
-                                        <a href="#" class="text-body">{{ !empty($product->executive)? 'Executive: ' . $product->executive->name : 'Admin: ' . $product->user->name }}</a>
+                                        <a href="#" class="text-body">{{ !empty($product->employee)? 'Employee: ' . $product->employee->name : 'Admin: ' . $product->user->name }}</a>
                                     </td>
 
                                     <td>
@@ -134,7 +134,7 @@
                                                     <input type="hidden" name="_method" value="DELETE" />
                                                 </form>
                                                 @endif
-                                                @if($product->executive)
+                                                @if($product->employee)
                                                 <li><a class="dropdown-item" href="{{ route('admin.products.approve',encrypt($product->id))}}">{!! $product->is_approved?'<i class="fas fa-thumbs-down font-size-16 text-danger me-1"></i> Reject':'<i class="fas fa-thumbs-up font-size-16 text-primary me-1"></i> Approve' !!}</a></li>
                                                 @endif
                                                 @if($product->is_approved)
