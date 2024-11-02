@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Enquiry extends Model
 {
     use HasFactory;
-    protected $fillable = ['customer_id','user_id','employee_id','is_approved','branch_id'];
+    protected $fillable = ['customer_id','user_id','employee_id','is_approved','branch_id','description'];
     protected $cast = [
         'is_approved' => 'boolean',
     ];

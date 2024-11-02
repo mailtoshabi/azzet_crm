@@ -24,7 +24,7 @@
                                 <form class="mt-4 pt-2" action="{{ route('employee.do.login') }}" method="POST">
                                     @csrf
                                     <div class="form-floating form-floating-custom mb-4">
-                                        <input type="text" class="form-control @error('username') is-invalid @enderror" value="{{ old('username', 'shabeer.exe@azzetgroup.com') }}" id="input-username" placeholder="Enter User Name" name="username">
+                                        <input type="text" class="form-control @error('username') is-invalid @enderror" value="{{ old('username', '') }}" id="input-username" placeholder="Enter User Name" name="username">
                                         @error('username')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -37,7 +37,7 @@
                                     </div>
 
                                     <div class="form-floating form-floating-custom mb-4 auth-pass-inputgroup">
-                                        <input type="password" class="form-control pe-5 @error('password') is-invalid @enderror" name="password" id="password-input" placeholder="Enter Password" value="123456">
+                                        <input type="password" class="form-control pe-5 @error('password') is-invalid @enderror" name="password" id="password-input" placeholder="Enter Password" value="">
                                         @error('password')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>

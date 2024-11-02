@@ -39,7 +39,7 @@ class EnquiryController extends Controller
         $validated = request()->validate([
             'customer_id' => 'required',
         ]);
-        $input = request()->only(['customer_id']);
+        $input = request()->only(['customer_id','description']);
         $input['employee_id'] = Auth::guard('employee')->id();
 
         $branch_id = Auth::guard('employee')->user()->branch_id;
@@ -79,7 +79,7 @@ class EnquiryController extends Controller
         $validated = request()->validate([
             'customer_id' => 'required',
         ]);
-        $input = request()->only(['customer_id']);
+        $input = request()->only(['customer_id','description']);
         // $input['employee_id'] =Auth::guard('employee')->id();
         $enquiry->update($input);
         $enquiry->products()->detach();

@@ -62,6 +62,7 @@
                                  </div>
                              </th>
                              <th scope="col">Name</th>
+                             <th scope="col">User Type</th>
                              <th scope="col">Permissions</th>
                              <th style="width: 80px; min-width: 80px;">Action</th>
                          </tr>
@@ -77,6 +78,9 @@
                                     </th>
                                     <td>
                                         <a href="#" class="text-body">{{ $role->display_name }}</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="text-body">{{ $role->user_type=='user'?'Admin':'Employee' }}</a>
                                     </td>
                                     <td>
                                         @php

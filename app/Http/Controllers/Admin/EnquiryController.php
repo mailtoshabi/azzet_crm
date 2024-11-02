@@ -38,7 +38,7 @@ class EnquiryController extends Controller
         $validated = request()->validate([
             'customer_id' => 'required',
         ]);
-        $input = request()->only(['customer_id']);
+        $input = request()->only(['customer_id','description']);
 
         $branch_id = (Auth::id()==Utility::SUPER_ADMIN_ID)? default_branch()->id : Auth::user()->branch_id;
         $input['user_id'] =Auth::id();
@@ -78,7 +78,7 @@ class EnquiryController extends Controller
         $validated = request()->validate([
             'customer_id' => 'required',
         ]);
-        $input = request()->only(['customer_id']);
+        $input = request()->only(['customer_id','description']);
         if(isset($estimate)) {
             return redirect()->route('admin.estimates.create')->with(['sess_customer_id'=>$comp_customer_id]);
         }else {

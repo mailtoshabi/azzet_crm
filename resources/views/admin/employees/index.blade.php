@@ -88,7 +88,13 @@
                                             </div>
                                         </div>
                                         @endif
-                                        <a href="#" class="text-body">{{ $employee->name }}</a>
+                                        <a href="#" class="text-body">{{ $employee->name }} {{ $employee->roles->count()>0? ' | ':''}}
+                                            <small>
+                                                @foreach ($employee->roles as $role)
+                                                    {{ $role->display_name }} {{ $loop->iteration!=1 ? ', ':'' }}
+                                                @endforeach
+                                            </small>
+                                            </a>
                                     </td>
                                     <td>{{ $employee->branch->name }}</td>
                                     <td>{{ $employee->email }}</td>

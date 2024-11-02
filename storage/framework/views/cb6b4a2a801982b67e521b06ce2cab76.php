@@ -94,9 +94,9 @@ unset($__errorArgs, $__bag); ?>
                                 <select id="role_id" name="role_id" class="form-control select2">
                                     <option value="">Select</option>
                                     <?php $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <?php if($role->id != Utility::ROLE_ADMIN): ?>
+                                        
                                         <option value="<?php echo e(encrypt($role->id)); ?>" <?php echo e(isset($user)&&($user->roles->contains($role->id))?'selected':''); ?>><?php echo e($role->display_name); ?></option>
-                                        <?php endif; ?>
+                                        
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                                 <?php $__errorArgs = ['role_id'];

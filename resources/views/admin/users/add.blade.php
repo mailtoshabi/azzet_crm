@@ -85,9 +85,9 @@
                                 <select id="role_id" name="role_id" class="form-control select2">
                                     <option value="">Select</option>
                                     @foreach ($roles as $role )
-                                        @if($role->id != Utility::ROLE_ADMIN)
+                                        {{-- @if($role->id != Utility::ROLE_ADMIN) --}}
                                         <option value="{{ encrypt($role->id) }}" {{ isset($user)&&($user->roles->contains($role->id))?'selected':''}}>{{ $role->display_name }}</option>
-                                        @endif
+                                        {{-- @endif --}}
                                     @endforeach
                                 </select>
                                 @error('role_id') <p class="text-danger">{{ $message }}</p> @enderror

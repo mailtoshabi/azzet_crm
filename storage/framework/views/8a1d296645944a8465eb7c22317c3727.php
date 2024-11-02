@@ -72,6 +72,7 @@
                              <th scope="col"><?php echo app('translator')->get('translation.Customer'); ?></th>
                              <th scope="col">Created By</th>
                              <th scope="col">Items</th>
+                             <th scope="col">Notes</th>
                              <th scope="col">Status</th>
                              <th style="width: 80px; min-width: 80px;">Action</th>
                          </tr>
@@ -106,6 +107,9 @@
                                                 <?php $data .="</a>" ?>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         <a href="#" class="text-body"><?php echo $data; ?></a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="text-body"><?php echo e($enquiry->description); ?></a>
                                     </td>
 
                                     <td>

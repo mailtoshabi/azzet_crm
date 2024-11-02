@@ -84,6 +84,7 @@
                              </th>
                              <th scope="col">Customer</th>
                              <th scope="col">Items</th>
+                             <th scope="col">Notes</th>
                              <th scope="col">Status</th>
                              <th style="width: 80px; min-width: 80px;">Action</th>
                          </tr>
@@ -111,7 +112,9 @@
                                         @endforeach
                                         <a href="#" class="text-body">{{ $data }}</a>
                                     </td>
-
+                                    <td>
+                                        <a href="#" class="text-body">{{ $enquiry->description }}</a>
+                                    </td>
                                     <td>
                                         <a> {!! $enquiry->estimate?'<span class="badge badge-pill badge-soft-success font-size-12">Estimate Created</span>':'<span class="badge badge-pill badge-soft-danger font-size-12">Estimate Not Created</span>' !!} </a>
                                     </td>

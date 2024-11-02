@@ -125,7 +125,7 @@ unset($__errorArgs, $__bag); ?>
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <div class="mb-3 required">
                                 <label for="email">Email</label>
                                 <input id="email" name="email" type="text" class="form-control" placeholder="Email" value="<?php echo e(isset($employee)?$employee->email:old('email')); ?>">
@@ -140,7 +140,7 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <div class="mb-3 required">
                                 <label for="phone">Mobile</label>
                                 <input id="phone" name="phone" type="text" class="form-control" placeholder="Mobile" value="<?php echo e(isset($employee)?$employee->phone:old('phone')); ?>">
@@ -155,11 +155,33 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <div class="mb-3 <?php echo e(isset($employee)?'':'required'); ?>">
                                 <label for="horizontal-password-input">Password</label>
                                 <input type="password" name="password" class="form-control" id="horizontal-password-input" placeholder="Enter Your Password">
                                 <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <p class="text-danger"><?php echo e($message); ?></p> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="mb-3">
+                                <label for="email">Role</label>
+                                <select id="role_id" name="role_id" class="form-control select2">
+                                    <option value="">Select</option>
+                                    <?php $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        
+                                        <option value="<?php echo e(encrypt($role->id)); ?>" <?php echo e(isset($employee)&&($employee->roles->contains($role->id))?'selected':''); ?>><?php echo e($role->display_name); ?></option>
+                                        
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </select>
+                                <?php $__errorArgs = ['role_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }

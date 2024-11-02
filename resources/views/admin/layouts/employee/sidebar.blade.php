@@ -16,7 +16,7 @@
                         <span data-key="t-dashboard">@lang('translation.Dashboards')</span>
                     </a>
                 </li>
-
+                @if ($user->hasRole('Executive'))
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i class="fas fa-binoculars"></i>
@@ -58,7 +58,8 @@
 
                     </ul>
                 </li>
-
+                @endif
+                @if ($user->hasRole(['Executive', 'OfficeStaff']))
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i class="fas fa-clone"></i>
@@ -70,7 +71,7 @@
 
                     </ul>
                 </li>
-
+                @endif
                 {{-- @if ($user->hasRole(['Administrator', 'Manager']))
                     <li class="menu-title" data-key="t-apps">@lang('translation.Catalogue_Manage')</li>
 

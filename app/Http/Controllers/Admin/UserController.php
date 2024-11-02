@@ -10,6 +10,7 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,7 +23,7 @@ class UserController extends Controller
 
     public function create()
     {
-        $roles = Role::orderBy('id','asc')->get();
+        $roles = Role::ofType('user')->orderBy('id','asc')->get();
         $branches = Branch::where('status',Utility::ITEM_ACTIVE)->orderBy('id','desc')->get();
         return view('admin.users.add',compact('roles','branches'));
     }
@@ -50,13 +51,21 @@ class UserController extends Controller
         $input['branch_id'] = default_branch()->id;
         $user = User::create($input);
         $role_id = decrypt(request('role_id'));
-        $user->roles()->attach($role_id);
+        $role = Role::where('id', $role_id)->where('user_type', 'user')->first();
+        if ($role) {
+            // $user->roles()->attach($role->id);
+            $data = ['role_id' => $role->id, 'user_id' => $user->id, 'user_type' => 'user'];
+            DB::table('role_user')->insert($data);
+        } else {
+            return redirect()->back()->withErrors(['role_id' => 'Invalid role for this user type']);
+        }
+        // $user->roles()->attach($role_id);
         return redirect()->route('admin.users.index')->with(['success'=>'New User Added Successfully']);
     }
 
     public function edit($id)
     {
-        $roles = Role::orderBy('id','asc')->get();
+        $roles = Role::ofType('user')->orderBy('id','asc')->get();
         $user = User::findOrFail(decrypt($id));
         if(decrypt($id)!=Utility::SUPER_ADMIN_ID) {
             $branches = Branch::where('status',Utility::ITEM_ACTIVE)->orderBy('id','desc')->get();
@@ -78,7 +87,6 @@ class UserController extends Controller
             'phone' => 'required|string|max:10|min:10|unique:users,phone,'. $id,
             'password' => 'nullable|min:6',
             'role_id' => 'required',
-            'branch_id' => 'required',
         ]);
 
         $input = request()->except(['_token','_method','email_verified_at','password']);
@@ -99,8 +107,17 @@ class UserController extends Controller
         }
         // $input['user_id'] =Auth::id();
         $user->update($input);
+        // $role_id = decrypt(request('role_id'));
         $role_id = decrypt(request('role_id'));
-        $user->roles()->sync($role_id);
+        $role = Role::where('id', $role_id)->where('user_type', 'user')->first();
+        if ($role) {
+            // $user->roles()->sync($role_id);
+            DB::table('role_user')->where('user_id', $user->id)->where('user_type', 'user')->delete();
+            $data = ['role_id' => $role->id, 'user_id' => $user->id, 'user_type' => 'user'];
+            DB::table('role_user')->insert($data);
+        } else {
+            return redirect()->back()->withErrors(['role_id' => 'Invalid role for this user type']);
+        }
         return redirect()->route('admin.users.index')->with(['success'=>'User Updated Successfully']);
         }else {
             abort(404);

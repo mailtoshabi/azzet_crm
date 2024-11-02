@@ -17,6 +17,8 @@ class User extends Authenticatable
     const DIR_STORAGE = 'storage/users/';
     const DIR_PUBLIC = 'users/';
 
+    protected $guard = 'web';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -56,5 +58,10 @@ class User extends Authenticatable
     public function branch()
     {
         return $this->belongsTO(Branch::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class)->withPivot('user_type')->where('roles.user_type','user');
     }
 }

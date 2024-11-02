@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('enquiries', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
+            $table->text('description')->nullable();
             $table->foreignId('employee_id')->nullable()->constrained()->onDelete('cascade');
             $table->boolean('is_approved')->comment('1-Approved 0-Unapporved')->default(0);
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');

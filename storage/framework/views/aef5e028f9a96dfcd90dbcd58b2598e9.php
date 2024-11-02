@@ -7,6 +7,7 @@
 <?php $__env->startSection('content'); ?>
 
 
+
 <div class="row">
     <div class="col-xl-3 col-md-6">
         <!-- card -->
@@ -15,7 +16,7 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div class="flex-grow-1">
-                        <span class="text-muted mb-3 lh-1 d-block text-truncate">Total Sales for Warehouse</span>
+                        <span class="text-muted mb-3 lh-1 d-block text-truncate">Total Sales</span>
                         <h4 class="mb-3">
                             $<span class="counter-value" data-target="354.5">0</span>k
                         </h4>
@@ -107,6 +108,9 @@
 </div><!-- end row-->
 
 
+<!-- end row-->
+
+
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('script'); ?>
 <!-- apexcharts -->
@@ -119,4 +123,4 @@
 <?php $__env->stopSection(); ?>
 
 
-<?php echo $__env->make('admin.layouts.employee.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\azzet_crm\resources\views/admin/employee/home.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('admin.layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\azzet_crm\resources\views/admin/home.blade.php ENDPATH**/ ?>

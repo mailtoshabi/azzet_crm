@@ -6,14 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Shanmuga\LaravelEntrust\Traits\LaravelEntrustUserTrait;
 
 class Employee extends Authenticatable
 {
+    use LaravelEntrustUserTrait;
     use HasFactory;
     use LogsActivity;
 
     const DIR_STORAGE = 'storage/employees/';
     const DIR_PUBLIC = 'employees/';
+
+    protected $guard = 'employee';
 
     protected $hidden = [
         'id',
@@ -68,6 +72,11 @@ class Employee extends Authenticatable
     public function employee_reports()
     {
         return $this->hasMany(Sale::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class,'role_user', 'user_id', 'role_id')->withPivot('user_type')->where('roles.user_type','employee');
     }
 
     // public function contactPersons()

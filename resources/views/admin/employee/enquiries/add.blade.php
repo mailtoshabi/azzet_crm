@@ -137,6 +137,12 @@
 
             <div class="card">
                 <div class="card-header">
+                    <div class="col-sm-12">
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Notes</label>
+                            <textarea class="form-control" rows="2" placeholder="Enter notes, if any" id="description" name="description">{{ isset($enquiry)?$enquiry->description:old('description ')}}</textarea>
+                        </div>
+                    </div>
                     <div class="d-flex flex-wrap gap-2">
                         <button type="submit" class="btn btn-primary waves-effect waves-light">{{ isset($enquiry) ? 'Update Enquiry' : 'Save' }}</button>
 

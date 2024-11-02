@@ -124,7 +124,7 @@
                     </ul>
                 </li>
 
-                <li>
+                {{-- <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i class="fas fa-users"></i>
                         <span data-key="t-contacts">@lang('translation.Role_Management')</span>
@@ -133,7 +133,7 @@
                         <li class="{{ set_active('admin.roles.edit') }}"><a href="{{ route('admin.roles.index') }}" data-key="t-read-email">@lang('translation.List_Menu')</a></li>
                         <li><a href="{{ route('admin.roles.create') }}" data-key="t-read-email">@lang('translation.Add_Menu')</a></li>
                     </ul>
-                </li>
+                </li> --}}
 
                 <li class="{{ set_active(['admin.components.create','admin.components.edit']) }}">
                     <a href="{{ route('admin.components.index') }}">

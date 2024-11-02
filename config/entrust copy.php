@@ -24,32 +24,27 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Laravel Entrust User Models
+    | Laravel Entrust User Model
     |--------------------------------------------------------------------------
     |
-    | These are the user models used by the application to handle ACL for
-    | different guards. You can specify multiple user models here.
+    | This is the users Model used by the application to handle ACL.
+    | If you want the Laravel Entrust User Model to be in a different namespace or
+    | to have a different name, you can do it here.
     |
     */
-    'user_models' => [
-        'users' => App\Models\User::class,
-        'employees' => App\Models\Employee::class,
-    ],
+    'user_model' => 'App\Models\User',
 
     /*
     |--------------------------------------------------------------------------
-    | Laravel Entrust User Tables
+    | Laravel Entrust User Table
     |--------------------------------------------------------------------------
     |
-    | These are the tables used by the application to save users to the database.
-    | Define both `users` and `employees` tables here to handle permissions for
-    | different guards.
+    | This is the users table used by the application to save users to the database.
+    | If you want the Laravel Entrust User Table to be in a different namespace or
+    | to have a different name, you can do it here.
     |
     */
-    'user_tables' => [
-        'users' => 'users',
-        'employees' => 'employees',
-    ],
+    'user_table' => 'users',
 
     /*
     |--------------------------------------------------------------------------
@@ -57,6 +52,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | These are the models used by Laravel Entrust to define the roles and permissions.
+    | If you want the Laravel Entrust models to be in a different namespace or
+    | to have a different name, you can do it here.
     |
     */
     'models' => [
@@ -70,11 +67,11 @@ return [
     |--------------------------------------------------------------------------
     |
     | These Configurations are used by Laravel Entrust to define the defaults
-    | Specify multiple guards to support `web` and `employee` guards.
+    | If you want the Laravel Entrust to be in a different guards you can do it here.
     |
     */
     'defaults' => [
-        'guard' => 'web', // Default guard
+        'guard'          => 'web',
     ],
 
     /*
@@ -94,15 +91,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Laravel Entrust Foreign Keys
+    | Laratrust Foreign Keys
     |--------------------------------------------------------------------------
     |
-    | Define foreign keys for both `users` and `employees` to support relationships.
+    | These are the foreign keys used by laratrust in the intermediate tables.
     |
     */
     'foreign_keys' => [
         'user' => 'user_id',
-        'employee' => 'employee_id',
         'role' => 'role_id',
         'permission' => 'permission_id',
     ],
@@ -129,24 +125,28 @@ return [
 
         /**
          * Handlers for the unauthorized method in the middlewares.
+         * The name of the handler must be the same as the handling.
          */
         'handlers' => [
             /**
-             * Aborts the execution with a 403 code and provides the response text
+             * Aborts the execution with a 403 code and allows you to provide the response text
              */
             'abort' => [
                 'code' => 403,
-                'message' => 'You don\'t have permission to access this page.'
+                'message' => 'You don\'t Have a permission to Access this page.'
             ],
 
             /**
-             * Redirects the user to the given URL with an optional flash message.
+             * Redirects the user to the given url.
+             * If you want to flash a key to the session,
+             * you can do it by setting the key and the content of the message
+             * If the message content is empty it won't be added to the redirection.
              */
             'redirect' => [
                 'url' => '/',
                 'message' => [
                     'key' => 'error',
-                    'content' => 'You don\'t have permission to access this page.'
+                    'content' => 'You don\'t Have a permission to Access this page'
                 ]
             ],
         ],

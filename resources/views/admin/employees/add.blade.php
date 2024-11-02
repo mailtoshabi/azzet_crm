@@ -100,7 +100,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <div class="mb-3 required">
                                 <label for="email">Email</label>
                                 <input id="email" name="email" type="text" class="form-control" placeholder="Email" value="{{ isset($employee)?$employee->email:old('email')}}">
@@ -108,7 +108,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <div class="mb-3 required">
                                 <label for="phone">Mobile</label>
                                 <input id="phone" name="phone" type="text" class="form-control" placeholder="Mobile" value="{{ isset($employee)?$employee->phone:old('phone')}}">
@@ -116,11 +116,26 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <div class="mb-3 {{ isset($employee)?'':'required'}}">
                                 <label for="horizontal-password-input">Password</label>
                                 <input type="password" name="password" class="form-control" id="horizontal-password-input" placeholder="Enter Your Password">
                                 @error('password') <p class="text-danger">{{ $message }}</p> @enderror
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="mb-3">
+                                <label for="email">Role</label>
+                                <select id="role_id" name="role_id" class="form-control select2">
+                                    <option value="">Select</option>
+                                    @foreach ($roles as $role )
+                                        {{-- @if($role->id != Utility::ROLE_ADMIN) --}}
+                                        <option value="{{ encrypt($role->id) }}" {{ isset($employee)&&($employee->roles->contains($role->id))?'selected':''}}>{{ $role->display_name }}</option>
+                                        {{-- @endif --}}
+                                    @endforeach
+                                </select>
+                                @error('role_id') <p class="text-danger">{{ $message }}</p> @enderror
                             </div>
                         </div>
 

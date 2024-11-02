@@ -65,6 +65,7 @@
                              </th>
                              <th scope="col">Customer</th>
                              <th scope="col">Items</th>
+                             <th scope="col">Notes</th>
                              <th scope="col">Status</th>
                              <th style="width: 80px; min-width: 80px;">Action</th>
                          </tr>
@@ -92,7 +93,9 @@
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         <a href="#" class="text-body"><?php echo e($data); ?></a>
                                     </td>
-
+                                    <td>
+                                        <a href="#" class="text-body"><?php echo e($enquiry->description); ?></a>
+                                    </td>
                                     <td>
                                         <a> <?php echo $enquiry->estimate?'<span class="badge badge-pill badge-soft-success font-size-12">Estimate Created</span>':'<span class="badge badge-pill badge-soft-danger font-size-12">Estimate Not Created</span>'; ?> </a>
                                     </td>

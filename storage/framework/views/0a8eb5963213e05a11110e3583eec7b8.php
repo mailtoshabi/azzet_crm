@@ -124,16 +124,7 @@
                     </ul>
                 </li>
 
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow">
-                        <i class="fas fa-users"></i>
-                        <span data-key="t-contacts"><?php echo app('translator')->get('translation.Role_Management'); ?></span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li class="<?php echo e(set_active('admin.roles.edit')); ?>"><a href="<?php echo e(route('admin.roles.index')); ?>" data-key="t-read-email"><?php echo app('translator')->get('translation.List_Menu'); ?></a></li>
-                        <li><a href="<?php echo e(route('admin.roles.create')); ?>" data-key="t-read-email"><?php echo app('translator')->get('translation.Add_Menu'); ?></a></li>
-                    </ul>
-                </li>
+                
 
                 <li class="<?php echo e(set_active(['admin.components.create','admin.components.edit'])); ?>">
                     <a href="<?php echo e(route('admin.components.index')); ?>">

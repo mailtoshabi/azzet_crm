@@ -180,10 +180,7 @@ Route::group(['as'=>'admin.', 'middleware'=>'auth', 'prefix'=>'admin'], function
     });
 
     Route::group(['prefix'=>'payments', 'as'=>'payments.', 'middleware' => ['role:Administrator|Manager|HR']], function() {
-        // Route::get('/',[PaymentController::class,'index'])->name('index');
-        // Route::get('/create',[PaymentController::class,'create'])->name('create');
         Route::post('/store',[PaymentController::class,'store'])->name('store');
-        // Route::get('/edit/{id}',[PaymentController::class,'edit'])->name('edit');
         Route::put('/update',[PaymentController::class,'update'])->name('update');
         Route::delete('/destroy/{id}',[PaymentController::class,'destroy'])->name('destroy');
     });
@@ -228,7 +225,7 @@ Route::group(['as'=>'admin.', 'middleware'=>'auth', 'prefix'=>'admin'], function
         Route::get('/change-status/{id}',[UserController::class,'changeStatus'])->name('changeStatus');
     });
 
-    Route::resource('/roles',RoleController::class)->middleware('role:Administrator');
+    // Route::resource('/roles',RoleController::class)->middleware('role:Administrator');
 
     Route::group(['prefix'=>'activities', 'as'=>'activities.'], function() {
         Route::get('/',[ActivityController::class,'index'])->name('index');
@@ -252,7 +249,7 @@ Route::group(['as'=>'employee.', 'prefix'=>'employee'], function() {
     Route::get('/dashboard', [EmployeeHomeController::class,'index'])->middleware('employee.auth')->name('dashboard');
 
     Route::group(['middleware'=>'employee.auth'], function () {
-        Route::group(['prefix'=>'enquiries', 'as'=>'enquiries.'], function() {
+        Route::group(['prefix'=>'enquiries', 'as'=>'enquiries.', 'middleware' => ['employee.role:Executive']], function() {
             Route::get('/',[EmployeeEnquiryController::class,'index'])->name('index');
             Route::get('/create',[EmployeeEnquiryController::class,'create'])->name('create');
             Route::post('/store',[EmployeeEnquiryController::class,'store'])->name('store');
@@ -265,7 +262,7 @@ Route::group(['as'=>'employee.', 'prefix'=>'employee'], function() {
             // Route::post('/store_as_estimate',[EnquiryController::class,'store_as_estimate'])->name('store_as_estimate');
         });
 
-        Route::group(['prefix'=>'products', 'as'=>'products.'], function() {
+        Route::group(['prefix'=>'products', 'as'=>'products.', 'middleware' => ['employee.role:Executive']], function() {
             Route::get('/',[EmployeeProductController::class,'index'])->name('index');
             Route::get('/create',[EmployeeProductController::class,'create'])->name('create');
             Route::post('/store',[EmployeeProductController::class,'store'])->name('store');
@@ -276,7 +273,7 @@ Route::group(['as'=>'employee.', 'prefix'=>'employee'], function() {
 
         });
 
-        Route::group(['prefix'=>'parties', 'as'=>'customers.'], function() {
+        Route::group(['prefix'=>'parties', 'as'=>'customers.', 'middleware' => ['employee.role:Executive']], function() {
             Route::get('/',[EmployeeCustomerController::class,'index'])->name('index');
             Route::get('/create',[EmployeeCustomerController::class,'create'])->name('create');
             Route::post('/store',[EmployeeCustomerController::class,'store'])->name('store');
@@ -289,7 +286,7 @@ Route::group(['as'=>'employee.', 'prefix'=>'employee'], function() {
             Route::post('/districts', [EmployeeCustomerController::class,'distric_list'])->name('list.districts');
         });
 
-        Route::group(['prefix'=>'proforma', 'as'=>'sales.'], function() {
+        Route::group(['prefix'=>'proforma', 'as'=>'sales.', 'middleware' => ['employee.role:Executive']], function() {
             Route::get('/',[EmployeeSaleController::class,'index'])->name('index');
             Route::get('/show/{id}',[EmployeeSaleController::class,'show'])->name('view');
             Route::get('/download-invoice/{id}',[EmployeeSaleController::class,'download_invoice'])->name('download.invoice');
@@ -305,7 +302,7 @@ Route::group(['as'=>'employee.', 'prefix'=>'employee'], function() {
             Route::get('/edit/{id}',[EmEmployeeReportController::class,'edit'])->name('edit');
             Route::put('/update',[EmEmployeeReportController::class,'update'])->name('update');
             Route::delete('/destroy/{id}',[EmEmployeeReportController::class,'destroy'])->name('destroy');
-        });
+        })->middleware('employee.role:Executive','employee.role:OfficeStaff');
     });
 });
 // Employee Dashboard Routes --End--
@@ -317,8 +314,8 @@ Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang'
 // Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('root');
 
 //Update User Details
-Route::post('/update-profile/{id}', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
-Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');
+// Route::post('/update-profile/{id}', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
+// Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');
 
 // Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index.home');
 

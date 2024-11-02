@@ -19,7 +19,7 @@
 <div class="row">
     <div class="col-lg-12">
     <ul class="nav nav-tabs">
-        
+
         <li class="nav-item">
           <a class="nav-link <?php if($status==Utility::ITEM_ACTIVE): ?> active <?php endif; ?>" <?php if($status==Utility::ITEM_ACTIVE): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.employee_reports.index','status='.encrypt(Utility::ITEM_ACTIVE))); ?>">Recent <span class="badge rounded-pill bg-soft-danger text-danger float-end"><?php echo e($count_new); ?></span></a>
         </li>
@@ -34,12 +34,33 @@
         <div class="card mb-0">
             <div class="card-body">
                  <div class="row align-items-center">
-                     <div class="col-md-6">
+
+                    <div class="col-md-6">
                          <div class="mb-3">
                              <h5 class="card-title"><?php echo app('translator')->get('translation.EmployeeReport_List'); ?> <span class="text-muted fw-normal ms-2">(<?php echo e($employee_reports->count()); ?>)</span></h5>
                          </div>
                      </div>
+                     <div class="col-md-6">
+                        <div class="mb-3">
+                            <form method="GET" action="<?php echo e(route('admin.employee_reports.index')); ?>" class="row gx-3 gy-2 align-items-center">
+                                
+                                <div class="col-md-6">
+                                    
+                                    <input type="hidden" id="status" name="status" value="<?php echo e(encrypt($status)); ?>">
+                                    <select id="employee_id" name="employee_id" class="form-control select2" >
+                                        <option value="">Select Employee</option>
+                                        <?php $__currentLoopData = $employees; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $employee): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($employee->id); ?>" <?php if(request()->has('employee_id')&&(request('employee_id')==$employee->id)): ?> selected <?php endif; ?> ><?php echo e($employee->name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                                </div>
 
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary waves-effect waves-light">Search Report</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                      <div class="col-md-6">
                          <div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
                              
@@ -63,7 +84,7 @@
                              </th>
                              <th scope="col">Date</th>
                              <th scope="col">Employee</th>
-                             
+
                              <th scope="col">Report</th>
                              
                          </tr>
@@ -81,7 +102,7 @@
                                     <td>
                                         <a href="#" class="text-body"><?php echo e($employee_report->employee->name . ' ' . $employee_report->employee->city); ?></a>
                                     </td>
-                                    
+
 
                                     <td>
                                         <a href="#" class="text-body"><?php echo e($employee_report->description); ?></a>

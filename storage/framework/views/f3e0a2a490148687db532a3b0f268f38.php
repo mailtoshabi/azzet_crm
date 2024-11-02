@@ -16,7 +16,7 @@
                         <span data-key="t-dashboard"><?php echo app('translator')->get('translation.Dashboards'); ?></span>
                     </a>
                 </li>
-
+                <?php if($user->hasRole('Executive')): ?>
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i class="fas fa-binoculars"></i>
@@ -58,10 +58,11 @@
 
                     </ul>
                 </li>
-
+                <?php endif; ?>
+                <?php if($user->hasRole(['Executive', 'OfficeStaff'])): ?>
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
-                        <i class="fas fa-city"></i>
+                        <i class="fas fa-clone"></i>
                         <span data-key="t-email"><?php echo app('translator')->get('translation.EmployeeReport_Manage'); ?></span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
@@ -70,7 +71,7 @@
 
                     </ul>
                 </li>
-
+                <?php endif; ?>
                 
             </ul>
 

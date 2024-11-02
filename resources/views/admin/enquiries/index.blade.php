@@ -90,6 +90,7 @@
                              <th scope="col">@lang('translation.Customer')</th>
                              <th scope="col">Created By</th>
                              <th scope="col">Items</th>
+                             <th scope="col">Notes</th>
                              <th scope="col">Status</th>
                              <th style="width: 80px; min-width: 80px;">Action</th>
                          </tr>
@@ -124,6 +125,9 @@
                                                 <?php $data .="</a>" ?>
                                         @endforeach
                                         <a href="#" class="text-body">{!! $data !!}</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="text-body">{{ $enquiry->description }}</a>
                                     </td>
 
                                     <td>

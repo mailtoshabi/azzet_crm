@@ -7,6 +7,7 @@ use App\Http\Utilities\Utility;
 use App\Models\Branch;
 use App\Models\Delivery;
 use App\Models\Employee;
+use App\Models\Role;
 use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,7 +36,8 @@ class EmployeeController extends Controller
     {
         $branches = Branch::where('status',Utility::ITEM_ACTIVE)->orderBy('id','desc')->get();
         $states = DB::table('states')->orderBy('name','asc')->select('id','name')->get();
-        return view('admin.employees.add',compact('branches','states'));
+        $roles = Role::ofType('employee')->orderBy('id','asc')->get();
+        return view('admin.employees.add',compact('branches','states','roles'));
     }
 
     /**
@@ -54,6 +56,7 @@ class EmployeeController extends Controller
             'postal_code' => 'required',
             'district_id' => 'required',
             'state_id' => 'required',
+            'role_id' => 'required',
         ]);
         $input = request()->except(['_token','email_verified_at','password','avatar','user_id']);
         if(request()->hasFile('avatar')) {
@@ -67,6 +70,15 @@ class EmployeeController extends Controller
         $input['branch_id'] = default_branch()->id;
         $input['password'] =Hash::make(request('password'));
         $employee = Employee::create($input);
+        $role_id = decrypt(request('role_id'));
+        $role = Role::where('id', $role_id)->where('user_type', 'employee')->first();
+        if ($role) {
+            $data = ['role_id' => $role->id, 'user_id' => $employee->id, 'user_type' => 'employee'];
+            DB::table('role_user')->insert($data);
+            // $employee->roles()->attach($role->id);
+        } else {
+            return redirect()->back()->withErrors(['role_id' => 'Invalid role for this user type']);
+        }
         return redirect()->route('admin.employees.index')->with(['success'=>'New Employee Added Successfully']);
     }
 
@@ -95,7 +107,8 @@ class EmployeeController extends Controller
         $employee = Employee::findOrFail(decrypt($id));
         $branches = Branch::where('status',Utility::ITEM_ACTIVE)->orderBy('id','desc')->get();
         $states = DB::table('states')->orderBy('name','asc')->select('id','name')->get();
-        return view('admin.employees.add',compact('employee','branches','states'));
+        $roles = Role::ofType('employee')->orderBy('id','asc')->get();
+        return view('admin.employees.add',compact('employee','branches','states','roles'));
     }
 
     /**
@@ -137,6 +150,16 @@ class EmployeeController extends Controller
         }
         //$input['user_id'] =Auth::id();
         $employee->update($input);
+        $role_id = decrypt(request('role_id'));
+        $role = Role::where('id', $role_id)->where('user_type', 'employee')->first();
+        if ($role) {
+            DB::table('role_user')->where('user_id', $employee->id)->where('user_type', 'employee')->delete();
+            $data = ['role_id' => $role->id, 'user_id' => $employee->id, 'user_type' => 'employee'];
+            DB::table('role_user')->insert($data);
+            // $employee->roles()->sync([$role_id => ['user_type' => 'employee']]);
+        } else {
+            return redirect()->back()->withErrors(['role_id' => 'Invalid role for this user type']);
+        }
         return redirect()->route('admin.employees.index')->with(['success'=>'Employee Updated Successfully']);
     }
 
