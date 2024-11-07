@@ -1,6 +1,11 @@
 @extends('admin.layouts.master')
 @section('title') @lang('translation.Proforma_Details') @endsection
 @section('content')
+@unless (empty($sale->reason))
+<div class="alert alert-danger alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-danger"></i><strong>Proforma Status : {{ Utility::saleStatus()[$sale->status]['name'] }}</strong> | <strong>Notes : </strong> <span class="">- {{ $sale->reason }}</span>
+</div>
+@endunless
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -20,32 +25,19 @@
                         <p class="text-muted mb-0">{{ $sale->estimate->customer->city }}</p>
                         <p class="text-muted mb-0">{{ $sale->estimate->customer->district->name }} District</p>
                         <p class="text-muted mb-0">{{ $sale->estimate->customer->state->name }} - {{ $sale->estimate->customer->postal_code }}</p>
-                        {{-- <p class="text-muted mb-2">{{ $sale->estimate->customer->postal_code }}</p> --}}
                         <p class="text-primary mb-0">Mob:{{ $sale->estimate->customer->phone }}</p>
                         @unless (empty($sale->estimate->customer->email))<p class="text-success mb-2">Email:{{ $sale->estimate->customer->email }}</p>@endunless
 
                         @unless (empty($sale->estimate->customer->employee))
                             <p class="text-muted mb-0"><b>Employee Name : {{ $sale->estimate->customer->employee->name }}</b><br><br>
                         @endunless
-                        {{-- @unless (empty($sale->employee))
-                        <button type="button" id="add_employee" class="btn btn-primary waves-effect waves-light">Change Employee</button><br><br>
-                        @endunless
-                        @empty($sale->employee)
-                            <button type="button" id="add_employee" class="btn btn-primary waves-effect waves-light">Assign to an Employee</button><br><br>
-                        @endempty --}}
-
+                        @if($sale->status!=Utility::STATUS_CLOSED)
                         <div class="btn-group" role="group">
-                            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                Status : <span id="status_id">{{ Utility::saleStatus()[$sale->status]['name'] }}</span> <i class="mdi mdi-chevron-down"></i>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
-                                @foreach (Utility::saleStatus() as $index => $status )
-                                    <li><a data-plugin="change-status" href="{{ route('admin.sales.changeStatus',[encrypt($sale->id),encrypt($index)]) }}" class="dropdown-item">{{ $status['name'] }}</a></li>
-                                @endforeach
-
-                                {{-- <li><a class="dropdown-item" href="#">Dropdown link</a></li> --}}
-                            </ul>
+                            <a href="{{ route('admin.sales.edit',encrypt($sale->id)) }}" class="btn btn-danger waves-effect waves-light w-sm">
+                                <i class="fas fa-pen d-block font-size-12"></i> Edit Proforma
+                            </a>
                         </div>
+                        @endif
                     </div>
                     <div class="col-sm-6 azzet_invoice">
                         <br>
@@ -53,7 +45,19 @@
                         <p class="mb-2">Order ID : {{ $sale->invoice_no }} </p>
                         @unless (empty($sale->estimate->customer->gstin))<p class="mb-2"><b>{!! 'GSTIN/UIN: '. $sale->estimate->customer->gstin !!}</b></p>@endunless
                         State Name :  {{ $sale->estimate->customer->state->name }}, Code : {{ $sale->estimate->customer->state->gst_code }} <br>
-                        @unless (empty($sale->estimate->customer->cin))<p class="mb-2">{!! 'CIN: '. $sale->estimate->customer->cin !!}</p>@endunless
+                        @unless (empty($sale->estimate->customer->cin))<p class="mb-2">{!! 'CIN: '. $sale->reason !!}</p>@endunless
+                        {{-- @unless (empty($sale->reason))<p class="mb-2"><b>Status Notes/Reason: <span class="text-danger"> {{ $sale->reason }}</span></b></p>@endunless --}}
+                        <div class="btn-group mt-2" role="group">
+                            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                Proforma Status : <span id="status_id">{{ Utility::saleStatus()[$sale->status]['name'] }}</span> <i class="mdi mdi-chevron-down"></i>
+                            </button>
+                            <ul id="proforma_status" class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
+                                @foreach (Utility::saleStatus() as $index => $status )
+                                    <li><a data-status_id="{{ encrypt($index) }}" href="{{ route('admin.sales.changeStatus') }}" class="dropdown-item status_change">{{ $status['name'] }}</a></li>
+                                    {{-- data-plugin="change-status" --}}
+                                @endforeach
+                            </ul>
+                        </div>
                         <div class="btn-group mt-2" role="group">
                             <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                 Payment Status : {{ $sale->payment_status }}
@@ -61,7 +65,6 @@
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
                                 <li><a class="dropdown-item" href="#allPaymentDetails">Details </a></li>
-                                {{-- <li><a class="dropdown-item" href="#">Dropdown link</a></li> --}}
                             </ul>
                         </div>
 
@@ -72,15 +75,17 @@
                             <a data-plugin="confirm-data" data-confirmtext="Do you really want to print the Invoice?" href="{{ route('admin.sales.view.invoice',encrypt($sale->id)) }}" class="btn btn-secondary waves-effect waves-light w-sm">
                                 <i class="fas fa-print d-block font-size-12"></i> Print Invoice
                             </a>
+                            @if($sale->status!=Utility::STATUS_CLOSED)
                             <button type="button" id="add_freight" class="btn btn-success waves-effect waves-light w-sm">
                                 <i class="fas fa-bus d-block font-size-12"></i> Add Frieght
                             </button>
                             <button type="button" id="add_discount" class="btn btn-danger waves-effect waves-light w-sm">
-                                <i class="fas fa-hand-holding-usd d-block font-size-12"></i> Add Discount
+                                <i class="fas fa-coffee d-block font-size-12"></i> Add Discount
                             </button>
                             <button type="button" id="add_round_off" class="btn btn-info waves-effect waves-light w-sm">
-                                <i class="fas fa-hand-holding-usd d-block font-size-12"></i> Round Off
+                                <i class="fas fa-bullseye d-block font-size-12"></i> Round Off
                             </button>
+                            @endif
                         </div>
                     </div>
 
@@ -128,6 +133,15 @@
                                                 <td class="has-border notop noright nobottom"></td>
                                                 <td class="has-border notop noright nobottom"></td>
                                                 <td class="has-border nobottom right-align">{{ Utility::formatPrice($sale->sub_total) }}</td>
+                                            </tr>
+                                            <tr class="center height-20" >
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td colspan="3" class="has-border notop noright nobottom right-align"></td>
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td class="has-border notop noright nobottom"></td>
+                                                <td class="has-border nobottom right-align"></td>
                                             </tr>
                                             @unless (($sale->delivery_charge==0))
                                             <tr class="center" >
@@ -277,31 +291,6 @@
                                             <tr class="center height-20" >
                                                 <td colspan="9" class="has-border notop left-align"><small>Tax Amount (in words)  : </small>{{ Utility::CURRENCY_DISPLAY . ' ' . Utility::currencyToWords($sale->total_igst)}}</td>
                                             </tr>
-
-
-                                            {{-- <tr class="center" >
-                                                <td colspan="3" class="w-half has-border notop nobottom noright left-align vertical-b">Company's PAN : AACCF6875F</td>
-                                                <td colspan="4" class="w-half has-border notop noleft left-align">
-                                                    Company's Bank Details<br>
-                                                    Bank Name : ICICI BANK<br>
-                                                    A/c No. : 016005008083<br>
-                                                    Branch & IFS Code: MODEL TOWN NEW DELHI & ICIC0000160</td>
-                                            </tr>
-                                            <tr class="center" >
-                                                <td colspan="3" class="w-half has-border notop noright left-align">
-                                                    <u><small>Declaration</small></u><br>
-                                                    We declare that this invoice shows the actual price of the
-                                                    goods described and that all particulars are true and
-                                                    correct.
-                                                </td>
-                                                <td colspan="4" class="w-half has-border notop right-align">
-                                                    for Fresco Print Pack Private Limited<br>
-                                                    <br>
-                                                    <br>
-                                                    Authorised Signatory</td>
-                                            </tr> --}}
-
-
                                         </table>
                                     </td>
                                 </tr>
@@ -337,10 +326,11 @@
                     </div>
                 </div>
             </div>
-            <div class="card-header">
+            @if($sale->status!=Utility::STATUS_CLOSED)
+            {{-- <div class="card-header">
                 <h4 class="card-title">Add New Payment</h4>
                 <p class="card-title-desc">Add new Payment from the customer</p>
-            </div>
+            </div> --}}
             <div class="card-body">
                 <form method="POST" action="{{ isset($payment_edit)? route('admin.payments.update') : route('admin.payments.store')  }}">
                     @csrf
@@ -413,75 +403,75 @@
                     </div>
                 </form>
             </div>
-            <div class="card-header">
-                <h4 class="card-title">Payment Details</h4>
-                <p class="card-title-desc">All Payment Details of the customer</p>
-            </div>
-            <div class="card-body">
-                @if($sale->payments()->exists())
-                <div class="row">
-                    <div class="tab-content p-3 text-muted">
-                        <div class="tab-pane customerdetailsTab active" role="tabpanel">
-                            <div class="table-responsive mb-4">
-                                <table class="table align-middle dt-responsive table-check nowrap" style="border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">Date</th>
-                                        <th scope="col">Amount</th>
-                                        <th scope="col">Mode</th>
-                                        <th scope="col">Transaction ID</th>
-                                        <th scope="col">status</th>
-                                        <th scope="col">Description</th>
-                                        <th style="width: 80px; min-width: 80px;">Edit</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach ($sale->payments as $payment)
+            @endif
+            @if($sale->payments()->exists())
+                {{-- <div class="card-header">
+                    <h4 class="card-title">Payment Details</h4>
+                    <p class="card-title-desc">All Payment Details of the customer</p>
+                </div> --}}
+                <div class="card-body">
+                    <div class="row">
+                        <div class="tab-content p-3 text-muted">
+                            <div class="tab-pane customerdetailsTab active" role="tabpanel">
+                                <div class="table-responsive mb-4">
+                                    <table class="table align-middle dt-responsive table-check nowrap" style="border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+                                        <thead>
                                         <tr>
-                                                <td>
-                                                    {{ $payment->paid_at->format('d M, Y') }}
-                                                </td>
-                                                <td>
-                                                <a href="#" class="text-body">{{ Utility::CURRENCY_DISPLAY . ' ' . Utility::formatPrice($payment->amount) }}</a>
-                                                </td>
-
-                                            <td>{{ Utility::paymentMethods()[$payment->payment_method]['name'] }}</td>
-                                            <td>{{ $payment->transaction_id }}</td>
-                                            <td>{{ Utility::paymentStatus()[$payment->status]['name'] }}</td>
-                                            <td>
-                                                {{ $payment->description }}
-                                                </td>
-                                                <td>
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="bx bx-dots-horizontal-rounded"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu dropdown-menu-end">
-                                                            <li><a class="dropdown-item" href="{{ route('admin.sales.view',encrypt($sale->id). '?payment_edit_id=' . encrypt($payment->id).'#allPaymentDetails') }}"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>
-                                                            <li><a href="#" class="dropdown-item" data-plugin="delete-data" data-target-form="#form_delete_{{ $loop->iteration }}"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>
-                                                            <form id="form_delete_{{ $loop->iteration }}" method="POST" action="{{ route('admin.payments.destroy',encrypt($payment->id))}}">
-                                                                @csrf
-                                                                <input type="hidden" name="_method" value="DELETE" />
-                                                                <input type="hidden" name="sale_id" id="sale_del_id" value="{{ encrypt($sale->id) }}" />
-                                                            </form>
-                                                        </ul>
-                                                    </div>
-                                                </td>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">Amount</th>
+                                            <th scope="col">Mode</th>
+                                            <th scope="col">Transaction ID</th>
+                                            <th scope="col">status</th>
+                                            <th scope="col">Description</th>
+                                            <th style="width: 80px; min-width: 80px;">Edit</th>
                                         </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                                <!-- end table -->
-                                {{-- <div class="pagination justify-content-center">{{ $sale->payments->links() }}</div> --}}
-                            </div>
-                            <!-- end table responsive -->
+                                        </thead>
+                                        <tbody>
+                                        @foreach ($sale->payments as $payment)
+                                            <tr>
+                                                    <td>
+                                                        {{ $payment->paid_at->format('d M, Y') }}
+                                                    </td>
+                                                    <td>
+                                                    <a href="#" class="text-body">{{ Utility::CURRENCY_DISPLAY . ' ' . Utility::formatPrice($payment->amount) }}</a>
+                                                    </td>
 
+                                                <td>{{ Utility::paymentMethods()[$payment->payment_method]['name'] }}</td>
+                                                <td>{{ $payment->transaction_id }}</td>
+                                                <td>{{ Utility::paymentStatus()[$payment->status]['name'] }}</td>
+                                                <td>
+                                                    {{ $payment->description }}
+                                                    </td>
+                                                    <td>
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="bx bx-dots-horizontal-rounded"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                                <li><a class="dropdown-item" href="{{ route('admin.sales.view',encrypt($sale->id). '?payment_edit_id=' . encrypt($payment->id).'#allPaymentDetails') }}"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>
+                                                                <li><a href="#" class="dropdown-item" data-plugin="delete-data" data-target-form="#form_delete_{{ $loop->iteration }}"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>
+                                                                <form id="form_delete_{{ $loop->iteration }}" method="POST" action="{{ route('admin.payments.destroy',encrypt($payment->id))}}">
+                                                                    @csrf
+                                                                    <input type="hidden" name="_method" value="DELETE" />
+                                                                    <input type="hidden" name="sale_id" id="sale_del_id" value="{{ encrypt($sale->id) }}" />
+                                                                </form>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                    <!-- end table -->
+                                    {{-- <div class="pagination justify-content-center">{{ $sale->payments->links() }}</div> --}}
+                                </div>
+                                <!-- end table responsive -->
+
+                            </div>
                         </div>
                     </div>
                 </div>
-                @endif
-            </div>
-
+            @endif
         </div>
 
 
@@ -503,6 +493,67 @@
 <script>
 
     $(document).ready(function() {
+        $('#proforma_status .status_change').on('click', function(e) {
+            e.preventDefault();
+            var targetUrl = $(this).attr('href');
+            var status_id = $(this).data('status_id');
+            // SweetAlert2 popup with input fields
+            Swal.fire({
+                title: 'Enter Note/Reason',
+                html:
+                    '<input type="hidden" id="sale_id_s" class="form-control" value="{{ encrypt($sale->id) }}">' +
+                    '<input type="text" id="description_s" class="form-control" value="" placeholder="Enter Note/Reason, if have"><br>' +
+                    '<input type="hidden" id="status_id_s" class="form-control" value="' + status_id + '">',
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'Submit',
+                preConfirm: () => {
+                    const status_id_s = document.getElementById('status_id_s').value;
+                    const sale_id_s = document.getElementById('sale_id_s').value;
+                    const description_s = document.getElementById('description_s').value;
+
+                    // Check if the inputs are valid
+                    if (!sale_id_s) {
+                        Swal.showValidationMessage('Something Went wrong!');
+                        return false;
+                    }
+                    return { status_id_s: status_id_s, sale_id_s: sale_id_s, description_s:description_s };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Get input values from the SweetAlert2 popup
+                    const status_id_s = result.value.status_id_s;
+                    const sale_id_s = result.value.sale_id_s;
+                    const description_s = result.value.description_s;
+
+                    // Send the data using AJAX
+                    $.ajax({
+                        url: targetUrl,
+                        type: 'POST',
+                        data: { status_id_s: status_id_s, sale_id_s: sale_id_s, description_s:description_s },
+                        success: function(response) {
+                            // console.log(response);
+                            Swal.fire(
+                                'Success!',
+                                'Your data has been submitted.',
+                                'success'
+                            ).then((result) => {
+
+                                refreshPage();
+                            });
+                        },
+                        error: function() {
+                            Swal.fire(
+                                'Error!',
+                                'There was a problem with the submission.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        });
+
         $('#add_freight').on('click', function() {
             // SweetAlert2 popup with input fields
             Swal.fire({
@@ -536,12 +587,14 @@
                         type: 'POST',
                         data: { delivery_charge: delivery_charge, sale_id: sale_id },
                         success: function(response) {
+                            // console.log(response);
                             Swal.fire(
                                 'Success!',
                                 'Your data has been submitted.',
                                 'success'
                             ).then((result) => {
                                 refreshPage();
+
                             });
                         },
                         error: function() {
@@ -662,18 +715,18 @@
             });
         });
 
-        $(document).on('click','[data-plugin="change-status"]',function(e) {
-            e.preventDefault();
-            if (!confirm('Do you want to change the status?')) return;
-            var url = $(this).attr('href');
-            $.ajax({
-                type: "GET",
-                url: url,
-                success: function (data) {
-                    refreshPage();
-                }
-            });
-	    });
+        // $(document).on('click','[data-plugin="change-status"]',function(e) {
+        //     e.preventDefault();
+        //     if (!confirm('Do you want to change the status?')) return;
+        //     var url = $(this).attr('href');
+        //     $.ajax({
+        //         type: "GET",
+        //         url: url,
+        //         success: function (data) {
+        //             refreshPage();
+        //         }
+        //     });
+	    // });
 
     });
 

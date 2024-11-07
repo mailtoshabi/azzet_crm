@@ -78,8 +78,8 @@ class LoginController extends Controller
         $this->validateLogin($request);
 
         if ($this->attemptLogin($request)) {
-            return redirect()->intended(route('employee.dashboard'));
-            // return redirect()->route('employee.dashboard');
+            // return redirect()->intended(route('employee.dashboard'));
+            return redirect()->route('employee.dashboard');
         }
 
         throw ValidationException::withMessages([

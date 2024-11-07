@@ -266,7 +266,7 @@
             </div> --}}
 
             <div class="dropdown d-inline-block">
-                <button type="button" class="btn header-item  me-2"> {{-- right-bar-toggle --}}
+                <button type="submit" onclick="goLink('{{ route('admin.settings.index') }}')" class="btn header-item  me-2"> {{-- right-bar-toggle href="{{ route('admin.settings.index') }}"  --}}
                     <i data-feather="settings" class="icon-lg"></i>
                 </button>
             </div>

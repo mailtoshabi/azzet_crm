@@ -262,6 +262,7 @@ return [
     "Proforma_Invoice" => "Sales Invoices",
     "Proforma_List" => "Invoice List",
     "Proforma_Details" => "Proforma Invoice Details",
+    "Edit_Proforma" => "Update Proforma",
 
     "Branch_Manage" => "Branches",
     "Branch" => "Branch",
@@ -292,4 +293,8 @@ return [
     "Role_Management" => "Roles",
     "Add_Role" => "Add Role",
     "Role_List" => "Role List",
+
+    "Settings" => "Settings",
+    "General_Settings" => "General Settings",
+    "Change_Password" => "Change Password",
 ];

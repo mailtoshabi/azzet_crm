@@ -27,19 +27,7 @@
                         <p class="text-primary mb-0">Mob:<?php echo e($sale->estimate->customer->phone); ?></p>
                         <?php if (! (empty($sale->estimate->customer->email))): ?><p class="text-success mb-2">Email:<?php echo e($sale->estimate->customer->email); ?></p><?php endif; ?>
 
-                        <div class="btn-group" role="group">
-                            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                Status : <span id="status_id"><?php echo e(Utility::saleStatus()[$sale->status]['name']); ?></span> <i class="mdi mdi-chevron-down"></i>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
-                                
-                                    <li><a data-plugin="change-status" href="<?php echo e(route('employee.sales.changeStatus',[encrypt($sale->id),encrypt(Utility::STATUS_OUT)])); ?>" class="dropdown-item"><?php echo e(Utility::saleStatus()[Utility::STATUS_OUT]['name']); ?></a></li>
-                                    <li><a data-plugin="change-status" href="<?php echo e(route('employee.sales.changeStatus',[encrypt($sale->id),encrypt(Utility::STATUS_DELIVERED)])); ?>" class="dropdown-item"><?php echo e(Utility::saleStatus()[Utility::STATUS_DELIVERED]['name']); ?></a></li>
-                                
-
-                                
-                            </ul>
-                        </div>
+                        
                     </div>
                     <div class="col-sm-6 azzet_invoice">
                         <br>
@@ -54,11 +42,13 @@
                                 Proforma Status : <span id="status_id"><?php echo e(Utility::saleStatus()[$sale->status]['name']); ?></span> <i class="mdi mdi-chevron-down"></i>
                             </button>
                             <ul id="proforma_status" class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
+                                <?php $__currentLoopData = Utility::saleStatus(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $status): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php if($status['exe']==1): ?>
+                                        <li><a data-status_id="<?php echo e(encrypt($index)); ?>" href="<?php echo e(route('employee.sales.changeStatus')); ?>" class="dropdown-item status_change"><?php echo e($status['name']); ?></a></li>
+                                    <?php endif; ?>
                                 
-                                    <li><a data-status_id="<?php echo e(Utility::STATUS_OUT); ?>" href="<?php echo e(route('employee.sales.changeStatus')); ?>" class="dropdown-item status_change"><?php echo e(Utility::saleStatus()[Utility::STATUS_OUT]['name']); ?></a></li>
-                                    <li><a data-status_id="<?php echo e(Utility::STATUS_DELIVERED); ?>" href="<?php echo e(route('employee.sales.changeStatus')); ?>" class="dropdown-item status_change"><?php echo e(Utility::saleStatus()[Utility::STATUS_DELIVERED]['name']); ?></a></li>
                                     
-                                
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </ul>
                         </div>
                         <div class="btn-group mt-2" role="group">
@@ -445,4 +435,4 @@
 
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('admin.layouts.employee.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\azzet_crm\resources\views\admin\employee\sales\view.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('admin.layouts.employee.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\azzet_crm\resources\views/admin/employee/sales/view.blade.php ENDPATH**/ ?>

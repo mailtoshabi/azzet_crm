@@ -47,9 +47,20 @@ class SaleController extends Controller
             $sales = Sale::orderBy('sales.id','desc')
             ->join('estimates','sales.estimate_id','=','estimates.id')
             ->join('customers','estimates.customer_id','=','customers.id')
-            ->join('employees','customers.employee_id','=','employees.id')
-            ->where('employees.id',Auth::guard('employee')->id())
-            ->where('sales.status',$status)
+            // ->join('employees','customers.employee_id','=','employees.id')
+            // ->where('employees.id',Auth::guard('employee')->id())
+
+            ->join("employees",function($join){
+                $join->on("employees.id","=","customers.employee_id")
+                ->where('employees.id',Auth::guard('employee')->id());
+                })
+
+            ->join("sale_statuses",function($join) use ($status) {
+                $join->on("sale_statuses.sale_id","=","sales.id")
+                ->where('sale_statuses.status',$status)
+                ->where('sale_statuses.is_current',Utility::ITEM_ACTIVE);
+                })
+            // ->where('sales.status',$status)
             ->select('sales.*')->distinct()
             ->paginate(Utility::PAGINATE_COUNT);
         }
@@ -86,13 +97,33 @@ class SaleController extends Controller
         }
     }
 
-    public function changeStatus($id, $status) {
-        $sale = Sale::find(decrypt($id));
-        $status = decrypt($status);
-        if($status<=Utility::STATUS_DELIVERED) {
-            $sale->update(['status'=>$status]);
-            return $sale;
-        }
+    // public function changeStatus($id, $status) {
+    //     $sale = Sale::find(decrypt($id));
+    //     $status = decrypt($status);
+    //     if($status<=Utility::STATUS_DELIVERED) {
+    //         $sale->update(['status'=>$status]);
+    //         return $sale;
+    //     }
+    // }
+
+    public function changeStatus() {
+        $sale_id = request('sale_id_s');
+        $status_id = request('status_id_s');
+        $sale = Sale::find(decrypt($sale_id));
+        $status_id = decrypt($status_id);
+//TODO: Only can change status to close if the payment has fully paid.
+        $sale_status_update = DB::table('sale_statuses')->where('sale_id',decrypt($sale_id))->where('is_current',Utility::ITEM_ACTIVE)->update(['is_current' => Utility::ITEM_INACTIVE]);
+        // foreach($sale_status_updates as $sale_status_update) {
+        //     $sale_status_update->update(['is_current' => Utility::ITEM_INACTIVE]);
+        // }
+        $sale_status_insert = DB::table('sale_statuses')->insert([
+            'sale_id' => decrypt($sale_id),
+            'status' => $status_id,
+            'description' => request('description_s'),
+            'is_current' => Utility::ITEM_ACTIVE,
+            'employee_id' => Auth::guard('employee')->id()
+        ]);
+        return $sale;
     }
 
 }

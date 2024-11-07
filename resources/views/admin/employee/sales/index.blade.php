@@ -18,12 +18,17 @@
 @endif
 <div class="row">
     <div class="col-lg-12">
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs sales_list">
+        @foreach(Utility::saleStatus() as $index=>$payment_status)
         <li class="nav-item">
+            <a class="nav-link @if($status==$index) active @endif" @if($status==$index)aria-current="page"@endif href="{{ route('employee.sales.index','status='.encrypt($index)) }}">{{ $payment_status['name'] }} {!! sales_exe_count($index) !!}</a>
+        </li>
+        @endforeach
+        {{-- <li class="nav-item">
           <a class="nav-link @if($status==Utility::STATUS_NEW) active @endif" @if($status==Utility::STATUS_NEW)aria-current="page"@endif href="{{ route('employee.sales.index','status='.encrypt(Utility::STATUS_NEW)) }}">New {!! sales_exe_count(Utility::STATUS_NEW) !!}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link @if($status==Utility::STATUS_CONFIRMED) active @endif" @if($status==Utility::STATUS_CONFIRMED)aria-current="page"@endif href="{{ route('employee.sales.index','status='.encrypt(Utility::STATUS_CONFIRMED)) }}">Approved {!! sales_exe_count(Utility::STATUS_CONFIRMED) !!}</a>
+          <a class="nav-link @if($status==Utility::STATUS_CONFIRMED) active @endif" @if($status==Utility::STATUS_CONFIRMED)aria-current="page"@endif href="{{ route('employee.sales.index','status='.encrypt(Utility::STATUS_CONFIRMED)) }}">{{ Utility::saleStatus()[Utility::STATUS_CONFIRMED]['name']}} {!! sales_exe_count(Utility::STATUS_CONFIRMED) !!}</a>
         </li>
         <li class="nav-item">
             <a class="nav-link @if($status==Utility::STATUS_PRODUCTION) active @endif" @if($status==Utility::STATUS_PRODUCTION)aria-current="page"@endif href="{{ route('employee.sales.index','status='.encrypt(Utility::STATUS_PRODUCTION)) }}">On Production {!! sales_exe_count(Utility::STATUS_PRODUCTION) !!}</a>
@@ -42,7 +47,7 @@
         </li>
         <li class="nav-item">
             <a class="nav-link @if($status==Utility::STATUS_CLOSED) active @endif" @if($status==Utility::STATUS_CLOSED)aria-current="page"@endif href="{{ route('employee.sales.index','status='.encrypt(Utility::STATUS_CLOSED)) }}">Closed</a>
-        </li>
+        </li> --}}
         <li class="nav-item">
             <a class="nav-link text-danger @if($status==Utility::STATUS_NOTPAID) active @endif" @if($status==Utility::STATUS_NOTPAID)aria-current="page"@endif href="{{ route('employee.sales.index','status='.encrypt(Utility::STATUS_NOTPAID)) }}"><b><i class="fas fa-exclamation-triangle"></i> Pending Payment</b> {!! sales_exe_count(Utility::STATUS_NOTPAID) !!}</a>
         </li>

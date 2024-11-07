@@ -6,6 +6,7 @@ use App\Http\Utilities\Utility;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\DB;
 
 class Sale extends Model
 {
@@ -32,13 +33,13 @@ class Sale extends Model
         else return '-';
     }
 
-    public function scopeActive($query) {
-        return $query->where('status',Utility::ITEM_ACTIVE);
-    }
+    // public function scopeActive($query) {
+    //     return $query->where('status',Utility::ITEM_ACTIVE);
+    // }
 
-    public function scopeArchive($query) {
-        return $query->where('status',Utility::ITEM_INACTIVE);
-    }
+    // public function scopeArchive($query) {
+    //     return $query->where('status',Utility::ITEM_INACTIVE);
+    // }
 
     public function estimate(): BelongsTo
     {
@@ -131,5 +132,17 @@ class Sale extends Model
     // {
     //     return $this->belongsTo(Employee::class);
     // }
+
+    public function getStatusAttribute() {
+        $sale_statuse = DB::table('sale_statuses')->select('status')->where('sale_id',$this->id)->where('is_current',Utility::ITEM_ACTIVE)->first();
+        $status=$sale_statuse?$sale_statuse->status:Utility::STATUS_NEW;
+        return $status;
+    }
+
+    public function getReasonAttribute() {
+        $sale_statuse = DB::table('sale_statuses')->select('description')->where('sale_id',$this->id)->where('is_current',Utility::ITEM_ACTIVE)->first();
+        $description=$sale_statuse?$sale_statuse->description:'';
+        return $description;
+    }
 
 }

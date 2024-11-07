@@ -24,6 +24,8 @@ use App\Http\Controllers\Admin\ActivityController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\EmployeeReportController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\ChangePasswordController;
 
 use App\Http\Controllers\Employee\HomeController as EmployeeHomeController;
 use App\Http\Controllers\Employee\Auth\LoginController as EmployeeLoginController;
@@ -171,12 +173,14 @@ Route::group(['as'=>'admin.', 'middleware'=>'auth', 'prefix'=>'admin'], function
     Route::group(['prefix'=>'proforma', 'as'=>'sales.', 'middleware' => ['role:Administrator|Manager|HR']], function() {
         Route::get('/',[SaleController::class,'index'])->name('index');
         Route::get('/show/{id}',[SaleController::class,'show'])->name('view');
+        Route::get('/edit/{id}',[SaleController::class,'edit'])->name('edit');
+        Route::put('/update',[SaleController::class,'update'])->name('update');
         Route::get('/download-invoice/{id}',[SaleController::class,'download_invoice'])->name('download.invoice');
         Route::get('/view-invoice/{id}',[SaleController::class,'view_invoice'])->name('view.invoice');
         Route::post('/add-frieght',[SaleController::class,'addFreight'])->name('addFreight');
         Route::post('/add-discount',[SaleController::class,'addDiscount'])->name('addDiscount');
         Route::post('/add-round-off',[SaleController::class,'addRoundOff'])->name('addRoundOff');
-        Route::get('/change-status/{id}/{status}',[SaleController::class,'changeStatus'])->name('changeStatus');
+        Route::post('/change-status',[SaleController::class,'changeStatus'])->name('changeStatus');
     });
 
     Route::group(['prefix'=>'payments', 'as'=>'payments.', 'middleware' => ['role:Administrator|Manager|HR']], function() {
@@ -223,6 +227,13 @@ Route::group(['as'=>'admin.', 'middleware'=>'auth', 'prefix'=>'admin'], function
         Route::put('/update',[UserController::class,'update'])->name('update');
         Route::delete('/destroy/{id}',[UserController::class,'destroy'])->name('destroy');
         Route::get('/change-status/{id}',[UserController::class,'changeStatus'])->name('changeStatus');
+    });
+
+    Route::group(['prefix'=>'settings', 'as'=>'settings.'], function() {
+        Route::get('/',[SettingsController::class,'index'])->name('index');
+        Route::put('/general',[SettingsController::class,'update'])->name('update.general');
+        Route::get('/password/change',[ChangePasswordController::class,'edit'])->name('change.password');
+        Route::put('/password/update',[ChangePasswordController::class,'update'])->name('update.password');
     });
 
     // Route::resource('/roles',RoleController::class)->middleware('role:Administrator');
@@ -291,7 +302,7 @@ Route::group(['as'=>'employee.', 'prefix'=>'employee'], function() {
             Route::get('/show/{id}',[EmployeeSaleController::class,'show'])->name('view');
             Route::get('/download-invoice/{id}',[EmployeeSaleController::class,'download_invoice'])->name('download.invoice');
             Route::get('/view-invoice/{id}',[EmployeeSaleController::class,'view_invoice'])->name('view.invoice');
-            Route::get('/change-status/{id}/{status}',[EmployeeSaleController::class,'changeStatus'])->name('changeStatus');
+            Route::post('/change-status',[EmployeeSaleController::class,'changeStatus'])->name('changeStatus');
         });
 
         Route::group(['prefix'=>'employee_reports', 'as'=>'employee_reports.'], function() {

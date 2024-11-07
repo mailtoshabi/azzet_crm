@@ -79,6 +79,7 @@
                                             <label class="form-check-label" for="checkAll"></label>
                                         </div>
                                     </th> --}}
+                                    <th scope="col">ID</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Mobile</th>
                                     <th scope="col">Email</th>
@@ -96,7 +97,7 @@
                                                    <label class="form-check-label" for="contacusercheck1"></label>
                                                </div>
                                            </th> --}}
-
+                                           <td>{{ $branch->id }}</td>
                                            <td>
                                                @if(!empty($branch->image))
                                                    <img src="{{ URL::asset('storage/branches/' . $branch->image) }}" alt="" class="branch_logo_list">

@@ -87,6 +87,10 @@ class EstimateController extends Controller
 
     public function edit($id) {
         $estimate = Estimate::findOrFail(decrypt($id));
+
+        if ($estimate->branch_id !== default_branch()->id) {
+            abort(403, 'This estimate is not associated with this branch.');
+        }
         // if(!$estimate->sale) {
         foreach($estimate->products as $estimate_product) {
             $estimate_product_comps = DB::table('component_estimate_product')->where('estimate_product_id',$estimate_product->pivot->id)->get();
@@ -104,40 +108,46 @@ class EstimateController extends Controller
     public function update () {
         $id = decrypt(request('estimate_id'));
         $estimate = Estimate::find($id);
+        if ($estimate->branch_id !== default_branch()->id) {
+            abort(403, 'This estimate is not associated with this branch.');
+        }
         if(!$estimate->sale) {
-        $validated = request()->validate([
-            'customer_id' => 'required',
-        ]);
-        $input = request()->only(['customer_id']);
+            $validated = request()->validate([
+                'customer_id' => 'required',
+            ]);
+            $input = request()->only(['customer_id']);
 
-        $input['user_id'] =Auth::id();
-        $estimate->update($input);
-        $estimate->products()->detach();
-        if(!empty(request('products'))) {
-            foreach(request('products') as $index => $product_id) {
-                if(!empty($product_id)) {
-                    $data = ['estimate_id' => $estimate->id, 'product_id' => $product_id, 'quantity' => request('quantities')[$index],'profit' => request('profits')[$index],'created_at' => now(),'updated_at' => now()];
-                    $estimate_product = DB::table('estimate_product')->insert($data);
+            $input['user_id'] =Auth::id();
+            $estimate->update($input);
+            $estimate->products()->detach();
+            if(!empty(request('products'))) {
+                foreach(request('products') as $index => $product_id) {
+                    if(!empty($product_id)) {
+                        $data = ['estimate_id' => $estimate->id, 'product_id' => $product_id, 'quantity' => request('quantities')[$index],'profit' => request('profits')[$index],'created_at' => now(),'updated_at' => now()];
+                        $estimate_product = DB::table('estimate_product')->insert($data);
 
-                    $lastInsertedId = DB::getPdo()->lastInsertId();
-                    foreach(request('component_names')[$index] as $index_comp => $component_id) {
-                        if(!empty($component_id)) {
-                            $data_comp = ['estimate_product_id' => $lastInsertedId, 'component_id' => $component_id, 'cost' => request('costs')[$index][$index_comp],'o_cost' => request('o_costs')[$index][$index_comp],'created_at' => now(),'updated_at' => now()];
-                            $estimate_product_comp = DB::table('component_estimate_product')->insert($data_comp);
+                        $lastInsertedId = DB::getPdo()->lastInsertId();
+                        foreach(request('component_names')[$index] as $index_comp => $component_id) {
+                            if(!empty($component_id)) {
+                                $data_comp = ['estimate_product_id' => $lastInsertedId, 'component_id' => $component_id, 'cost' => request('costs')[$index][$index_comp],'o_cost' => request('o_costs')[$index][$index_comp],'created_at' => now(),'updated_at' => now()];
+                                $estimate_product_comp = DB::table('component_estimate_product')->insert($data_comp);
+                            }
                         }
                     }
                 }
             }
-        }
 
-        return redirect()->route('admin.estimates.index')->with(['success'=>'Estimate Updated Successfully']);
-    }else {
-        abort(404);
-    }
+            return redirect()->route('admin.estimates.index')->with(['success'=>'Estimate Updated Successfully']);
+        }else {
+            abort(404);
+        }
     }
 
     public function destroy($id) {
         $estimate = Estimate::find(decrypt($id));
+        if ($estimate->branch_id !== default_branch()->id) {
+            abort(403, 'This estimate is not associated with this branch.');
+        }
         if(!$estimate->sale) {
         $estimate->delete();
         return redirect()->route('admin.estimates.index')->with(['success'=>'Estimate Deleted Successfully']);
@@ -156,6 +166,9 @@ class EstimateController extends Controller
 
     public function convertToProforma($id) {
         $estimate = Estimate::find(decrypt($id));
+        if ($estimate->branch_id !== default_branch()->id) {
+            abort(403, 'This estimate is not associated with this branch.');
+        }
         if(!$estimate->sale) {
         $input_sale = ['invoice_no'=>'','estimate_id'=>$estimate->id,'delivery_charge'=>0];
         $sale = Sale::create($input_sale);
@@ -175,10 +188,18 @@ class EstimateController extends Controller
         $sale->invoice_no = 'INV-' . date('Ymd') . '-' . str_pad($sale->id, 6, '0', STR_PAD_LEFT);
         $sale->save();
 
+        $sale_status_insert = DB::table('sale_statuses')->insert([
+            'sale_id' => $sale->id,
+            'status' => Utility::ITEM_INACTIVE,
+            'description' => '',
+            'is_current' => Utility::ITEM_ACTIVE,
+            'user_id' => Auth::id()
+        ]);
+
         // $status = 1;
         // $estimate->update(['has_proforma'=>$status]);
         // return redirect()->route('admin.estimates.index','status='.encrypt(1))->with(['success'=>'Proforma Created Successfully']);
-        $redirect_route = route('admin.estimates.index','status='.encrypt(1).'&success=1');
+        $redirect_route = route('admin.estimates.index','status='.encrypt(Utility::ITEM_ACTIVE).'&success=1');
         return $redirect_route;
     }else {
         return abort(404);

@@ -37,12 +37,12 @@ if (!function_exists('default_branch')) {
                 $id = session()->get('default_branch');
                 $default_branch = Branch::where('id',decrypt($id))->first();
             }else {
-                $default_branch = Branch::where('status',Utility::ITEM_ACTIVE)->orderBy('id','asc')->first();
+                $default_branch = Branch::where('status',Utility::ITEM_ACTIVE)->where('id',Utility::DEFAULT_BRANCH_ID)->first();
+                if(!$default_branch) { $default_branch = Branch::orderBy('id','asc')->first(); }
             }
         }else {
             $default_branch = Branch::where('id',Auth::user()->branch_id)->first();
         }
-
         return $default_branch;
     }
 }
@@ -51,9 +51,18 @@ if (!function_exists('sales_count')) {
     function sales_count($status)
     {
         if($status!=Utility::STATUS_NOTPAID) {
-        $count = Sale::leftJoin('estimates','sales.estimate_id','=','estimates.id')
-        ->where('estimates.branch_id',default_branch()->id)
-        ->where('sales.status',$status)->distinct()->count();
+        $count = Sale::orderBy('sales.id','desc')
+
+        ->join("estimates",function($join){
+            $join->on("estimates.id","=","sales.estimate_id")
+            ->where('estimates.branch_id',default_branch()->id);
+            })
+
+        ->join("sale_statuses",function($join) use ($status) {
+            $join->on("sale_statuses.sale_id","=","sales.id")
+            ->where('sale_statuses.status',$status)
+            ->where('sale_statuses.is_current',Utility::ITEM_ACTIVE);
+            })->distinct()->count();
         }else{
             $count = Sale::with('payments')
             ->addSelect([
@@ -86,9 +95,20 @@ if (!function_exists('sales_exe_count')) {
             $count = Sale::orderBy('sales.id','desc')
             ->join('estimates','sales.estimate_id','=','estimates.id')
             ->join('customers','estimates.customer_id','=','customers.id')
-            ->join('employees','customers.employee_id','=','employees.id')
-            ->where('employees.id',Auth::guard('employee')->id())
-            ->where('sales.status',$status)->distinct()->count();
+            // ->join('employees','customers.employee_id','=','employees.id')
+            // ->where('employees.id',Auth::guard('employee')->id())
+            ->join("employees",function($join){
+                $join->on("employees.id","=","customers.employee_id")
+                ->where('employees.id',Auth::guard('employee')->id());
+                })
+                ->join("sale_statuses",function($join) use ($status) {
+                    $join->on("sale_statuses.sale_id","=","sales.id")
+                    ->where('sale_statuses.status',$status)
+                    ->where('sale_statuses.is_current',Utility::ITEM_ACTIVE);
+                    })
+            // ->where('sales.status',$status)
+
+            ->distinct()->count();
         }else{
             $count = Sale::with('payments')
             ->addSelect([

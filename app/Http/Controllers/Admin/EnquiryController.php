@@ -59,6 +59,9 @@ class EnquiryController extends Controller
 
     public function edit($id) {
         $enquiry = Enquiry::findOrFail(decrypt($id));
+        if ($enquiry->branch_id !== default_branch()->id) {
+            abort(403, 'This estimate is not associated with this branch.');
+        }
         if(!$enquiry->estimate) {
         $customers = Customer::where('status',Utility::ITEM_ACTIVE)->where('branch_id',default_branch()->id)->orderBy('id','desc')->get();
         $products = Product::where('status',Utility::ITEM_ACTIVE)->orderBy('id','desc')->get();
@@ -74,6 +77,9 @@ class EnquiryController extends Controller
         $comp_customer_id = request('customer_id');
         // return $sess_products;
         $enquiry = Enquiry::find($id);
+        if ($enquiry->branch_id !== default_branch()->id) {
+            abort(403, 'This estimate is not associated with this branch.');
+        }
         if(!$enquiry->estimate) {
         $validated = request()->validate([
             'customer_id' => 'required',
@@ -102,6 +108,9 @@ class EnquiryController extends Controller
 
     public function destroy($id) {
         $enquiry = Enquiry::find(decrypt($id));
+        if ($enquiry->branch_id !== default_branch()->id) {
+            abort(403, 'This estimate is not associated with this branch.');
+        }
         if(!$enquiry->estimate) {
         $enquiry->delete();
         return redirect()->route('admin.enquiries.index')->with(['success'=>'Enquiry Deleted Successfully']);
@@ -112,6 +121,9 @@ class EnquiryController extends Controller
 
     public function changeStatus($id) {
         $enquiry = Enquiry::find(decrypt($id));
+        if ($enquiry->branch_id !== default_branch()->id) {
+            abort(403, 'This estimate is not associated with this branch.');
+        }
         if(!$enquiry->estimate) {
             $currentStatus = $enquiry->is_approved;
             $status = $currentStatus ? 0 : 1;
@@ -132,6 +144,9 @@ class EnquiryController extends Controller
 
     public function convertToEstimate(Request $request, $id) {
         $enquiry = Enquiry::findOrFail(decrypt($id));
+        if ($enquiry->branch_id !== default_branch()->id) {
+            abort(403, 'This estimate is not associated with this branch.');
+        }
         $status = $request->has('status')? request('status'):0;
         if($enquiry->is_approved || $status==1) {
         $customers = Customer::where('status',Utility::ITEM_ACTIVE)->orderBy('id','desc')->get();
@@ -219,6 +234,9 @@ class EnquiryController extends Controller
         // return request()->all();
         $enquiry_id = decrypt(request('enquiry_id'));
         $enquiry = Enquiry::find($enquiry_id);
+        if ($enquiry->branch_id !== default_branch()->id) {
+            abort(403, 'This estimate is not associated with this branch.');
+        }
             if(!$enquiry->estimate&&$enquiry->is_approved) {
                 $validated = request()->validate([
                     'customer_id' => 'required',

@@ -40,6 +40,7 @@ return new class extends Migration
         Settings::create(['term'=>'account_number', 'value'=>'921020050860357']);
         Settings::create(['term'=>'bank_branch', 'value'=>'Kondotty']);
         Settings::create(['term'=>'ifsc', 'value'=>'UTIB0003043']);
+        Settings::create(['term'=>'default_branch_id', 'value'=>'2']);
 
         // Settings::create(['term'=>'whatsapp', 'value'=>'9809373738']);
         // Settings::create(['term'=>'facebook', 'value'=>'www.facebook.com']);

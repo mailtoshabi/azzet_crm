@@ -1,6 +1,11 @@
 @extends('admin.layouts.employee.master')
 @section('title') @lang('translation.Proforma_Details') @endsection
 @section('content')
+@unless (empty($sale->reason))
+<div class="alert alert-danger alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-danger"></i><strong>Proforma Status : {{ Utility::saleStatus()[$sale->status]['name'] }}</strong> | <strong>Notes : </strong> <span class="">- {{ $sale->reason }}</span>
+</div>
+@endunless
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -20,23 +25,18 @@
                         <p class="text-muted mb-0">{{ $sale->estimate->customer->city }}</p>
                         <p class="text-muted mb-0">{{ $sale->estimate->customer->district->name }} District</p>
                         <p class="text-muted mb-0">{{ $sale->estimate->customer->state->name }} - {{ $sale->estimate->customer->postal_code }}</p>
-                        {{-- <p class="text-muted mb-2">{{ $sale->estimate->customer->postal_code }}</p> --}}
                         <p class="text-primary mb-0">Mob:{{ $sale->estimate->customer->phone }}</p>
-                        <p class="text-success mb-2">Email:{{ $sale->estimate->customer->email }}</p>
+                        @unless (empty($sale->estimate->customer->email))<p class="text-success mb-2">Email:{{ $sale->estimate->customer->email }}</p>@endunless
 
-                        <div class="btn-group" role="group">
+                        {{-- <div class="btn-group" role="group">
                             <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                 Status : <span id="status_id">{{ Utility::saleStatus()[$sale->status]['name'] }}</span> <i class="mdi mdi-chevron-down"></i>
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
-                                {{-- @foreach (Utility::saleStatus() as $index => $status ) --}}
                                     <li><a data-plugin="change-status" href="{{ route('employee.sales.changeStatus',[encrypt($sale->id),encrypt(Utility::STATUS_OUT)]) }}" class="dropdown-item">{{ Utility::saleStatus()[Utility::STATUS_OUT]['name'] }}</a></li>
                                     <li><a data-plugin="change-status" href="{{ route('employee.sales.changeStatus',[encrypt($sale->id),encrypt(Utility::STATUS_DELIVERED)]) }}" class="dropdown-item">{{ Utility::saleStatus()[Utility::STATUS_DELIVERED]['name'] }}</a></li>
-                                {{-- @endforeach --}}
-
-                                {{-- <li><a class="dropdown-item" href="#">Dropdown link</a></li> --}}
                             </ul>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="col-sm-6 azzet_invoice">
                         <br>
@@ -45,6 +45,26 @@
                         @unless (empty($sale->estimate->customer->gstin))<p class="mb-2"><b>{!! 'GSTIN/UIN: '. $sale->estimate->customer->gstin !!}</b></p>@endunless
                         State Name :  {{ $sale->estimate->customer->state->name }}, Code : {{ $sale->estimate->customer->state->gst_code }} <br>
                         @unless (empty($sale->estimate->customer->cin))<p class="mb-2">{!! 'CIN: '. $sale->estimate->customer->cin !!}</p>@endunless
+
+                        <div class="btn-group mt-2" role="group">
+                            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                Proforma Status : <span id="status_id">{{ Utility::saleStatus()[$sale->status]['name'] }}</span> <i class="mdi mdi-chevron-down"></i>
+                            </button>
+                            <ul id="proforma_status" class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
+                                @foreach (Utility::saleStatus() as $index => $status )
+                                    @if($status['exe']==1)
+                                        <li><a data-status_id="{{ encrypt($index) }}" href="{{ route('employee.sales.changeStatus') }}" class="dropdown-item status_change">{{ $status['name'] }}</a></li>
+                                    @endif
+                                {{-- <li><a data-status_id="{{ encrypt(Utility::STATUS_OUT) }}" href="{{ route('employee.sales.changeStatus') }}" class="dropdown-item status_change">{{ Utility::saleStatus()[Utility::STATUS_OUT]['name'] }}</a></li>
+                                    <li><a data-status_id="{{ encrypt(Utility::STATUS_DELIVERED) }}" href="{{ route('employee.sales.changeStatus') }}" class="dropdown-item status_change">{{ Utility::saleStatus()[Utility::STATUS_DELIVERED]['name'] }}</a></li> --}}
+                                    {{-- data-plugin="change-status" --}}
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="btn-group mt-2" role="group">
+                            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                Payment Status : {{ $sale->payment_status }}
+                        </div>
                         {{-- <div class="btn-group" role="group">
                             <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                 Status : New <i class="mdi mdi-chevron-down"></i>
@@ -54,6 +74,7 @@
                                 <li><a class="dropdown-item" href="#">Dropdown link</a></li>
                             </ul>
                         </div> --}}
+
 
                         <div class="mt-4">
                             <a data-plugin="confirm-data" data-confirmtext="Do you really want to download the Invoice?" href="{{ route('employee.sales.download.invoice',encrypt($sale->id)) }}" class="btn btn-primary waves-effect waves-light w-sm">
@@ -316,6 +337,68 @@
 <script>
 
     $(document).ready(function() {
+
+        $('#proforma_status .status_change').on('click', function(e) {
+            e.preventDefault();
+            var targetUrl = $(this).attr('href');
+            var status_id = $(this).data('status_id');
+            // SweetAlert2 popup with input fields
+            Swal.fire({
+                title: 'Enter Note/Reason',
+                html:
+                    '<input type="hidden" id="sale_id_s" class="form-control" value="{{ encrypt($sale->id) }}">' +
+                    '<input type="text" id="description_s" class="form-control" value="" placeholder="Enter Note/Reason, if have"><br>' +
+                    '<input type="hidden" id="status_id_s" class="form-control" value="' + status_id + '">',
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'Submit',
+                preConfirm: () => {
+                    const status_id_s = document.getElementById('status_id_s').value;
+                    const sale_id_s = document.getElementById('sale_id_s').value;
+                    const description_s = document.getElementById('description_s').value;
+
+                    // Check if the inputs are valid
+                    if (!sale_id_s) {
+                        Swal.showValidationMessage('Something Went wrong!');
+                        return false;
+                    }
+                    return { status_id_s: status_id_s, sale_id_s: sale_id_s, description_s:description_s };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Get input values from the SweetAlert2 popup
+                    const status_id_s = result.value.status_id_s;
+                    const sale_id_s = result.value.sale_id_s;
+                    const description_s = result.value.description_s;
+
+                    // Send the data using AJAX
+                    $.ajax({
+                        url: targetUrl,
+                        type: 'POST',
+                        data: { status_id_s: status_id_s, sale_id_s: sale_id_s, description_s:description_s },
+                        success: function(response) {
+                            // console.log(response);
+                            Swal.fire(
+                                'Success!',
+                                'Your data has been submitted.',
+                                'success'
+                            ).then((result) => {
+
+                                refreshPage();
+                            });
+                        },
+                        error: function() {
+                            Swal.fire(
+                                'Error!',
+                                'There was a problem with the submission.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        });
+
         $('#add_freight').on('click', function() {
 
             // SweetAlert2 popup with input fields
@@ -370,18 +453,18 @@
             });
         });
 
-        $(document).on('click','[data-plugin="change-status"]',function(e) {
-            e.preventDefault();
-            if (!confirm('Do you want to change the status?')) return;
-            var url = $(this).attr('href');
-            $.ajax({
-                type: "GET",
-                url: url,
-                success: function (data) {
-                    refreshPage();
-                }
-            });
-	    });
+        // $(document).on('click','[data-plugin="change-status"]',function(e) {
+        //     e.preventDefault();
+        //     if (!confirm('Do you want to change the status?')) return;
+        //     var url = $(this).attr('href');
+        //     $.ajax({
+        //         type: "GET",
+        //         url: url,
+        //         success: function (data) {
+        //             refreshPage();
+        //         }
+        //     });
+	    // });
 
     });
 

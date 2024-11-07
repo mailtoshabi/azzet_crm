@@ -23,7 +23,7 @@ class BranchController extends Controller
         // $count_pending = Branch::where('status',Utility::ITEM_INACTIVE)->count();
         // return $count_pending;
         // $is_approved = isset($status)? decrypt(request('status')) : ($count_pending==0?1:0);
-        $branches = Branch::orderBy('id','desc')->paginate(Utility::PAGINATE_COUNT);
+        $branches = Branch::orderBy('id','asc')->paginate(Utility::PAGINATE_COUNT);
         return view('admin.branches.index',compact('branches'));
     }
 

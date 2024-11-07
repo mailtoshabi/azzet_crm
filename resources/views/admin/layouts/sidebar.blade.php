@@ -159,6 +159,17 @@
                         <span data-key="t-email">@lang('translation.Tax_Manage')</span>
                     </a>
                 </li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i class="fas fa-cog"></i>
+                        <span data-key="t-contacts">@lang('translation.Settings')</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('admin.settings.index') }}" data-key="t-read-email">@lang('translation.General_Settings')</a></li>
+                        <li><a href="{{ route('admin.settings.change.password') }}" data-key="t-user-grid">@lang('translation.Change_Password')</a></li>
+                    </ul>
+                </li>
                 @endif
 
             </ul>

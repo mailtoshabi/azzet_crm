@@ -150,6 +150,17 @@
                         <span data-key="t-email"><?php echo app('translator')->get('translation.Tax_Manage'); ?></span>
                     </a>
                 </li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i class="fas fa-cog"></i>
+                        <span data-key="t-contacts"><?php echo app('translator')->get('translation.Settings'); ?></span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="<?php echo e(route('admin.settings.index')); ?>" data-key="t-read-email"><?php echo app('translator')->get('translation.General_Settings'); ?></a></li>
+                        <li><a href="<?php echo e(route('admin.settings.change.password')); ?>" data-key="t-user-grid"><?php echo app('translator')->get('translation.Change_Password'); ?></a></li>
+                    </ul>
+                </li>
                 <?php endif; ?>
 
             </ul>

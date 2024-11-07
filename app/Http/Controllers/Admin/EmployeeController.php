@@ -91,6 +91,9 @@ class EmployeeController extends Controller
     public function show($id)
     {
         $employee = Employee::findOrFail(decrypt($id));
+        if ($employee->branch_id !== default_branch()->id) {
+            abort(403, 'This estimate is not associated with this branch.');
+        }
         $req_type = 1;
         $reviews = $employee->reviews;
         return view('admin.employees.view',compact('employee','req_type','reviews'));
@@ -105,6 +108,9 @@ class EmployeeController extends Controller
     public function edit($id)
     {
         $employee = Employee::findOrFail(decrypt($id));
+        if ($employee->branch_id !== default_branch()->id) {
+            abort(403, 'This estimate is not associated with this branch.');
+        }
         $branches = Branch::where('status',Utility::ITEM_ACTIVE)->orderBy('id','desc')->get();
         $states = DB::table('states')->orderBy('name','asc')->select('id','name')->get();
         $roles = Role::ofType('employee')->orderBy('id','asc')->get();
@@ -122,6 +128,9 @@ class EmployeeController extends Controller
     {
         $id = decrypt(request('employee_id'));
         $employee = Employee::find($id);
+        if ($employee->branch_id !== default_branch()->id) {
+            abort(403, 'This estimate is not associated with this branch.');
+        }
         //return Employee::DIR_PUBLIC . $employee->image;
         $validated = request()->validate([
             'name' => 'required',
@@ -131,6 +140,7 @@ class EmployeeController extends Controller
             'postal_code' => 'required',
             'district_id' => 'required',
             'state_id' => 'required',
+            'role_id' => 'required',
         ]);
         $input = request()->except(['_token','_method','email_verified_at','image','password']);
 
@@ -172,6 +182,9 @@ class EmployeeController extends Controller
     public function destroy($id)
     {
         $employee = Employee::find(decrypt($id));
+        if ($employee->branch_id !== default_branch()->id) {
+            abort(403, 'This estimate is not associated with this branch.');
+        }
         if(!empty($employee->image)) {
             Storage::delete(Employee::DIR_PUBLIC . $employee->image);
             $input['image'] =null;
@@ -182,6 +195,9 @@ class EmployeeController extends Controller
 
     public function changeStatus($id) {
         $employee = Employee::find(decrypt($id));
+        if ($employee->branch_id !== default_branch()->id) {
+            abort(403, 'This estimate is not associated with this branch.');
+        }
         $currentStatus = $employee->status;
         $status = $currentStatus ? 0 : 1;
         $employee->update(['status'=>$status]);

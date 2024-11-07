@@ -156,7 +156,7 @@
             
 
             <div class="dropdown d-inline-block">
-                <button type="button" class="btn header-item  me-2"> 
+                <button type="submit" onclick="goLink('<?php echo e(route('admin.settings.index')); ?>')" class="btn header-item  me-2"> 
                     <i data-feather="settings" class="icon-lg"></i>
                 </button>
             </div>

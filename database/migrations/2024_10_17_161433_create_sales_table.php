@@ -20,16 +20,16 @@ return new class extends Migration
             $table->double('discount')->default(0);
             $table->boolean('is_paid')->comment('1-paid,0-not paid')->default(0);
             $table->double('delivery_charge')->default(0);
-            $table->text('reason_hold')->nullable();
-            $table->text('reason_cancel')->nullable();
-            $table->date('date_confirmed')->nullable();
-            $table->date('date_production')->nullable();
-            $table->date('date_out_delivery')->nullable();
-            $table->date('date_delivered')->nullable();
-            $table->date('date_closed')->nullable();
-            $table->date('date_onhold')->nullable();
-            $table->date('date_cancelled')->nullable();
-            $table->smallInteger('status')->default(0)->comment('0:New, 1:confirmed, 2:On Production, 3:Out for delivery, 4:Delivered, 5:Closed, 6:On Hold, 7:Cancelled');
+            // $table->text('reason_hold')->nullable();
+            // $table->text('reason_cancel')->nullable();
+            // $table->date('date_confirmed')->nullable();
+            // $table->date('date_production')->nullable();
+            // $table->date('date_out_delivery')->nullable();
+            // $table->date('date_delivered')->nullable();
+            // $table->date('date_closed')->nullable();
+            // $table->date('date_onhold')->nullable();
+            // $table->date('date_cancelled')->nullable();
+            // $table->smallInteger('status')->default(0)->comment('0:New, 1:confirmed, 2:On Production, 3:Out for delivery, 4:Delivered, 5:Closed, 6:On Hold, 7:Cancelled');
             $table->timestamps();
         });
     }

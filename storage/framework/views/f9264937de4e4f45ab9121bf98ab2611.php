@@ -18,31 +18,13 @@
 <?php endif; ?>
 <div class="row">
     <div class="col-lg-12">
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs sales_list">
+        <?php $__currentLoopData = Utility::saleStatus(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index=>$payment_status): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <li class="nav-item">
-          <a class="nav-link <?php if($status==Utility::STATUS_NEW): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_NEW): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt(Utility::STATUS_NEW))); ?>">New <?php echo sales_count(Utility::STATUS_NEW); ?></a>
+            <a class="nav-link <?php if($status==$index): ?> active <?php endif; ?>" <?php if($status==$index): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt($index))); ?>"><?php echo e($payment_status['name']); ?> <?php echo sales_count($index); ?></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link <?php if($status==Utility::STATUS_CONFIRMED): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_CONFIRMED): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt(Utility::STATUS_CONFIRMED))); ?>"><?php echo e(Utility::saleStatus()[Utility::STATUS_CONFIRMED]['name']); ?> <?php echo sales_count(Utility::STATUS_CONFIRMED); ?></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link <?php if($status==Utility::STATUS_PRODUCTION): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_PRODUCTION): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt(Utility::STATUS_PRODUCTION))); ?>">On Production <?php echo sales_count(Utility::STATUS_PRODUCTION); ?></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link <?php if($status==Utility::STATUS_OUT): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_OUT): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt(Utility::STATUS_OUT))); ?>">Out for Delivery <?php echo sales_count(Utility::STATUS_OUT); ?></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link <?php if($status==Utility::STATUS_DELIVERED): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_DELIVERED): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt(Utility::STATUS_DELIVERED))); ?>">Delivered <?php echo sales_count(Utility::STATUS_DELIVERED); ?></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link <?php if($status==Utility::STATUS_ONHOLD): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_ONHOLD): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt(Utility::STATUS_ONHOLD))); ?>">On Hold <?php echo sales_count(Utility::STATUS_ONHOLD); ?></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link <?php if($status==Utility::STATUS_CANCELLED): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_CANCELLED): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt(Utility::STATUS_CANCELLED))); ?>">Cancelled</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link <?php if($status==Utility::STATUS_CLOSED): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_CLOSED): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt(Utility::STATUS_CLOSED))); ?>">Closed</a>
-        </li>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        
         <li class="nav-item">
             <a class="nav-link text-danger <?php if($status==Utility::STATUS_NOTPAID): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_NOTPAID): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt(Utility::STATUS_NOTPAID))); ?>"><b><i class="fas fa-exclamation-triangle"></i> Pending Payment</b> <?php echo sales_count(Utility::STATUS_NOTPAID); ?></a>
         </li>
@@ -144,4 +126,4 @@
 <script src="<?php echo e(URL::asset('assets/js/pages/datatable-pages.init.js')); ?>"></script>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('admin.layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\azzet_crm\resources\views\admin\sales\index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('admin.layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\azzet_crm\resources\views/admin/sales/index.blade.php ENDPATH**/ ?>

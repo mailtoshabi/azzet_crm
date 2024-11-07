@@ -12,6 +12,7 @@ class Utility{
 
     const SUPER_ADMIN_ID = 1;
     const ROLE_ADMIN = 1;
+    const DEFAULT_BRANCH_ID = 2;
 
     const FROM_MAIL = 'shabeer@gmail.com';
 
@@ -40,12 +41,14 @@ class Utility{
 
     const STATUS_NEW = 0;
     const STATUS_CONFIRMED = 1;
-    const STATUS_PRODUCTION = 2;
-    const STATUS_OUT = 3;
-    const STATUS_DELIVERED = 4;
-    const STATUS_CLOSED = 5;
-    const STATUS_ONHOLD = 6;
-    const STATUS_CANCELLED = 7;
+    const STATUS_PRINTING = 2;
+    const STATUS_PRODUCTION = 3;
+    const STATUS_OUT = 4;
+    const STATUS_DELIVEREDP = 5;
+    const STATUS_DELIVERED = 6;
+    const STATUS_CLOSED = 7;
+    const STATUS_ONHOLD = 8;
+    const STATUS_CANCELLED = 9;
     const STATUS_NOTPAID = 15;
 
     public static function otp()
@@ -56,14 +59,16 @@ class Utility{
     }
 
     protected  static $saleStatus = [
-        self::STATUS_NEW => ['name'=>'New', 'date_field'=>'created_at'],
-        self::STATUS_CONFIRMED => ['name'=>'confirmed', 'date_field'=>'date_confirmed'],
-        self::STATUS_PRODUCTION => ['name'=>'On Production', 'date_field'=>'date_production'],
-        self::STATUS_OUT => ['name'=>'Out for Delivery', 'date_field'=>'date_out_delivery'],
-        self::STATUS_DELIVERED => ['name'=>'Delivered', 'date_field'=>'date_delivered'],
-        self::STATUS_CLOSED => ['name'=>'Closed', 'date_field'=>'date_closed'],
-        self::STATUS_ONHOLD => ['name'=>'On Hold', 'date_field'=>'date_onhold'],
-        self::STATUS_CANCELLED => ['name'=>'Cancelled', 'date_field'=>'date_cancelled'],
+        self::STATUS_NEW => ['name'=>'New', 'exe'=>'0'],
+        self::STATUS_CONFIRMED => ['name'=>'Party Approved', 'exe'=>'0'],
+        self::STATUS_PRINTING => ['name'=>'Printing', 'exe'=>'0'],
+        self::STATUS_PRODUCTION => ['name'=>'On Production', 'exe'=>'0'],
+        self::STATUS_OUT => ['name'=>'Out for Delivery', 'exe'=>'1'],
+        self::STATUS_DELIVEREDP => ['name'=>'Delivered Partially', 'exe'=>'1'],
+        self::STATUS_DELIVERED => ['name'=>'Delivered', 'exe'=>'1'],
+        self::STATUS_CLOSED => ['name'=>'Closed', 'exe'=>'0'],
+        self::STATUS_ONHOLD => ['name'=>'On Hold', 'exe'=>'0'],
+        self::STATUS_CANCELLED => ['name'=>'Cancelled', 'exe'=>'0'],
     ];
     public static function saleStatus()
     {
@@ -93,10 +98,10 @@ class Utility{
         return static::$paymentMethods;
     }
 
-    // public static function settings($term) {
-    //     $value = Settings::where('term', $term)->value('value');
-    //     return $value;
-    // }
+    public static function settings($term) {
+        $value = Settings::where('term', $term)->value('value');
+        return $value;
+    }
 
     public static function addUnderScore($data)
     {

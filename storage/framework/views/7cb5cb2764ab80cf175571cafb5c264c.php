@@ -41,6 +41,7 @@
                                 <thead>
                                 <tr>
                                     
+                                    <th scope="col">ID</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Mobile</th>
                                     <th scope="col">Email</th>
@@ -53,7 +54,7 @@
                                    <?php $__currentLoopData = $branches; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $branch): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                        <tr>
                                            
-
+                                           <td><?php echo e($branch->id); ?></td>
                                            <td>
                                                <?php if(!empty($branch->image)): ?>
                                                    <img src="<?php echo e(URL::asset('storage/branches/' . $branch->image)); ?>" alt="" class="branch_logo_list">
