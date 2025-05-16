@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name',255);
+            $table->string('code',255);
             $table->string('image')->nullable();
             $table->text('images')->nullable();
             $table->double('profit')->default(0);
@@ -25,12 +26,16 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->boolean('is_approved')->comment('1-Approved 0-Unapporved')->default(0);
             $table->foreignId('branch_id')->nullable()->constrained()->onDelete('cascade');
+            $table->tinyInteger('handle_type')->default(0);
+            $table->double('width')->default(0);
+            $table->double('height')->default(0);
+            $table->double('gusset')->default(0);
             $table->foreignId('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
         });
-        Product::create(['name' => 'Carry Bag', 'profit'=>3,'uom_id'=>1,'hsn_id'=>1, 'category_id'=>1, 'is_approved'=>1, 'user_id' => Utility::SUPER_ADMIN_ID, 'branch_id'=>1,'created_at' => now()]);
-        Product::create(['name' => 'Signage', 'profit'=>2.5,'uom_id'=>1,'hsn_id'=>2, 'category_id'=>1, 'is_approved'=>1, 'user_id' => Utility::SUPER_ADMIN_ID, 'branch_id'=>1,'created_at' => now()]);
+        Product::create(['name' => 'Carry Bag', 'code'=>'CB80x34', 'profit'=>3,'uom_id'=>1,'hsn_id'=>1, 'category_id'=>1, 'is_approved'=>1, 'user_id' => Utility::SUPER_ADMIN_ID, 'branch_id'=>1,'created_at' => now()]);
+        Product::create(['name' => 'Signage', 'code'=>'CB50x30', 'profit'=>2.5,'uom_id'=>1,'hsn_id'=>2, 'category_id'=>1, 'is_approved'=>1, 'user_id' => Utility::SUPER_ADMIN_ID, 'branch_id'=>1,'created_at' => now()]);
     }
 
     /**

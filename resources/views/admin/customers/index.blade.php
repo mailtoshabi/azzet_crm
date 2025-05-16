@@ -107,7 +107,7 @@
                                                    </div>
                                                </div>
                                                @endif
-                                               <a href="#" class="text-body">{{ $customer->name }}</a>
+                                               <a href="{{ route('admin.customers.edit',encrypt($customer->id)) }}" class="">{{ $customer->name }}</a>
                                             </td>
 
                                            <td>{{ $customer->phone }}</td>

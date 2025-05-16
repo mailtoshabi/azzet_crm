@@ -54,3 +54,7 @@ img.branch_logo_list{
 .nav.sales_list .nav-link {
     padding: .5rem .5rem !important;
 }
+
+/* body[data-sidebar-size=sm] .logo span.logo-lg {
+    display: block;
+} */

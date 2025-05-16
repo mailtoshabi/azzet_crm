@@ -25,6 +25,11 @@
     <i class="mdi mdi-check-all me-3 align-middle text-warning"></i><strong>Warning</strong> - This Enquiry is yet to convert as Estimate !!
 </div>
 @endif
+@if(isset($enquiry) && $enquiry->estimate )
+<div class="alert alert-warning alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-warning"></i><strong>Warning</strong> - This Enquiry can't Edit. Already created Estimate. !!
+</div>
+@endif
 <div class="row">
     <form method="POST" action="{{ isset($enquiry)? route('admin.enquiries.update') : route('admin.enquiries.store')  }}" enctype="multipart/form-data">
         @csrf
@@ -78,9 +83,14 @@
                                         <select id="products-{{ $index }}" name="products[{{ $index }}]" class="form-control select2">
                                             <option value="">Select Product</option>
                                             @foreach ($products as $product)
-                                                <option value="{{ $product->id }}" {{ $product->id==$enquiry_product->id ? 'selected':'' }}>{{ $product->name }}</option>
+                                                <option value="{{ $product->id }}" {{ $product->id==$enquiry_product->id ? 'selected':'' }}>{{ $product->name }}
+                                                    {{-- @if($product->is_approved == 0 || $product->status == 0)
+                                                    <span class="text-danger">Product not approved/activated !!</span>
+                                                    @endif --}}
+                                                </option>
                                             @endforeach
                                         </select>
+
                                     </div>
                                 </div>
 
@@ -159,13 +169,21 @@
                             <textarea class="form-control" rows="2" placeholder="Enter notes, if any" id="description" name="description">{{ isset($enquiry)?$enquiry->description:old('description ')}}</textarea>
                         </div>
                     </div>
+
                     <div class="d-flex flex-wrap gap-2">
-                        <button type="submit" class="btn btn-primary waves-effect waves-light">{{ isset($enquiry) ? $enquiry->is_approved?'Update':'Update & Approve' : 'Save' }}</button>
-                            @if((isset($enquiry) && (!$enquiry->estimate)&&$enquiry->is_approved))
-                                <a href="{{ route('admin.enquiries.convert_to_estimate',encrypt($enquiry->id)).'?status=1' }}" class="btn btn-primary waves-effect waves-light" >Save as Estimate</a>
+                        @if(isset($enquiry))
+                            @if(!$enquiry->estimate)
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Update</button>
                             @endif
+                        @else
+                        <button type="submit" class="btn btn-primary waves-effect waves-light">Save</button>
+                        @endif
+                        @if((isset($enquiry) && (!$enquiry->estimate)&&$enquiry->is_approved))
+                            <a href="{{ route('admin.enquiries.convert_to_estimate',encrypt($enquiry->id)).'?status=1' }}" class="btn btn-primary waves-effect waves-light" >Save as Estimate</a>
+                        @endif
                         <button type="reset" class="btn btn-secondary waves-effect waves-light">Cancel</button>
                     </div>
+
                 </div>
             </div>
         </div>

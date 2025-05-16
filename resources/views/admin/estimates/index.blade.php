@@ -16,6 +16,11 @@
     <i class="mdi mdi-check-all me-3 align-middle text-success"></i><strong>Success</strong> - {{ session()->get('success') }}
 </div>
 @endif
+@if(session()->has('error'))
+<div class="alert alert-danger alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-danger"></i><strong>Error</strong> - {{ session()->get('error') }}
+</div>
+@endif
 @if(request()->get('success') && (request()->get('success')==1)) <p class="text-success">Proforma Created Successfully <a href="{{ route('admin.sales.index') }}">View Proforma</a></p>@endif
 <div class="row">
     <div class="col-lg-12">
@@ -103,10 +108,13 @@
                                         </div>
                                     </th>
                                     <td>
-                                        <a href="#" class="text-body">{{ $estimate->id }}</a>
+                                        <a href="{{ route('admin.estimates.edit',encrypt($estimate->id))}}" class="">{{ $estimate->est_no }}</a>
+                                        @if($estimate->sale)
+                                        <br><small>Invoice No: <a href="{{ route('admin.sales.view',encrypt($estimate->sale->id))}}" class="">{{ $estimate->sale->invoice_no }}</a></small>
+                                        @endif
                                     </td>
                                     <td>
-                                        <a href="#" class="text-body">{{ $estimate->customer->name. ' ' . $estimate->customer->city }}</a>
+                                        <a target="_blank" href="{{ route('admin.customers.view',encrypt($estimate->customer->id))}}">{{ $estimate->customer->name. ' ' . $estimate->customer->city }}</a>
                                     </td>
                                     <td>
                                         <a href="#" class="text-body">{{ $estimate->user->name }}<br>{{ $estimate->user->email }}</a>
@@ -130,6 +138,7 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li><a class="dropdown-item" href="{{ route('admin.estimates.edit',encrypt($estimate->id))}}"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit/View</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('admin.estimates.copy',encrypt($estimate->id))}}"><i class="fas fa-copy font-size-16 text-success me-1"></i> Creat a Copy</a></li>
                                                 {{-- <li><a class="dropdown-item" href="{{ route('admin.estimates.destroy',encrypt($estimate->id))}}"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li> --}}
                                                 @if(!$estimate->sale)
                                                 <li><a href="#" class="dropdown-item" data-plugin="delete-data" data-target-form="#form_delete_{{ $loop->iteration }}"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>
@@ -137,8 +146,9 @@
                                                     @csrf
                                                     <input type="hidden" name="_method" value="DELETE" />
                                                 </form>
-
-                                                <li><a class="dropdown-item" data-plugin="convert-profoma" href="{{ route('admin.estimates.convertToProforma',encrypt($estimate->id))}}"><i class="mdi mdi-cursor-pointer font-size-16 text-success me-1"></i> Convert to Proforma</a></li>
+                                                    @if($estimate->products()->exists())
+                                                    <li><a class="dropdown-item" data-plugin="convert-profoma" href="{{ route('admin.estimates.convertToProforma',encrypt($estimate->id))}}"><i class="mdi mdi-cursor-pointer font-size-16 text-success me-1"></i> Convert to Proforma</a></li>
+                                                    @endif
                                                 @endif
                                             </ul>
                                         </div>

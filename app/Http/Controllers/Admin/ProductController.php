@@ -38,11 +38,12 @@ class ProductController extends Controller
     public function store () {
         $validated = request()->validate([
             'name' => 'required|unique:products,name',
+            'code' => 'required',
             'category_id' => 'required',
             'hsn_id' => 'required',
             'uom_id' => 'required',
         ]);
-        $input = request()->only(['name','category_id','description','uom_id','hsn_id']);
+        $input = request()->only(['name','code','category_id','description','uom_id','hsn_id','handle_type','width','height','gusset']);
         if(request()->hasFile('image')) {
             $extension = request('image')->extension();
             $fileName = Utility::cleanString(request()->name) . date('YmdHis') . '.' . $extension;
@@ -85,11 +86,12 @@ class ProductController extends Controller
         //return Product::DIR_PUBLIC . $product->image;
         $validated = request()->validate([
             'name' => 'required|unique:products,name,'. $id,
+            'code' => 'required',
             'category_id' => 'required',
             'hsn_id' => 'required',
             'uom_id' => 'required',
         ]);
-        $input = request()->only(['name','category_id','description','uom_id','hsn_id']);
+        $input = request()->only(['name','code','category_id','description','uom_id','hsn_id','handle_type','width','height','gusset']);
         if(request('isImageDelete')==1) {
             Storage::delete(Product::DIR_PUBLIC . $product->image);
             $input['image'] =null;

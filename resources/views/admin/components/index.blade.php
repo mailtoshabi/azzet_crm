@@ -86,7 +86,7 @@
                                         </div>
                                     </th>
                                     <td>
-                                        <a href="#" class="text-body">{{ $component->name }}</a>
+                                        <a href="{{ route('admin.components.edit',encrypt($component->id)) }}" class="">{{ $component->name }}</a>
                                     </td>
                                     <td>
                                         <a href="#" class="text-body">{{ $component->cost }}</a>

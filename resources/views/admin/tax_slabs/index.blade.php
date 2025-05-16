@@ -85,7 +85,7 @@
                                         </div>
                                     </th>
                                     <td>
-                                        <a href="#" class="text-body">{{ $tax_slab->name }}%</a>
+                                        <a href="{{ route('admin.tax_slabs.edit',encrypt($tax_slab->id)) }}" class="">{{ $tax_slab->name }}%</a>
                                     </td>
 
 

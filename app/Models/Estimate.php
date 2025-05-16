@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 class Estimate extends Model
 {
     use HasFactory;
-    protected $fillable = ['customer_id','user_id','enquiry_id','branch_id'];
+    protected $fillable = ['customer_id','est_no','user_id','enquiry_id','branch_id','description'];
 
     public function employee()
     {

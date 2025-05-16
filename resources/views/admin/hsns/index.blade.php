@@ -86,7 +86,7 @@
                                         </div>
                                     </th>
                                     <td>
-                                        <a href="#" class="text-body">{{ $hsn->name }}</a>
+                                        <a href="{{ route('admin.hsns.edit',encrypt($hsn->id)) }}" class="">{{ $hsn->name }}</a>
                                     </td>
 
                                     <td>

@@ -52,7 +52,7 @@
                 @if ($user->hasRole(['Administrator', 'Manager']))
                     <li class="menu-title" data-key="t-apps">@lang('translation.Catalogue_Manage')</li>
 
-                    <li class="{{ set_active(['admin.categories.edit','admin.categories.create']) }}">
+                    <li class="{{ set_active(['admin.categories.edit','admin.categories.create','admin.categories.products']) }}">
                         <a href="{{ route('admin.categories.index') }}">
                             <i class="fas fa-coins"></i>
                             <span data-key="t-email">@lang('translation.Category_Manage')</span>

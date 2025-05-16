@@ -16,6 +16,11 @@
     <i class="mdi mdi-check-all me-3 align-middle text-success"></i><strong>Success</strong> - {{ session()->get('success') }}
 </div>
 @endif
+@if(session()->has('error'))
+<div class="alert alert-danger alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-danger"></i><strong>Error</strong> - {{ session()->get('error') }}
+</div>
+@endif
 <div class="row">
     <div class="col-lg-12">
     <ul class="nav nav-tabs sales_list">
@@ -24,30 +29,6 @@
             <a class="nav-link @if($status==$index) active @endif" @if($status==$index)aria-current="page"@endif href="{{ route('admin.sales.index','status='.encrypt($index)) }}">{{ $payment_status['name'] }} {!! sales_count($index) !!}</a>
         </li>
         @endforeach
-        {{-- <li class="nav-item">
-          <a class="nav-link @if($status==Utility::STATUS_NEW) active @endif" @if($status==Utility::STATUS_NEW)aria-current="page"@endif href="{{ route('admin.sales.index','status='.encrypt(Utility::STATUS_NEW)) }}">New {!! sales_count(Utility::STATUS_NEW) !!}</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link @if($status==Utility::STATUS_CONFIRMED) active @endif" @if($status==Utility::STATUS_CONFIRMED)aria-current="page"@endif href="{{ route('admin.sales.index','status='.encrypt(Utility::STATUS_CONFIRMED)) }}">{{ Utility::saleStatus()[Utility::STATUS_CONFIRMED]['name']}} {!! sales_count(Utility::STATUS_CONFIRMED) !!}</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link @if($status==Utility::STATUS_PRODUCTION) active @endif" @if($status==Utility::STATUS_PRODUCTION)aria-current="page"@endif href="{{ route('admin.sales.index','status='.encrypt(Utility::STATUS_PRODUCTION)) }}">On Production {!! sales_count(Utility::STATUS_PRODUCTION) !!}</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link @if($status==Utility::STATUS_OUT) active @endif" @if($status==Utility::STATUS_OUT)aria-current="page"@endif href="{{ route('admin.sales.index','status='.encrypt(Utility::STATUS_OUT)) }}">Out for Delivery {!! sales_count(Utility::STATUS_OUT) !!}</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link @if($status==Utility::STATUS_DELIVERED) active @endif" @if($status==Utility::STATUS_DELIVERED)aria-current="page"@endif href="{{ route('admin.sales.index','status='.encrypt(Utility::STATUS_DELIVERED)) }}">Delivered {!! sales_count(Utility::STATUS_DELIVERED) !!}</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link @if($status==Utility::STATUS_ONHOLD) active @endif" @if($status==Utility::STATUS_ONHOLD)aria-current="page"@endif href="{{ route('admin.sales.index','status='.encrypt(Utility::STATUS_ONHOLD)) }}">On Hold {!! sales_count(Utility::STATUS_ONHOLD) !!}</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link @if($status==Utility::STATUS_CANCELLED) active @endif" @if($status==Utility::STATUS_CANCELLED)aria-current="page"@endif href="{{ route('admin.sales.index','status='.encrypt(Utility::STATUS_CANCELLED)) }}">Cancelled</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link @if($status==Utility::STATUS_CLOSED) active @endif" @if($status==Utility::STATUS_CLOSED)aria-current="page"@endif href="{{ route('admin.sales.index','status='.encrypt(Utility::STATUS_CLOSED)) }}">Closed</a>
-        </li> --}}
         <li class="nav-item">
             <a class="nav-link text-danger @if($status==Utility::STATUS_NOTPAID) active @endif" @if($status==Utility::STATUS_NOTPAID)aria-current="page"@endif href="{{ route('admin.sales.index','status='.encrypt(Utility::STATUS_NOTPAID)) }}"><b><i class="fas fa-exclamation-triangle"></i> Pending Payment</b> {!! sales_count(Utility::STATUS_NOTPAID) !!}</a>
         </li>
@@ -106,6 +87,7 @@
                                  </div>
                              </th>
                              <th scope="col">Invoice No</th>
+                             <th scope="col">Estimate</th>
                              <th scope="col">Customer</th>
                              <th scope="col">Items</th>
                              <th scope="col">Sub Total</th>
@@ -124,9 +106,12 @@
                                             <label class="form-check-label" for="contacusercheck1"></label>
                                         </div>
                                     </th>
-                                    <td>{{ $sale->invoice_no }}<br>{{ $sale->created_at->format('d-m-Y H:i:s') }}</td>
+                                    <td><a target="_blank" href="{{ route('admin.sales.view',encrypt($sale->id)) }}">{{ $sale->invoice_no }}<br>{{ $sale->created_at->format('d-m-Y H:i:s') }}</a></td>
                                     <td>
-                                        <a href="#" class="text-body">{{ $sale->estimate->customer->name }}</a>
+                                        <a target="_blank" href="{{ route('admin.estimates.edit',encrypt($sale->estimate->id))}}">{{ $sale->estimate->est_no }}</a>
+                                    </td>
+                                    <td>
+                                        <a target="_blank" href="{{ route('admin.customers.view',encrypt($sale->estimate->customer->id))}}">{{ $sale->estimate->customer->name }}</a>
                                     </td>
 
                                     <td>

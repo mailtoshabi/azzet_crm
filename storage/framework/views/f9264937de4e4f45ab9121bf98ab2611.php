@@ -16,6 +16,12 @@
 
 </div>
 <?php endif; ?>
+<?php if(session()->has('error')): ?>
+<div class="alert alert-danger alert-top-border alert-dismissible fade show" role="alert">
+    <i class="mdi mdi-check-all me-3 align-middle text-danger"></i><strong>Error</strong> - <?php echo e(session()->get('error')); ?>
+
+</div>
+<?php endif; ?>
 <div class="row">
     <div class="col-lg-12">
     <ul class="nav nav-tabs sales_list">
@@ -24,7 +30,6 @@
             <a class="nav-link <?php if($status==$index): ?> active <?php endif; ?>" <?php if($status==$index): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt($index))); ?>"><?php echo e($payment_status['name']); ?> <?php echo sales_count($index); ?></a>
         </li>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        
         <li class="nav-item">
             <a class="nav-link text-danger <?php if($status==Utility::STATUS_NOTPAID): ?> active <?php endif; ?>" <?php if($status==Utility::STATUS_NOTPAID): ?>aria-current="page"<?php endif; ?> href="<?php echo e(route('admin.sales.index','status='.encrypt(Utility::STATUS_NOTPAID))); ?>"><b><i class="fas fa-exclamation-triangle"></i> Pending Payment</b> <?php echo sales_count(Utility::STATUS_NOTPAID); ?></a>
         </li>
@@ -64,6 +69,7 @@
                                  </div>
                              </th>
                              <th scope="col">Invoice No</th>
+                             <th scope="col">Estimate</th>
                              <th scope="col">Customer</th>
                              <th scope="col">Items</th>
                              <th scope="col">Sub Total</th>
@@ -82,9 +88,12 @@
                                             <label class="form-check-label" for="contacusercheck1"></label>
                                         </div>
                                     </th>
-                                    <td><?php echo e($sale->invoice_no); ?><br><?php echo e($sale->created_at->format('d-m-Y H:i:s')); ?></td>
+                                    <td><a target="_blank" href="<?php echo e(route('admin.sales.view',encrypt($sale->id))); ?>"><?php echo e($sale->invoice_no); ?><br><?php echo e($sale->created_at->format('d-m-Y H:i:s')); ?></a></td>
                                     <td>
-                                        <a href="#" class="text-body"><?php echo e($sale->estimate->customer->name); ?></a>
+                                        <a target="_blank" href="<?php echo e(route('admin.estimates.edit',encrypt($sale->estimate->id))); ?>"><?php echo e($sale->estimate->est_no); ?></a>
+                                    </td>
+                                    <td>
+                                        <a target="_blank" href="<?php echo e(route('admin.customers.view',encrypt($sale->estimate->customer->id))); ?>"><?php echo e($sale->estimate->customer->name); ?></a>
                                     </td>
 
                                     <td>

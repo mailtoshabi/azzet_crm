@@ -85,7 +85,7 @@
                                         </div>
                                     </th>
                                     <td>
-                                        <a href="#" class="text-body">{{ $uom->name }}</a>
+                                        <a href="{{ route('admin.uoms.edit',encrypt($uom->id)) }}" class="">{{ $uom->name }}</a>
                                     </td>
 
 

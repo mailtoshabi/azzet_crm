@@ -91,7 +91,7 @@ class EmployeeController extends Controller
     public function show($id)
     {
         $employee = Employee::findOrFail(decrypt($id));
-        if ($employee->branch_id !== default_branch()->id) {
+        if ($employee->branch_id != default_branch()->id) {
             abort(403, 'This estimate is not associated with this branch.');
         }
         $req_type = 1;
@@ -108,7 +108,7 @@ class EmployeeController extends Controller
     public function edit($id)
     {
         $employee = Employee::findOrFail(decrypt($id));
-        if ($employee->branch_id !== default_branch()->id) {
+        if ($employee->branch_id != default_branch()->id) {
             abort(403, 'This estimate is not associated with this branch.');
         }
         $branches = Branch::where('status',Utility::ITEM_ACTIVE)->orderBy('id','desc')->get();
@@ -128,7 +128,7 @@ class EmployeeController extends Controller
     {
         $id = decrypt(request('employee_id'));
         $employee = Employee::find($id);
-        if ($employee->branch_id !== default_branch()->id) {
+        if ($employee->branch_id != default_branch()->id) {
             abort(403, 'This estimate is not associated with this branch.');
         }
         //return Employee::DIR_PUBLIC . $employee->image;
@@ -182,7 +182,7 @@ class EmployeeController extends Controller
     public function destroy($id)
     {
         $employee = Employee::find(decrypt($id));
-        if ($employee->branch_id !== default_branch()->id) {
+        if ($employee->branch_id != default_branch()->id) {
             abort(403, 'This estimate is not associated with this branch.');
         }
         if(!empty($employee->image)) {
@@ -195,7 +195,7 @@ class EmployeeController extends Controller
 
     public function changeStatus($id) {
         $employee = Employee::find(decrypt($id));
-        if ($employee->branch_id !== default_branch()->id) {
+        if ($employee->branch_id != default_branch()->id) {
             abort(403, 'This estimate is not associated with this branch.');
         }
         $currentStatus = $employee->status;

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Utilities\Utility;
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -89,5 +90,15 @@ class CategoryController extends Controller
         $status = $currentStatus ? 0 : 1;
         $category->update(['status'=>$status]);
         return redirect()->route('admin.categories.index')->with(['success'=>'Status changed Successfully']);
+    }
+
+    public function products($id) {
+        $category = Category::find(decrypt($id));
+        // $status = request('status');
+        // $count_pending = Product::where('is_approved',Utility::ITEM_INACTIVE)->count();
+        // $is_approved = isset($status)? decrypt(request('status')) : ($count_pending==0 ? 1: 0);
+        // $count_new = $count_pending<99? $count_pending:'99+';
+        $products = Product::orderBy('id','desc')->where('category_id',decrypt($id))->paginate(Utility::PAGINATE_COUNT);
+        return view('admin.categories.products',compact('products','category'));
     }
 }

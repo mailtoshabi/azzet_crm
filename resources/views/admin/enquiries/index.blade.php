@@ -106,11 +106,11 @@
                                         </div>
                                     </th>
                                     <td>
-                                        <a href="#" class="text-body">{{ $enquiry->customer->name }}</a>
+                                        <a target="_blank" href="{{ route('admin.customers.view',encrypt($enquiry->customer->id))}}" class="">{{ $enquiry->customer->name }}</a>
                                     </td>
 
                                     <td>
-                                        <a href="#" class="text-body">{{ !empty($enquiry->employee)? 'Employee: ' . $enquiry->employee->name : 'Admin: ' . $enquiry->user->name }}</a>
+                                        <a target="_blank" href="{{ !empty($enquiry->employee)? route('admin.employees.edit',encrypt($enquiry->employee->id)) :'#'}}">{{ !empty($enquiry->employee)? 'Employee: ' . $enquiry->employee->name : 'Admin: ' . $enquiry->user->name }}</a>
                                     </td>
 
                                     <td>

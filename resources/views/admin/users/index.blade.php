@@ -86,7 +86,7 @@
                                             </div>
                                         </div>
                                         @endif
-                                        <a href="#" class="text-body">{{ $user->name }} {{ $user->roles->count()>0? ' | ':''}}
+                                        <a href="{{ route('admin.users.edit',encrypt($user->id)) }}" class="">{{ $user->name }} {{ $user->roles->count()>0? ' | ':''}}
                                         <small>
                                             @foreach ($user->roles as $role)
                                                 {{ $role->display_name }} {{ $loop->iteration!=1 ? ', ':'' }}

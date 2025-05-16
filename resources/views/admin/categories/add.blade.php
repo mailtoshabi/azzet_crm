@@ -1,5 +1,5 @@
 @extends('admin.layouts.master')
-@section('title') @lang('translation.Add_Category') @endsection
+@section('title')  @if(isset($category)) @lang('translation.Edit_Category') @else @lang('translation.Add_Category') @endif @endsection
 @section('css')
 <link href="{{ URL::asset('assets/libs/select2/select2.min.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('assets/libs/dropzone/dropzone.min.css') }}" rel="stylesheet">

@@ -52,7 +52,7 @@
                 <?php if($user->hasRole(['Administrator', 'Manager'])): ?>
                     <li class="menu-title" data-key="t-apps"><?php echo app('translator')->get('translation.Catalogue_Manage'); ?></li>
 
-                    <li class="<?php echo e(set_active(['admin.categories.edit','admin.categories.create'])); ?>">
+                    <li class="<?php echo e(set_active(['admin.categories.edit','admin.categories.create','admin.categories.products'])); ?>">
                         <a href="<?php echo e(route('admin.categories.index')); ?>">
                             <i class="fas fa-coins"></i>
                             <span data-key="t-email"><?php echo app('translator')->get('translation.Category_Manage'); ?></span>

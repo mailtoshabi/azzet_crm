@@ -78,6 +78,7 @@ Route::group(['as'=>'admin.', 'middleware'=>'auth', 'prefix'=>'admin'], function
         Route::put('/update',[CategoryController::class,'update'])->name('update');
         Route::delete('/destroy/{id}',[CategoryController::class,'destroy'])->name('destroy');
         Route::get('/change-status/{id}',[CategoryController::class,'changeStatus'])->name('changeStatus');
+        Route::get('/products/{id}',[CategoryController::class,'products'])->name('products');
     });
 
     Route::group(['prefix'=>'components', 'as'=>'components.', 'middleware' => ['role:Administrator']], function() {
@@ -165,6 +166,7 @@ Route::group(['as'=>'admin.', 'middleware'=>'auth', 'prefix'=>'admin'], function
         Route::post('/store',[EstimateController::class,'store'])->name('store');
         Route::get('/edit/{id}',[EstimateController::class,'edit'])->name('edit');
         Route::put('/update',[EstimateController::class,'update'])->name('update');
+        Route::get('/copy/{id}',[EstimateController::class,'copy'])->name('copy');
         Route::delete('/destroy/{id}',[EstimateController::class,'destroy'])->name('destroy');
         Route::get('/convert_to_proforma/{id}',[EstimateController::class,'convertToProforma'])->name('convertToProforma');
         Route::post('/get-product-detail',[EstimateController::class,'getProductDetail'])->name('get_product_detail');

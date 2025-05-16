@@ -54,7 +54,7 @@ class PaymentController extends Controller
             abort(403, 'The Proforma has already been closed');
         }
         $payment = Payment::find($id);
-        if ($payment->sale->estimate->branch_id !== default_branch()->id) {
+        if ($payment->sale->estimate->branch_id != default_branch()->id) {
             abort(403, 'This estimate is not associated with this branch.');
         }
         // return $payment;
@@ -74,7 +74,7 @@ class PaymentController extends Controller
 
     public function destroy($id) {
         $payment = Payment::find(decrypt($id));
-        if ($payment->sale->estimate->branch_id !== default_branch()->id) {
+        if ($payment->sale->estimate->branch_id != default_branch()->id) {
             abort(403, 'This estimate is not associated with this branch.');
         }
         // return request()->all();

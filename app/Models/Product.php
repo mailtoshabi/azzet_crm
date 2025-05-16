@@ -49,7 +49,7 @@ class Product extends Model
 
     public function components()
     {
-        return $this->belongsToMany(Component::class)->withPivot('id','cost','o_cost')->withTimestamps();
+        return $this->belongsToMany(Component::class, 'component_product')->withPivot('id','cost','o_cost')->withTimestamps();
     }
 
     public function category()
@@ -90,5 +90,11 @@ class Product extends Model
     public function branch()
     {
         return $this->belongsTO(Branch::class);
+    }
+
+    public function getTotalPriceAttribute()
+    {
+        $total_components_cost = $this->components()->sum('component_product.cost');
+        return $total_components_cost+$this->profit;
     }
 }

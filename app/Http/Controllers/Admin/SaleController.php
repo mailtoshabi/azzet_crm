@@ -66,8 +66,12 @@ class SaleController extends Controller
     public function show($id)
     {
         $sale = Sale::findOrFail(decrypt($id));
-        // return $sale->status;
-        if ($sale->estimate->branch_id !== default_branch()->id) {
+        $hasProduct = $sale->products()->exists();
+        // return $hasProduct;
+        if(!$hasProduct) {
+            return redirect()->route('admin.sales.index')->with(['error'=>'No products found in the estimate']);
+        }
+        if ($sale->estimate->branch_id != default_branch()->id) {
             abort(403, 'This estimate is not associated with this branch.');
         }
         $employees = Employee::where('branch_id',default_branch()->id)->where('status',Utility::ITEM_ACTIVE)->get();
@@ -86,11 +90,13 @@ class SaleController extends Controller
         if($sale->status==Utility::STATUS_CLOSED) {
             abort(403, 'The Proforma has already been closed');
         }
-        if ($sale->estimate->branch_id !== default_branch()->id) {
+        if ($sale->estimate->branch_id != default_branch()->id) {
             abort(403, 'This estimate is not associated with this branch.');
         }
         $estimate_id = $sale->estimate->id;
         $estimate = Estimate::findOrFail($estimate_id);
+        // $input['est_no'] = 'EST-' . date('Ymd') . '-' . str_pad($estimate->id, 6, '0', STR_PAD_LEFT);
+        // $estimate->update($input);
         // if(!$estimate->sale) {
         foreach($estimate->products as $estimate_product) {
             $estimate_product_comps = DB::table('component_estimate_product')->where('estimate_product_id',$estimate_product->pivot->id)->get();
@@ -109,7 +115,7 @@ class SaleController extends Controller
         if($sale->status==Utility::STATUS_CLOSED) {
             abort(403, 'The Proforma has already been closed');
         }
-        if ($estimate->branch_id !== default_branch()->id) {
+        if ($estimate->branch_id != default_branch()->id) {
             abort(403, 'This estimate is not associated with this branch.');
         }
         $validated = request()->validate([

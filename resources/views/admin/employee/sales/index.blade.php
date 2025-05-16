@@ -106,9 +106,12 @@
                                      <label class="form-check-label" for="checkAll"></label>
                                  </div>
                              </th>
-                             <th scope="col">Date</th>
+                             <th scope="col">Invoice No</th>
                              <th scope="col">Customer</th>
                              <th scope="col">Items</th>
+                             <th scope="col">Sub Total</th>
+                             <th scope="col">Total Paid</th>
+                             <th scope="col">Status</th>
                              <th style="width: 80px; min-width: 80px;">View</th>
                          </tr>
                          </thead>
@@ -122,7 +125,7 @@
                                             <label class="form-check-label" for="contacusercheck1"></label>
                                         </div>
                                     </th>
-                                    <td>{{ $sale->created_at->format('d-m-Y H:i:s') }}</td>
+                                    <td>{{ $sale->invoice_no }}<br>{{ $sale->created_at->format('d-m-Y H:i:s') }}</td>
                                     <td>
                                         <a href="#" class="text-body">{{ $sale->estimate->customer->name }}</a>
                                     </td>
@@ -136,6 +139,9 @@
                                         @endforeach
                                         <a href="#" class="text-body">{{ $data }}</a>
                                     </td>
+                                    <td>{{ Utility::formatPrice($sale->sub_total+$sale->total_igst+$sale->delivery_charge-$sale->round_off-$sale->discount) }}</td>
+                                    <td>{{ Utility::formatPrice($sale->total_paid) }}</td>
+                                    <td>{{ $sale->payment_status }}</td>
                                     <td>
                                         <a target="_blank" title="view" href="{{ route('employee.sales.view',encrypt($sale->id)) }}"><i class="fa fa-eye font-size-16 text-primary me-1"></i></a>
                                     </td>

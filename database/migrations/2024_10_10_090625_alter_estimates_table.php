@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('estimates', function (Blueprint $table) {
             $table->foreignId('enquiry_id')->nullable()->after('customer_id')->constrained()->onDelete('cascade');
-            // $table->boolean('has_proforma')->comment('1-Yes 0-No')->default(0)->after('enquiry_id');
+            $table->text('description')->nullable();
         });
     }
 

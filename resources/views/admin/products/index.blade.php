@@ -84,6 +84,7 @@
                              </th>
                              <th scope="col">Name</th>
                              <th scope="col">Category/HSN Code</th>
+                             <th scope="col">Price</th>
                              <th scope="col">Created By</th>
                              <th style="width: 80px; min-width: 80px;">Action</th>
                          </tr>
@@ -109,12 +110,16 @@
                                         </div>
                                         @endif
 
-                                        <a href="#" class="text-body">{{ $product->name }}</a>
+                                        <a href="{{ route('admin.products.edit',encrypt($product->id)) }}" class="">{{ $product->name }}
+                                        @unless (empty($product->code))
+                                            {{ ' - '.$product->code }}
+                                        @endunless </a>
                                         @unless (empty($product->description))
                                            <p style="padding-left: 43px;"><small>{{ \Illuminate\Support\Str::limit($product->description, $limit = 60   , $end = '...') }}</small></p>
                                         @endunless
                                     </td>
-                                    <td>{{ $product->category->name }} @if(!empty($product->hsn->name)) {{ '/'. $product->hsn->name }} @endif</td>
+                                    <td><a target="_blank" href="{{ route('admin.categories.edit',encrypt($product->category->id))}}" class="">{{ $product->category->name }} @if(!empty($product->hsn->name)) {{ '/'. $product->hsn->name }} @endif</a></td>
+                                    <td>{{ Utility::CURRENCY_DISPLAY . ' '. $product->total_price }}</td>
                                     <td>
                                         <a href="#" class="text-body">{{ !empty($product->employee)? 'Employee: ' . $product->employee->name : 'Admin: ' . $product->user->name }}</a>
                                     </td>

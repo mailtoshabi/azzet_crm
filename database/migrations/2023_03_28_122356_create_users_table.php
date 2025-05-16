@@ -30,7 +30,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
-        User::create(['name' => 'Azzet Admin','email' => 'admin@azzetgroup.com','phone'=>'9809373738','password' => Hash::make('123456'),'email_verified_at'=>now(),'avatar' => 'avatar-1.jpg', 'branch_id'=>1, 'created_at' => now()]);
+        User::create(['name' => 'Super Admin','email' => 'admin@azzetgroup.com','phone'=>'9809373738','password' => Hash::make('123456'),'email_verified_at'=>now(),'avatar' => 'avatar-1.jpg', 'branch_id'=>1, 'created_at' => now()]);
         User::create(['name' => 'Rameesh','email' => 'rameeshcv@gmail.com','phone'=>'9895310132','password' => Hash::make('123456'),'email_verified_at'=>now(),'avatar' => 'avatar-1.jpg', 'branch_id'=>1,'created_at' => now()]);
         User::create(['name' => 'Shada Mariyam','email' => 'shada@gmail.com','phone'=>'9809373737','password' => Hash::make('123456'),'email_verified_at'=>now(),'avatar' => 'avatar-1.jpg', 'branch_id'=>1,'created_at' => now()]);
     }

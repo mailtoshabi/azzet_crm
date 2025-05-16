@@ -28,9 +28,26 @@ class EnquiryController extends Controller
     }
 
     public function create() {
-        $auth_id = Auth::guard('employee')->id();
-        $customers = Customer::where('employee_id',$auth_id)->get(); //where('status',Utility::ITEM_ACTIVE)->
-        $products = Product::where('status',Utility::ITEM_ACTIVE)->get();
+        $authId = Auth::guard('employee')->id();
+        $customers = Customer::where('employee_id',$authId)->get(); //where('status',Utility::ITEM_ACTIVE)->
+        // $products = Product::all(); //where('status',Utility::ITEM_ACTIVE)->get()
+
+        $products = Product::where(function ($query) use ($authId) {
+            // Condition 1: employee_id is not the auth user and status is active
+            // $query->where('employee_id', '!=', $authId)
+
+            $query->where(function ($query) use ($authId) {
+                $query->where('employee_id', '!=', $authId)
+                ->orWhere('employee_id', null);
+            })
+                  ->where('status', 1);
+        })
+        ->orWhere(function ($query) use ($authId) {
+            // Condition 2: employee_id is the auth user
+            $query->where('employee_id', $authId);
+        })
+        ->get();
+
         return view('admin.employee.enquiries.add',compact('customers','products'));
     }
 

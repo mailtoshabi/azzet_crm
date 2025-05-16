@@ -108,7 +108,7 @@
                                                    </div>
                                                </div>
                                                @endif
-                                               <a href="#" class="text-body">{{ $branch->name }} @if($branch->id==default_branch()->id)<span class="badge badge-pill badge-soft-success font-size-12">Default</span>@endif</a>
+                                               <a href="{{ route('admin.branches.edit',encrypt($branch->id)) }}" class="">{{ $branch->name }} @if($branch->id==default_branch()->id)<span class="badge badge-pill badge-soft-success font-size-12">Default</span>@endif</a>
                                             </td>
 
                                            <td>{{ $branch->phone }}</td>

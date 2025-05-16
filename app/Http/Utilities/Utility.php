@@ -98,6 +98,16 @@ class Utility{
         return static::$paymentMethods;
     }
 
+    protected  static $handleTypes = [
+        1 => 'Paper Handle',
+        2 => 'Rope Handle'
+
+    ];
+    public static function handleTypes()
+    {
+        return static::$handleTypes;
+    }
+
     public static function settings($term) {
         $value = Settings::where('term', $term)->value('value');
         return $value;

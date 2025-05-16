@@ -1,5 +1,5 @@
 @extends('admin.layouts.master')
-@section('title') @lang('translation.Add_Product') @endsection
+@section('title') @if(isset($product)) @lang('translation.Edit_Product') @else @lang('translation.Add_Product') @endif @endsection
 @section('css')
 <link href="{{ URL::asset('assets/libs/select2/select2.min.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('assets/libs/dropzone/dropzone.min.css') }}" rel="stylesheet">
@@ -33,11 +33,6 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="mb-3">
-                                    <label for="name">Name</label>
-                                    <input id="name" name="name" type="text" class="form-control"  placeholder="Name" value="{{ isset($product)?$product->name:old('name')}}">
-                                    @error('name') <p class="text-danger">{{ $message }}</p> @enderror
-                                </div>
-                                <div class="mb-3">
                                     <label class="control-label">Category</label>
                                     <select id="category_id" name="category_id" class="form-control select2">
                                         <option value="">Select Category</option>
@@ -47,6 +42,17 @@
                                     </select>
                                     @error('category_id') <p class="text-danger">{{ $message }}</p> @enderror
                                 </div>
+                                <div class="mb-3">
+                                    <label for="name">Name</label>
+                                    <input id="name" name="name" type="text" class="form-control"  placeholder="Name" value="{{ isset($product)?$product->name:old('name')}}">
+                                    @error('name') <p class="text-danger">{{ $message }}</p> @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="code">Product Code</label>
+                                    <input id="code" name="code" type="text" class="form-control"  placeholder="Product Code" value="{{ isset($product)?$product->code:old('code')}}">
+                                    @error('code') <p>{{ $message }}</p> @enderror
+                                </div>
+
                             </div>
                             <div class="col-sm-6">
                                 <div class="mb-3">
@@ -71,14 +77,20 @@
                                     </span>
                                     <input name="isImageDelete" type="hidden" value="0">
                                 </div>
-                            </div>
 
-                            <div class="col-sm-12">
                                 <div class="mb-3">
-                                    <label for="description" class="form-label">Notes</label>
-                                    <textarea class="form-control" rows="2" placeholder="Enter notes, if any" id="description" name="description">{{ isset($product)?$product->description:old('description ')}}</textarea>
+                                    <label class="control-label">HSN Code</label>
+                                    <select id="hsn_id" name="hsn_id" class="form-control select2">
+                                        <option value="">Select Code</option>
+                                        @foreach ($hsns as $hsn)
+                                        <option value="{{ $hsn->id }}" @isset($product) {{ $hsn->id==$product->hsn_id ? 'selected':'' }} @endisset>{{ $hsn->name }} - GST {{ $hsn->tax_slab->name }}%</option>
+                                        @endforeach
+                                    </select>
+                                    @error('hsn_id') <p class="text-danger">{{ $message }}</p> @enderror
+                                    <a target="_blank" href="{{ route('admin.hsns.create') }}"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add New Code</a>
                                 </div>
                             </div>
+
                             <div class="col-sm-6">
                                 <div class="mb-3">
                                     <label class="control-label">Unit of Measure</label>
@@ -92,17 +104,11 @@
                                     <a target="_blank" href="{{ route('admin.uoms.create') }}"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add New Unit</a>
                                 </div>
                             </div>
+
                             <div class="col-sm-6">
                                 <div class="mb-3">
-                                    <label class="control-label">HSN Code</label>
-                                    <select id="hsn_id" name="hsn_id" class="form-control select2">
-                                        <option value="">Select Code</option>
-                                        @foreach ($hsns as $hsn)
-                                        <option value="{{ $hsn->id }}" @isset($product) {{ $hsn->id==$product->hsn_id ? 'selected':'' }} @endisset>{{ $hsn->name }} - GST {{ $hsn->tax_slab->name }}%</option>
-                                        @endforeach
-                                    </select>
-                                    @error('hsn_id') <p class="text-danger">{{ $message }}</p> @enderror
-                                    <a target="_blank" href="{{ route('admin.hsns.create') }}"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add New Code</a>
+                                    <label for="description" class="form-label">Notes</label>
+                                    <textarea class="form-control" rows="2" placeholder="Enter notes, if any" id="description" name="description">{{ isset($product)?$product->description:old('description ')}}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -200,6 +206,86 @@
                         <input id="" name="" type="text" class="form-control costs"  placeholder="Cost" value="">
                         <input id="" name="" type="hidden" class="o_costs" value="">
                     </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Paper Details</h4>
+                    <p class="card-title-desc">{{ isset($product)? 'Edit' : "Enter" }} the Details of Paper</p>
+                </div>
+                <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="control-label">Handle Type</label>
+                                    <select id="handle_type" name="handle_type" class="form-control select2">
+                                        <option value="0">Select Handle Type</option>
+                                        @foreach (Utility::handleTypes() as $index => $handle_type )
+                                            <option value="{{ $index }}" @isset($product) {{ $index==$product->handle_type ? 'selected':'' }} @endisset>{{ $handle_type }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('handle_type') <p class="text-danger">{{ $message }}</p> @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="width">Bag Width</label>
+                                    <input id="width" name="width" type="text" class="form-control"  placeholder="Bag Width" value="{{ isset($product)?$product->width:old('width')}}">
+                                    @error('width') <p class="text-danger">{{ $message }}</p> @enderror
+                                </div>
+
+
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label for="height">Bag Height</label>
+                                    <input id="height" name="height" type="text" class="form-control"  placeholder="Bag Height" value="{{ isset($product)?$product->height:old('height')}}">
+                                    @error('height') <p class="text-danger">{{ $message }}</p> @enderror
+                                </div>
+
+
+                                <div class="mb-3">
+                                    <label for="gusset">Bag Gusset</label>
+                                    <input id="gusset" name="gusset" type="text" class="form-control"  placeholder="Bag Gusset" value="{{ isset($product)?$product->gusset:old('gusset')}}">
+                                    @error('gusset') <p class="text-danger">{{ $message }}</p> @enderror
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label for="paper_width"><b>Paper Width</b></label>
+                                        @if(isset($product))
+                                            <?php
+                                                $paper_width = (($product->width+$product->gusset)*2)+2;
+                                                $formattedWidth = sprintf("%.2f", $paper_width);
+
+                                                $paper_height_f = ($product->height+($product->gusset)/2)+2;
+                                                $paper_height = $product->handle_type==2?$paper_height_f+3:$paper_height_f;
+                                                $formattedHeight = sprintf("%.2f", $paper_height);
+                                            ?>
+                                        @else
+                                            <?php
+                                                $formattedWidth = '';
+                                                $formattedHeight = '';
+                                            ?>
+                                        @endif
+                                    <input id="paper_width" name="paper_width" type="text" class="form-control" value="{{  $formattedWidth }}" readonly>
+                                    @error('paper_width') <p class="text-danger">{{ $message }}</p> @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label for="paper_height"><b>Paper Height</b></label>
+                                    <input id="paper_height" name="paper_height" type="text" class="form-control" value="{{  $formattedHeight }}" readonly>
+                                    @error('paper_height') <p class="text-danger">{{ $message }}</p> @enderror
+                                </div>
+                            </div>
+
+
+                        </div>
                 </div>
             </div>
 
@@ -315,5 +401,33 @@
         });
 
     })
+
+    $(document).ready(function () {
+        function calculatePaperDimensions() {
+            let width = parseFloat($("#width").val()) || 0;
+            let height = parseFloat($("#height").val()) || 0;
+            let gusset = parseFloat($("#gusset").val()) || 0;
+            let handleType = parseInt($("#handle_type").val()) || 0;
+
+            if (handleType === 0) {
+                $("#paper_width").val('');
+                $("#paper_height").val('');
+                return;
+            }
+
+            let paperWidth = ((width + gusset) * 2) + 2;
+            let paperHeight = (height + (gusset / 2)) + 2;
+
+            if (handleType === 2) {
+                paperHeight += 3;
+            }
+
+            $("#paper_width").val(paperWidth.toFixed(2));
+            $("#paper_height").val(paperHeight.toFixed(2));
+        }
+
+        $("#width, #height, #gusset, #handle_type").on("input change", calculatePaperDimensions);
+    });
+
 </script>
 @endsection

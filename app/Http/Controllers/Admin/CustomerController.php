@@ -93,7 +93,7 @@ class CustomerController extends Controller
     public function show($id)
     {
         $customer = Customer::findOrFail(decrypt($id));
-        if ($customer->branch_id !== default_branch()->id) {
+        if ($customer->branch_id != default_branch()->id) {
             abort(403, 'This estimate is not associated with this branch.');
         }
         $employees = Employee::where('branch_id',default_branch()->id)->where('status',Utility::ITEM_ACTIVE)->get();
@@ -109,7 +109,7 @@ class CustomerController extends Controller
     public function edit($id)
     {
         $customer = Customer::findOrFail(decrypt($id));
-        if ($customer->branch_id !== default_branch()->id) {
+        if ($customer->branch_id != default_branch()->id) {
             abort(403, 'This estimate is not associated with this branch.');
         }
         $states = DB::table('states')->orderBy('name','asc')->select('id','name')->get();
@@ -129,7 +129,7 @@ class CustomerController extends Controller
     {
         $id = decrypt(request('customer_id'));
         $customer = Customer::find($id);
-        if ($customer->branch_id !== default_branch()->id) {
+        if ($customer->branch_id != default_branch()->id) {
             abort(403, 'This estimate is not associated with this branch.');
         }
         //return Customer::DIR_PUBLIC . $customer->image;
@@ -183,7 +183,7 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         $customer = Customer::find(decrypt($id));
-        if ($customer->branch_id !== default_branch()->id) {
+        if ($customer->branch_id != default_branch()->id) {
             abort(403, 'This estimate is not associated with this branch.');
         }
         if(!$customer->is_approved) {
@@ -200,7 +200,7 @@ class CustomerController extends Controller
 
     public function changeStatus($id) {
         $customer = Customer::find(decrypt($id));
-        if ($customer->branch_id !== default_branch()->id) {
+        if ($customer->branch_id != default_branch()->id) {
             abort(403, 'This estimate is not associated with this branch.');
         }
         if($customer->is_approved) {
@@ -215,7 +215,7 @@ class CustomerController extends Controller
 
     public function approve($id) {
         $customer = Customer::find(decrypt($id));
-        if ($customer->branch_id !== default_branch()->id) {
+        if ($customer->branch_id != default_branch()->id) {
             abort(403, 'This estimate is not associated with this branch.');
         }
         if($customer->employee) {
@@ -243,7 +243,7 @@ class CustomerController extends Controller
         $id = request('customer_id');
         $employee_id = request('employee_id');
         $customer = Customer::find(decrypt($id));
-        if ($customer->branch_id !== default_branch()->id) {
+        if ($customer->branch_id != default_branch()->id) {
             abort(403, 'This estimate is not associated with this branch.');
         }
         $customer->update(['employee_id'=>$employee_id]);

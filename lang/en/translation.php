@@ -257,7 +257,9 @@ return [
     "Estimate_Manage" => "Estimates",
     "Add_Estimate" => "Add Estimate",
     "Edit_Estimate" => "Edit Estimate",
+    "View_Estimate" => "View Estimate",
     "Estimate_List" => "Estimate List",
+    "Estimate_Copy" => "Estimate Save as Copy",
 
     "Proforma_Invoice" => "Sales Invoices",
     "Proforma_List" => "Invoice List",
